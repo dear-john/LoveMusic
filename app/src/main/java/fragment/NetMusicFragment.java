@@ -18,15 +18,11 @@ import utils.ToastUtil;
 public class NetMusicFragment extends BaseFragment {
     private Banner banner;
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        LogUtil.logD("netmusic setUserVisibleHint   "+isVisibleToUser);
-    }
 
     @Override
     protected void lazyLoad() {
         banner = view.findViewById(R.id.net_music_banner);
+        LogUtil.logD("banner:  " + (banner == null ? null : "banner"));
         banner.setImageLoader(new GlideImageLoader())
                 .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                 .setIndicatorGravity(BannerConfig.CENTER)
@@ -36,7 +32,7 @@ public class NetMusicFragment extends BaseFragment {
                 .setOnBannerListener(new OnBannerListener() {
                     @Override
                     public void OnBannerClick(int position) {
-                        ToastUtil.toast(getActivity(), "banner: " + position);
+                        ToastUtil.toast( view.getContext().getApplicationContext(), "banner: " + position);
                     }
                 })
                 .start();
@@ -51,6 +47,7 @@ public class NetMusicFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         banner.stopAutoPlay();
+        LogUtil.logD("onStop");
     }
 
     @Override
