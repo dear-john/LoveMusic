@@ -8,7 +8,6 @@ import com.youth.banner.listener.OnBannerListener;
 import base.BaseFragment;
 import utils.GetBannerImages;
 import utils.GlideImageLoader;
-import utils.LogUtil;
 import utils.ToastUtil;
 
 /**
@@ -18,11 +17,9 @@ import utils.ToastUtil;
 public class NetMusicFragment extends BaseFragment {
     private Banner banner;
 
-
     @Override
     protected void lazyLoad() {
         banner = view.findViewById(R.id.net_music_banner);
-        LogUtil.logD("banner:  " + (banner == null ? null : "banner"));
         banner.setImageLoader(new GlideImageLoader())
                 .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                 .setIndicatorGravity(BannerConfig.CENTER)
@@ -32,7 +29,7 @@ public class NetMusicFragment extends BaseFragment {
                 .setOnBannerListener(new OnBannerListener() {
                     @Override
                     public void OnBannerClick(int position) {
-                        ToastUtil.toast( view.getContext().getApplicationContext(), "banner: " + position);
+                        ToastUtil.toast(view.getContext().getApplicationContext(), "banner: " + position);
                     }
                 })
                 .start();
@@ -47,7 +44,6 @@ public class NetMusicFragment extends BaseFragment {
     public void onStop() {
         super.onStop();
         banner.stopAutoPlay();
-        LogUtil.logD("onStop");
     }
 
     @Override

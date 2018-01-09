@@ -10,20 +10,16 @@ import java.util.List;
 
 import adapter.MyFragmentAdapter;
 import base.BaseFragment;
-import utils.LogUtil;
 
 
 public class AroundMusicFragment extends BaseFragment {
-    private TabLayout tabLayout;
-    private ViewPager aroundMusicVp;
     private static final int PAGE_NUM = 2;
-    private List<BaseFragment> baseFragmentList;
 
     @Override
     protected void lazyLoad() {
-        tabLayout = view.findViewById(R.id.around_music_tablayout);
-        aroundMusicVp = view.findViewById(R.id.around_viewpager);
-        baseFragmentList = new ArrayList<>(PAGE_NUM);
+        TabLayout tabLayout = view.findViewById(R.id.around_music_tablayout);
+        ViewPager aroundMusicVp = view.findViewById(R.id.around_viewpager);
+        List<BaseFragment> baseFragmentList = new ArrayList<>(PAGE_NUM);
         baseFragmentList.add(new NetMusicFragment());
         baseFragmentList.add(new VideoFragment());
         List<String> titles = new ArrayList<>(PAGE_NUM);
@@ -33,7 +29,6 @@ public class AroundMusicFragment extends BaseFragment {
         aroundMusicVp.setOffscreenPageLimit(2);
         aroundMusicVp.setCurrentItem(0);
         tabLayout.setupWithViewPager(aroundMusicVp);
-        isLoaded = true;
     }
 
 

@@ -22,9 +22,9 @@ import java.util.List;
 
 import adapter.MyFragmentAdapter;
 import base.BaseFragment;
+import fragment.AroundMusicFragment;
 import fragment.FriendFragment;
 import fragment.LocalMusicFragment;
-import fragment.AroundMusicFragment;
 import utils.ToastUtil;
 
 
