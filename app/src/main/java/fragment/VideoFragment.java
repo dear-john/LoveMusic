@@ -14,6 +14,8 @@ public class VideoFragment extends BaseFragment {
     @Override
     protected void lazyLoad() {
 
+        //加载成功后，设置为true避免下次重复加载
+        hasLoaded=true;
     }
 
     @Override

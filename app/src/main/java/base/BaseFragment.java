@@ -20,7 +20,12 @@ public abstract class BaseFragment extends Fragment {
         view = inflater.inflate(getLayoutId(), container, false);
         if (canLoad && !hasLoaded) {
             lazyLoad();
-            hasLoaded = true;
+            /*
+            加载成功后，设置为true避免下次重复加载
+            但是如果只是调用了lazyLoad()，但加载没有成功
+            设置为true会导致下一次不再加载
+             */
+//            hasLoaded = true;
         }
         isPrepared = true;
         return view;
@@ -34,7 +39,7 @@ public abstract class BaseFragment extends Fragment {
         }
         if (getUserVisibleHint() && !hasLoaded && isPrepared) {
             lazyLoad();
-            hasLoaded = true;
+//            hasLoaded = true;
         }
     }
 

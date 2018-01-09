@@ -19,6 +19,7 @@ public class NetMusicFragment extends BaseFragment {
 
     @Override
     protected void lazyLoad() {
+        //轮播图
         banner = view.findViewById(R.id.net_music_banner);
         banner.setImageLoader(new GlideImageLoader())
                 .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
@@ -33,6 +34,9 @@ public class NetMusicFragment extends BaseFragment {
                     }
                 })
                 .start();
+
+        //加载成功后，设置为true避免下次重复加载
+        hasLoaded=true;
     }
 
     @Override
