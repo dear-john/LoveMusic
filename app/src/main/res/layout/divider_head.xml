@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <View
+        android:layout_width="3dp"
+        android:layout_height="20dp"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/view_shape" />
+
+    <TextView
+        android:id="@+id/tv_movie_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:gravity="center_vertical"
+        android:text="榜单分类"
+        android:textColor="@android:color/black"
+        android:textSize="17sp" />
+
+</LinearLayout>

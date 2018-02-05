@@ -5,4 +5,14 @@
     <string name="nav_quit_ontime">定时停止播放</string>
     <string name="nav_scan">扫一扫</string>
     <string name="nav_night_mode">夜间模式</string>
+    <string name="local_music">本地音乐</string>
+    <string name="local_music_init">(点击扫描)</string>
+    <string name="recent_play">最近播放</string>
+    <string name="recent_play_init">(暂无最近播放)</string>
+    <string name="download_init">(0)</string>
+    <string name="download">下载管理</string>
+    <string name="my_radio">我的电台</string>
+    <string name="my_radio_init">(暂无收藏电台)</string>
+    <string name="my_collection">我的收藏</string>
+    <string name="my_collection_init">(专辑/歌手/视频/专栏)</string>
 </resources>
