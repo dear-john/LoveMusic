@@ -1,5 +1,7 @@
 package fragment;
 
+import android.view.View;
+
 import com.spring_ballet.lovemusic.R;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -53,5 +55,10 @@ public class NetMusicFragment extends BaseFragment {
     @Override
     protected int getLayoutId() {
         return R.layout.net_music_frag;
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

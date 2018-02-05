@@ -1,5 +1,7 @@
 package fragment;
 
+import android.view.View;
+
 import com.spring_ballet.lovemusic.R;
 
 import base.BaseFragment;
@@ -21,5 +23,10 @@ public class FriendFragment extends BaseFragment {
     @Override
     protected int getLayoutId() {
         return R.layout.friend_frag;
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }

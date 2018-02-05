@@ -14,7 +14,7 @@ import java.util.List;
 import utils.ToastUtil;
 
 
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment implements View.OnClickListener{
     private boolean canLoad = false;
     private boolean isPrepared = false;
     protected boolean hasLoaded = false;

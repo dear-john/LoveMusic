@@ -2,6 +2,7 @@ package fragment;
 
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.view.View;
 
 import com.spring_ballet.lovemusic.R;
 
@@ -45,4 +46,8 @@ public class AroundMusicFragment extends BaseFragment {
     }
 
 
+    @Override
+    public void onClick(View v) {
+
+    }
 }
