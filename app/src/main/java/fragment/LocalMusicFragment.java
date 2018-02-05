@@ -4,12 +4,13 @@ import android.Manifest;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
+import android.view.View;
+import android.widget.TextView;
 
 import com.spring_ballet.lovemusic.R;
 
 import base.BaseFragment;
 import utils.DialogUtil;
-import utils.ToastUtil;
 
 
 public class LocalMusicFragment extends BaseFragment {
@@ -58,6 +59,61 @@ public class LocalMusicFragment extends BaseFragment {
     }
 
     private void loadData() {
-        ToastUtil.showShort(mContext, "load data");
+        View localMusicLayout = view.findViewById(R.id.layout_local_music);
+        TextView localMusicNumberTv = view.findViewById(R.id.tv_local_music_number);
+        View recentPlayLayout = view.findViewById(R.id.layout_recent_play);
+        TextView recentPlayNumberTv = view.findViewById(R.id.tv_recent_paly_number);
+        View downloadLayout = view.findViewById(R.id.layout_download_music);
+        TextView downloadNumberTv = view.findViewById(R.id.tv_download_music_number);
+        View radioLayout = view.findViewById(R.id.layout_radio);
+        TextView radioTv = view.findViewById(R.id.tv_radio_number);
+        View collectLayout = view.findViewById(R.id.layout_collection);
+        TextView collectTv = view.findViewById(R.id.tv_collection_number);
+        localMusicLayout.setOnClickListener(this);
+        recentPlayLayout.setOnClickListener(this);
+        downloadLayout.setOnClickListener(this);
+        radioLayout.setOnClickListener(this);
+        collectLayout.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.layout_local_music:
+                loadLocalMusicData();
+                break;
+            case R.id.layout_recent_play:
+                loadRecentPlayData();
+                break;
+            case R.id.layout_download_music:
+                loadDownloadData();
+                break;
+            case R.id.layout_radio:
+                loadRadioData();
+                break;
+            case R.id.layout_collection:
+                loadCollectionData();
+                break;
+        }
+    }
+
+    private void loadLocalMusicData() {
+
+    }
+
+    private void loadCollectionData() {
+
+    }
+
+    private void loadRadioData() {
+
+    }
+
+    private void loadDownloadData() {
+
+    }
+
+    private void loadRecentPlayData() {
+
     }
 }
