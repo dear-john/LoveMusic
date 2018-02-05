@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private FrameLayout searchLauout;
     private ViewPager mainVp;
     private LinearLayout footLayout;
+    private List<BaseFragment> baseFragmentList;
 
     //滑动菜单
     private NavigationView nav;
@@ -58,11 +59,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initWidgets();
         initListeners();
         initViewPager();
-        setSelectedItemAndPage(0);
+        setSelectedItemAndPage(1);
     }
 
     private void initViewPager() {
-        List<BaseFragment> baseFragmentList = new ArrayList<>(3);
+        baseFragmentList = new ArrayList<>(3);
         baseFragmentList.add(new LocalMusicFragment());
         baseFragmentList.add(new AroundMusicFragment());
         baseFragmentList.add(new FriendFragment());
@@ -123,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.nav_foot_layout:
-                ToastUtil.toast(this, "nav foot");
+                ToastUtil.showShort(this, "nav foot");
                 break;
             case R.id.main_menu:
                 drawerLayout.openDrawer(GravityCompat.START);
@@ -132,43 +133,43 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if (mainVp.getCurrentItem() != 0) {
                     setSelectedItemAndPage(0);
                 } else {
-                    ToastUtil.toast(this, "refresh");
+                    ToastUtil.showShort(this, "refresh");
                 }
                 break;
             case R.id.iv_around_music:
                 if (mainVp.getCurrentItem() != 1) {
                     setSelectedItemAndPage(1);
                 } else {
-                    ToastUtil.toast(this, "refresh");
+                    ToastUtil.showShort(this, "refresh");
                 }
                 break;
             case R.id.iv_friend:
                 if (mainVp.getCurrentItem() != 2) {
                     setSelectedItemAndPage(2);
                 } else {
-                    ToastUtil.toast(this, "refresh");
+                    ToastUtil.showShort(this, "refresh");
                 }
                 break;
             case R.id.search:
-                ToastUtil.toast(this, "this is search");
+                ToastUtil.showShort(this, "this is search");
                 break;
             case R.id.main_footview:
-                ToastUtil.toast(this, "this is foot");
+                ToastUtil.showShort(this, "this is foot");
                 break;
             case R.id.nav_head_icon:
-                ToastUtil.toast(this, "this is head icon");
+                ToastUtil.showShort(this, "this is head icon");
                 break;
             case R.id.nav_bg:
-                ToastUtil.toast(this, "this is bg");
+                ToastUtil.showShort(this, "this is bg");
                 break;
             case R.id.tv_user_name:
-                ToastUtil.toast(this, "this is name");
+                ToastUtil.showShort(this, "this is name");
                 break;
             case R.id.tv_user_level:
-                ToastUtil.toast(this, "this is level");
+                ToastUtil.showShort(this, "this is level");
                 break;
             case R.id.tv_user_sign:
-                ToastUtil.toast(this, "this is sign");
+                ToastUtil.showShort(this, "this is sign");
                 break;
         }
     }
@@ -215,16 +216,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.item_my_msg:
-                ToastUtil.toast(this, "msg");
+                ToastUtil.showShort(this, "msg");
                 break;
             case R.id.item_my_friend:
-                ToastUtil.toast(this, "friend");
+                ToastUtil.showShort(this, "friend");
                 break;
             case R.id.item_quit_ontime:
-                ToastUtil.toast(this, "quit");
+                ToastUtil.showShort(this, "quit");
                 break;
             case R.id.item_scan:
-                ToastUtil.toast(this, "scan");
+                ToastUtil.showShort(this, "scan");
                 break;
         }
         return true;
@@ -240,4 +241,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         return super.onKeyDown(keyCode, event);
     }
+
 }

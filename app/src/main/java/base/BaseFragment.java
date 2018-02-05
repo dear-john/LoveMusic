@@ -1,11 +1,17 @@
 package base;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import java.util.List;
+
+import utils.ToastUtil;
 
 
 public abstract class BaseFragment extends Fragment {
@@ -13,6 +19,7 @@ public abstract class BaseFragment extends Fragment {
     private boolean isPrepared = false;
     protected boolean hasLoaded = false;
     protected View view;
+    protected Context mContext;
 
     @Nullable
     @Override
@@ -28,6 +35,7 @@ public abstract class BaseFragment extends Fragment {
 //            hasLoaded = true;
         }
         isPrepared = true;
+        mContext = view.getContext().getApplicationContext();
         return view;
     }
 

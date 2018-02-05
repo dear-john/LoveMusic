@@ -15,13 +15,13 @@ import utils.ToastUtil;
  */
 
 public class NetMusicFragment extends BaseFragment {
-    private Banner banner;
+    private Banner mBanner;
 
     @Override
     protected void lazyLoad() {
         //轮播图
-        banner = view.findViewById(R.id.net_music_banner);
-        banner.setImageLoader(new GlideImageLoader())
+        mBanner = view.findViewById(R.id.net_music_banner);
+        mBanner.setImageLoader(new GlideImageLoader())
                 .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
                 .setIndicatorGravity(BannerConfig.CENTER)
                 .isAutoPlay(true)
@@ -30,13 +30,13 @@ public class NetMusicFragment extends BaseFragment {
                 .setOnBannerListener(new OnBannerListener() {
                     @Override
                     public void OnBannerClick(int position) {
-                        ToastUtil.toast(view.getContext().getApplicationContext(), "banner: " + position);
+                        ToastUtil.showShort(mContext, "mBanner: " + position);
                     }
                 })
                 .start();
 
         //加载成功后，设置为true避免下次重复加载
-        hasLoaded=true;
+        hasLoaded = true;
     }
 
     @Override
@@ -47,7 +47,7 @@ public class NetMusicFragment extends BaseFragment {
     @Override
     public void onStop() {
         super.onStop();
-        banner.stopAutoPlay();
+        mBanner.stopAutoPlay();
     }
 
     @Override
