@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LoveMusic</string>
+    <string name="app_name">音乐之声</string>
     <string name="nav_my_msg">我的消息</string>
     <string name="nav_my_friend">我的好友</string>
     <string name="nav_quit_ontime">定时停止播放</string>
