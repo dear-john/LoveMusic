@@ -1,7 +1,6 @@
 package fragment;
 
 import android.Manifest;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
@@ -11,17 +10,20 @@ import android.widget.TextView;
 import com.spring_ballet.lovemusic.LocalMusicActivity;
 import com.spring_ballet.lovemusic.R;
 
-import java.util.List;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import base.BaseFragment;
-import bean.LocalMusic;
+import bean.MessageEvent;
 import utils.DialogUtil;
 import utils.IntentUtil;
-import utils.LocalMusicUtil;
-import utils.ToastUtil;
+import utils.SharedPreferencesUtil;
 
 
 public class LocalMusicFragment extends BaseFragment {
+
+    private TextView localMusicNumberTv;
 
     @Override
     protected void lazyLoad() {
@@ -67,8 +69,14 @@ public class LocalMusicFragment extends BaseFragment {
     }
 
     private void loadData() {
+        EventBus.getDefault().register(this);
         View localMusicLayout = view.findViewById(R.id.layout_local_music);
-        TextView localMusicNumberTv = view.findViewById(R.id.tv_local_music_number);
+        localMusicNumberTv = view.findViewById(R.id.tv_local_music_number);
+        int number = SharedPreferencesUtil.getIntData(mContext, "LocalMusicNumber");
+        if (number != -1) {
+            String text = "(" + number + ")";
+            localMusicNumberTv.setText(text);
+        }
         View recentPlayLayout = view.findViewById(R.id.layout_recent_play);
         TextView recentPlayNumberTv = view.findViewById(R.id.tv_recent_paly_number);
         View downloadLayout = view.findViewById(R.id.layout_download_music);
@@ -105,6 +113,12 @@ public class LocalMusicFragment extends BaseFragment {
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onMessageEvent(MessageEvent event) {
+        String text = "(" + event.getLocalMusicNumber() + ")";
+        localMusicNumberTv.setText(text);
+    }
+
     private void loadCollectionData() {
 
     }
@@ -119,5 +133,11 @@ public class LocalMusicFragment extends BaseFragment {
 
     private void loadRecentPlayData() {
 
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().unregister(this);
     }
 }

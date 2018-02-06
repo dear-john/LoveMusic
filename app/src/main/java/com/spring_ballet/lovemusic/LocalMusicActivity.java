@@ -2,17 +2,22 @@ package com.spring_ballet.lovemusic;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.List;
 
 import adapter.LocalRecyclerViewAdapter;
 import bean.LocalMusic;
+import bean.MessageEvent;
 import utils.LocalMusicUtil;
+import utils.SharedPreferencesUtil;
 import utils.ToastUtil;
 
 public class LocalMusicActivity extends AppCompatActivity implements View.OnClickListener {
@@ -33,7 +38,9 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
         menuLayout.setOnClickListener(this);
         mRecyclerView = findViewById(R.id.rv_local_music);
         mLocalMusicList = LocalMusicUtil.getLocalMusicData(this);
+        SharedPreferencesUtil.putIntData(this, "LocalMusicNumber", mLocalMusicList.size());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setAdapter(new LocalRecyclerViewAdapter(mLocalMusicList, new LocalRecyclerViewAdapter.ClickListener() {
             @Override
             public void moreListener(View view, int position) {
@@ -69,5 +76,13 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        MessageEvent event = new MessageEvent();
+        event.setLocalMusicNumber(mLocalMusicList.size());
+        EventBus.getDefault().post(event);
     }
 }
