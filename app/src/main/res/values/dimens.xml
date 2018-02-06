@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="music_item_height">55dp</dimen>
+    <dimen name="local_music_icon_size">35dp</dimen>
+    <dimen name="local_music_margin">5dp</dimen>
+    <dimen name="local_music_item_font">15sp</dimen>
+</resources>

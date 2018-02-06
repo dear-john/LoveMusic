@@ -39,7 +39,7 @@
                         android:layout_width="23dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/toolbar_menu" />
+                        android:src="@drawable/horziontal_menu" />
 
                 </FrameLayout>
 

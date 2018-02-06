@@ -1,16 +1,24 @@
 package fragment;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
 
+import com.spring_ballet.lovemusic.LocalMusicActivity;
 import com.spring_ballet.lovemusic.R;
 
+import java.util.List;
+
 import base.BaseFragment;
+import bean.LocalMusic;
 import utils.DialogUtil;
+import utils.IntentUtil;
+import utils.LocalMusicUtil;
+import utils.ToastUtil;
 
 
 public class LocalMusicFragment extends BaseFragment {
@@ -80,7 +88,7 @@ public class LocalMusicFragment extends BaseFragment {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.layout_local_music:
-                loadLocalMusicData();
+                IntentUtil.gotoActivity(mContext, LocalMusicActivity.class);
                 break;
             case R.id.layout_recent_play:
                 loadRecentPlayData();
@@ -95,10 +103,6 @@ public class LocalMusicFragment extends BaseFragment {
                 loadCollectionData();
                 break;
         }
-    }
-
-    private void loadLocalMusicData() {
-
     }
 
     private void loadCollectionData() {

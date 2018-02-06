@@ -12,14 +12,14 @@
         <LinearLayout
             android:id="@+id/layout_local_music"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="@dimen/music_item_height"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="@dimen/local_music_icon_size"
+                android:layout_height="@dimen/local_music_icon_size"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="@dimen/local_music_margin"
                 android:scaleType="fitXY"
                 android:src="@drawable/music_local" />
 
@@ -27,11 +27,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"
+                android:layout_marginEnd="@dimen/local_music_margin"
+                android:layout_marginStart="@dimen/local_music_margin"
                 android:text="@string/local_music"
                 android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:textSize="@dimen/local_music_item_font" />
 
             <TextView
                 android:id="@+id/tv_local_music_number"
@@ -46,14 +46,14 @@
         <LinearLayout
             android:id="@+id/layout_recent_play"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="@dimen/music_item_height"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="@dimen/local_music_icon_size"
+                android:layout_height="@dimen/local_music_icon_size"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="@dimen/local_music_margin"
                 android:scaleType="fitXY"
                 android:src="@drawable/recent_play" />
 
@@ -61,11 +61,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"
+                android:layout_marginEnd="@dimen/local_music_margin"
+                android:layout_marginStart="@dimen/local_music_margin"
                 android:text="@string/recent_play"
                 android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:textSize="@dimen/local_music_item_font" />
 
             <TextView
                 android:id="@+id/tv_recent_paly_number"
@@ -80,14 +80,14 @@
         <LinearLayout
             android:id="@+id/layout_download_music"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="@dimen/music_item_height"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
+                android:layout_width="@dimen/local_music_icon_size"
+                android:layout_height="@dimen/local_music_icon_size"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="@dimen/local_music_margin"
                 android:scaleType="fitXY"
                 android:src="@drawable/download_music" />
 
@@ -95,11 +95,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"
+                android:layout_marginEnd="@dimen/local_music_margin"
+                android:layout_marginStart="@dimen/local_music_margin"
                 android:text="@string/download"
                 android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:textSize="@dimen/local_music_item_font" />
 
             <TextView
                 android:id="@+id/tv_download_music_number"
@@ -114,15 +114,14 @@
         <LinearLayout
             android:id="@+id/layout_radio"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="@dimen/music_item_height"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:padding="2.5dp"
+                android:layout_width="@dimen/local_music_icon_size"
+                android:layout_height="@dimen/local_music_icon_size"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="@dimen/local_music_margin"
                 android:scaleType="fitXY"
                 android:src="@drawable/radio" />
 
@@ -130,11 +129,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"
+                android:layout_marginEnd="@dimen/local_music_margin"
+                android:layout_marginStart="@dimen/local_music_margin"
                 android:text="@string/my_radio"
                 android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:textSize="@dimen/local_music_item_font" />
 
             <TextView
                 android:id="@+id/tv_radio_number"
@@ -149,14 +148,14 @@
         <LinearLayout
             android:id="@+id/layout_collection"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="@dimen/music_item_height"
             android:orientation="horizontal">
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="@dimen/local_music_icon_size"
+                android:layout_height="@dimen/local_music_icon_size"
                 android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
+                android:layout_marginStart="@dimen/local_music_margin"
                 android:scaleType="fitXY"
                 android:src="@drawable/local_music" />
 
@@ -164,11 +163,11 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"
+                android:layout_marginEnd="@dimen/local_music_margin"
+                android:layout_marginStart="@dimen/local_music_margin"
                 android:text="@string/my_collection"
                 android:textColor="@android:color/black"
-                android:textSize="15sp" />
+                android:textSize="@dimen/local_music_item_font" />
 
             <TextView
                 android:id="@+id/tv_collection_number"
