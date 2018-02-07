@@ -4,4 +4,5 @@
     <dimen name="local_music_icon_size">35dp</dimen>
     <dimen name="local_music_margin">5dp</dimen>
     <dimen name="local_music_item_font">15sp</dimen>
+    <dimen name="popupwindow_item_dimen">50dp</dimen>
 </resources>

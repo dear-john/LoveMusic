@@ -12,10 +12,12 @@ import android.view.View;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
+import java.util.Random;
 
 import adapter.LocalRecyclerViewAdapter;
 import bean.LocalMusic;
 import bean.MessageEvent;
+import utils.BottomDialogUtil;
 import utils.LocalMusicUtil;
 import utils.SharedPreferencesUtil;
 import utils.ToastUtil;
@@ -44,12 +46,20 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
         mRecyclerView.setAdapter(new LocalRecyclerViewAdapter(mLocalMusicList, new LocalRecyclerViewAdapter.ClickListener() {
             @Override
             public void moreListener(View view, int position) {
-                ToastUtil.showShort(LocalMusicActivity.this, "this is" + mLocalMusicList.get(position).getMusicName());
+                LocalMusic localMusic = mLocalMusicList.get(position);
+                BottomDialogUtil.showDialog(LocalMusicActivity.this, localMusic.getMusicName(),
+                        new Random().nextInt(10000) + 100, localMusic.getSinger(), localMusic.getAlbum(),
+                        new BottomDialogUtil.DialogItemClickListener() {
+                            @Override
+                            public void OnItemClickListener(int index) {
+                                ToastUtil.showShort(LocalMusicActivity.this, index + "");
+                            }
+                        });
             }
 
             @Override
             public void itemListener(View view, int position) {
-                ToastUtil.showShort(LocalMusicActivity.this, "item is" + mLocalMusicList.get(position).getMusicName());
+                ToastUtil.showShort(LocalMusicActivity.this, "play " + mLocalMusicList.get(position).getMusicName());
             }
         }));
     }
