@@ -15,21 +15,14 @@ import com.spring_ballet.lovemusic.R;
  * Created by 李君 on 2018/2/7.
  */
 
-public class BottomDialogUtil implements View.OnClickListener{
+public class BottomDialogUtil {
 
     public static void showDialog(final Context context, String name, int commentNumber, String singer, String album, final DialogItemClickListener listener) {
         final Dialog dialog = new Dialog(context, R.style.BottomDialog);
         View view = LayoutInflater.from(context).inflate(R.layout.music_popupwindow, null);
-//        view.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                //do-something
-//            }
-//        });
         TextView nameTv = view.findViewById(R.id.tv_popupwin_music_name);
         nameTv.setText(String.format("歌曲: %s", name));
         View nextLayout = view.findViewById(R.id.layout_next_music);
-//        nextLayout.setOnClickListener(this);
         nextLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -94,11 +87,6 @@ public class BottomDialogUtil implements View.OnClickListener{
         //点击空白dialog消失
         dialog.setCanceledOnTouchOutside(true);
         dialog.show();
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 
     public interface DialogItemClickListener {
