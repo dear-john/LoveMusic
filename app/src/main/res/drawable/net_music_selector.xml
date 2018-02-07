@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/net_music_selected" android:state_selected="true" />
-    <item android:drawable="@drawable/net_music" android:state_selected="false" />
+    <item android:background="?attr/selectableItemBackgroundBorderless"
+        android:drawable="@drawable/net_music_selected"
+        android:state_selected="true" />
+
+    <item android:background="?attr/selectableItemBackgroundBorderless"
+        android:drawable="@drawable/net_music"
+        android:state_selected="false" />
 </selector>

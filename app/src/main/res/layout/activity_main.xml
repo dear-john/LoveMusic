@@ -32,6 +32,7 @@
                     android:id="@+id/main_menu"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:background="?android:attr/selectableItemBackgroundBorderless"
                     android:paddingEnd="15dp"
                     android:paddingStart="15dp">
 
@@ -77,6 +78,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="end|center_vertical"
+                    android:background="?attr/selectableItemBackgroundBorderless"
                     android:paddingEnd="15dp"
                     android:paddingStart="15dp">
 
