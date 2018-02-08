@@ -19,7 +19,7 @@ public class BottomDialogUtil {
 
     public static void showDialog(final Context context, String name, int commentNumber, String singer, String album, final DialogItemClickListener listener) {
         final Dialog dialog = new Dialog(context, R.style.BottomDialog);
-        View view = LayoutInflater.from(context).inflate(R.layout.music_popupwindow, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.music_bottom_dialog, null);
         TextView nameTv = view.findViewById(R.id.tv_popupwin_music_name);
         nameTv.setText(String.format("歌曲: %s", name));
         View nextLayout = view.findViewById(R.id.layout_next_music);

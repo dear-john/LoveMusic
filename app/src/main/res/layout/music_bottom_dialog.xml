@@ -36,7 +36,7 @@
 
     </LinearLayout>
 
-    <include layout="@layout/divider_line" />
+    <include layout="@layout/divider_line_margin" />
 
     <LinearLayout
         android:id="@+id/layout_collect"
@@ -62,7 +62,7 @@
 
     </LinearLayout>
 
-    <include layout="@layout/divider_line" />
+    <include layout="@layout/divider_line_margin" />
 
     <LinearLayout
         android:id="@+id/layout_comment"
@@ -88,7 +88,7 @@
 
     </LinearLayout>
 
-    <include layout="@layout/divider_line" />
+    <include layout="@layout/divider_line_margin" />
 
     <LinearLayout
         android:id="@+id/layout_share"
@@ -114,7 +114,7 @@
 
     </LinearLayout>
 
-    <include layout="@layout/divider_line" />
+    <include layout="@layout/divider_line_margin" />
 
     <LinearLayout
         android:id="@+id/layout_singer"
@@ -140,7 +140,7 @@
 
     </LinearLayout>
 
-    <include layout="@layout/divider_line" />
+    <include layout="@layout/divider_line_margin" />
 
     <LinearLayout
         android:id="@+id/layout_album"
