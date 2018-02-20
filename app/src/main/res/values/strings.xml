@@ -15,4 +15,11 @@
     <string name="my_radio_init">(暂无收藏电台)</string>
     <string name="my_collection">我的收藏</string>
     <string name="my_collection_init">(专辑/歌手/视频/专栏)</string>
+    <string name="new_music">新歌榜</string>
+    <string name="hot_music">热歌榜</string>
+    <string name="pop_music">流行音乐榜</string>
+    <string name="classical_music">经典老歌榜</string>
+    <string name="movie_music">影视金曲榜</string>
+    <string name="net_music">网络歌曲榜</string>
+    <string name="europe_music">欧美金曲榜</string>
 </resources>

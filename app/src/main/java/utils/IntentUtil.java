@@ -15,7 +15,7 @@ public class IntentUtil {
         from.startActivity(intent);
     }
 
-    public static void gotoActivityWithData(Activity from, Class target, String data) {
+    public static void gotoActivityWithData(Context from, Class target, String data) {
         Intent intent = new Intent(from, target);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK );
         intent.putExtra("data", data);
