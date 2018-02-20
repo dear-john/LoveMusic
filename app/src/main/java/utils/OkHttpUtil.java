@@ -2,6 +2,7 @@ package utils;
 
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -10,7 +11,11 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class OkHttpUtil {
-    private static OkHttpClient sClient = new OkHttpClient();
+    private static final OkHttpClient sClient = new OkHttpClient.Builder()
+            .connectTimeout(2000, TimeUnit.SECONDS)
+            .readTimeout(2000, TimeUnit.SECONDS)
+            .writeTimeout(2000, TimeUnit.SECONDS)
+            .build();
     private static String data;
 
     public static String loadData(String url) {
