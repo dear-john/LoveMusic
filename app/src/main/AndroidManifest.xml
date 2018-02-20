@@ -20,7 +20,10 @@
             </intent-filter>
         </activity>
         <activity android:name="base.BaseActivity" />
-        <activity android:name=".LocalMusicActivity"/>
+        <activity android:name=".LocalMusicActivity" />
+        <activity
+            android:name=".RanklistActivity"
+            android:label="" />
     </application>
 
 </manifest>

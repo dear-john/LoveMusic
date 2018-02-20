@@ -6,7 +6,7 @@
 
     <View
         android:layout_width="3dp"
-        android:layout_height="20dp"
+        android:layout_height="15dp"
         android:layout_gravity="center_vertical"
         android:background="@drawable/view_shape" />
 
@@ -18,12 +18,12 @@
         android:gravity="center_vertical"
         android:text="榜单分类"
         android:textColor="@android:color/black"
-        android:textSize="17sp" />
+        android:textSize="15sp" />
 
-    <ImageView
-        android:layout_width="15dp"
-        android:layout_height="15dp"
-        android:layout_gravity="center_vertical"
-        android:layout_marginStart="5dp"
-        android:src="@drawable/arrow" />
+    <!--<ImageView-->
+        <!--android:layout_width="15dp"-->
+        <!--android:layout_height="15dp"-->
+        <!--android:layout_gravity="center_vertical"-->
+        <!--android:layout_marginStart="5dp"-->
+        <!--android:src="@drawable/arrow" />-->
 </LinearLayout>

@@ -27,19 +27,20 @@ public class LocalRecyclerViewAdapter extends RecyclerView.Adapter<LocalRecycler
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.local_music_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.music_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+        holder.mMusicOrderTv.setText(String.valueOf(mLocalMusicList.get(position).getMusicOrder()));
         holder.mMusicNameTv.setText(mLocalMusicList.get(position).getMusicName());
         holder.mSingerTv.setText(mLocalMusicList.get(position).getSinger());
         holder.mAlbum.setText(mLocalMusicList.get(position).getAlbum());
         holder.mMusicItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mListener.itemListener(v,holder.getAdapterPosition());
+                mListener.itemListener(v, holder.getAdapterPosition());
             }
         });
         holder.mMusicMoreLayout.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +58,7 @@ public class LocalRecyclerViewAdapter extends RecyclerView.Adapter<LocalRecycler
 
     class ViewHolder extends RecyclerView.ViewHolder {
         View mMusicItemLayout;
+        TextView mMusicOrderTv;
         TextView mMusicNameTv;
         TextView mSingerTv;
         TextView mAlbum;
@@ -64,7 +66,8 @@ public class LocalRecyclerViewAdapter extends RecyclerView.Adapter<LocalRecycler
 
         ViewHolder(View itemView) {
             super(itemView);
-            mMusicItemLayout=itemView.findViewById(R.id.layout_music_item);
+            mMusicItemLayout = itemView.findViewById(R.id.layout_music_item);
+            mMusicOrderTv = itemView.findViewById(R.id.tv_music_order);
             mMusicNameTv = itemView.findViewById(R.id.tv_music_name);
             mSingerTv = itemView.findViewById(R.id.tv_singer);
             mAlbum = itemView.findViewById(R.id.tv_music_album);
@@ -74,6 +77,7 @@ public class LocalRecyclerViewAdapter extends RecyclerView.Adapter<LocalRecycler
 
     public interface ClickListener {
         void moreListener(View view, int position);
-        void itemListener(View view,int position);
+
+        void itemListener(View view, int position);
     }
 }

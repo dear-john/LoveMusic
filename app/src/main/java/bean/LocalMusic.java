@@ -11,6 +11,15 @@ public class LocalMusic {
     private String path;
     private int duration;
     private long size;
+    private int musicOrder;
+
+    public int getMusicOrder() {
+        return musicOrder;
+    }
+
+    public void setMusicOrder(int musicOrder) {
+        this.musicOrder = musicOrder;
+    }
 
     public String getSinger() {
         return singer;

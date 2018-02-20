@@ -2,7 +2,6 @@ package com.spring_ballet.lovemusic;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -42,7 +41,6 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
         mLocalMusicList = LocalMusicUtil.getLocalMusicData(this);
         SharedPreferencesUtil.putIntData(this, "LocalMusicNumber", mLocalMusicList.size());
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
         mRecyclerView.setAdapter(new LocalRecyclerViewAdapter(mLocalMusicList, new LocalRecyclerViewAdapter.ClickListener() {
             @Override
             public void moreListener(View view, int position) {
@@ -77,15 +75,6 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
                 ToastUtil.showShort(this, "more");
                 break;
         }
-    }
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-            finish();
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
     }
 
     @Override

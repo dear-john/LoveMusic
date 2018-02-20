@@ -14,7 +14,9 @@ import bean.LocalMusic;
  */
 
 public class LocalMusicUtil {
+
     public static List<LocalMusic> getLocalMusicData(Context context) {
+        int musicOrder = 1;
         List<LocalMusic> localMusicList = new ArrayList<>();
         Cursor cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 null, null, null, MediaStore.Audio.Media.DEFAULT_SORT_ORDER);
@@ -28,6 +30,7 @@ public class LocalMusicUtil {
                 localMusic.setDuration(cursor.getInt(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DURATION)));
                 localMusic.setPath(cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.DATA)));
                 localMusic.setSize(cursor.getLong(cursor.getColumnIndexOrThrow(MediaStore.Audio.Media.SIZE)));
+                localMusic.setMusicOrder(musicOrder++);
                 localMusicList.add(localMusic);
             }
             cursor.close();
