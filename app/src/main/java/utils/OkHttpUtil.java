@@ -1,6 +1,10 @@
 package utils;
 
 
+import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
+
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
@@ -11,15 +15,21 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 public class OkHttpUtil {
+    private static final int DEFAULT_TIMEOUT = 3000;
     private static final OkHttpClient sClient = new OkHttpClient.Builder()
-            .connectTimeout(2000, TimeUnit.SECONDS)
-            .readTimeout(2000, TimeUnit.SECONDS)
-            .writeTimeout(2000, TimeUnit.SECONDS)
+            .connectTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+            .readTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
+            .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
             .build();
     private static String data;
 
-    public static String loadData(String url) {
-        Request request = new Request.Builder().url(url).build();
+    public static void loadData(String url, final OnLoadDataFinish l) {
+        Request request = new Request.Builder()
+                //获取客户端标识：Build.BRAND + "/" + Build.MODEL + "/" + Build.VERSION.RELEASE
+                // 不添加请求头会报403错误
+                .addHeader("User-Agent", Build.BRAND + "/" + Build.MODEL + "/" + Build.VERSION.RELEASE)
+                .url(url)
+                .build();
         sClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
@@ -28,8 +38,18 @@ public class OkHttpUtil {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 data = response.body().string();
+                Handler mainHandler = new Handler(Looper.getMainLooper());
+                mainHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        l.loadDataFinish(data);
+                    }
+                });
             }
         });
-        return data;
+    }
+
+    public interface OnLoadDataFinish {
+        void loadDataFinish(String data);
     }
 }

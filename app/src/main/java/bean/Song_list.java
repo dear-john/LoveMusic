@@ -35,12 +35,12 @@ public class Song_list {
     private String biaoshi;
     private String info;
     private String has_filmtv;
-    private String si_proxycompany;
+    private String si_proxycompany;//签约公司
     private String res_encryption_flag;
     private String song_id;
     private String title;
     private String ting_uid;
-    private String author;
+    private String author;//歌手
     private String album_id;
     private String album_title;
     private int is_first_publish;
@@ -53,7 +53,7 @@ public class Song_list {
     private String korean_bb_song;
     private String resource_type_ext;
     private String mv_provider;
-    private String artist_name;
+    private String artist_name;//歌手
     private String pic_radio;
     private String pic_s500;
     private String pic_premium;
