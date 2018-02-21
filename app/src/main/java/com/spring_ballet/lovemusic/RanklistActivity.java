@@ -25,7 +25,7 @@ public class RanklistActivity extends AppCompatActivity implements View.OnClickL
                 ranklistName.setText(R.string.hot_music);
                 break;
             case 16:
-                ranklistName.setText(R.string.pop_music);
+                ranklistName.setText(R.string.billboard_music);
                 break;
             case 21:
                 ranklistName.setText(R.string.europe_music);

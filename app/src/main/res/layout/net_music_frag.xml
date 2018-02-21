@@ -139,12 +139,19 @@
         <LinearLayout
             android:id="@+id/layout_new_music_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/new_list" />
 
             <TextView
                 android:layout_width="75dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:paddingEnd="0dp"
                 android:paddingStart="10dp"
@@ -161,17 +168,24 @@
                 android:src="@drawable/arrow" />
         </LinearLayout>
 
-        <include layout="@layout/divider_line_nomargin" />
+        <include layout="@layout/net_music_divider_line" />
 
         <LinearLayout
             android:id="@+id/layout_hot_music_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/hot_list" />
 
             <TextView
                 android:layout_width="75dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:gravity="center_vertical"
                 android:paddingEnd="0dp"
                 android:paddingStart="10dp"
@@ -188,43 +202,24 @@
                 android:src="@drawable/arrow" />
         </LinearLayout>
 
-        <include layout="@layout/divider_line_nomargin" />
-
-        <LinearLayout
-            android:id="@+id/layout_popular_music_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:layout_width="105dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:gravity="center_vertical"
-                android:text="@string/pop_music"
-                android:textColor="@android:color/black"
-                android:textSize="18sp"
-                android:textStyle="italic" />
-
-            <ImageView
-                android:layout_width="12dp"
-                android:layout_height="12dp"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="5dp"
-                android:src="@drawable/arrow" />
-        </LinearLayout>
-
-        <include layout="@layout/divider_line_nomargin" />
+        <include layout="@layout/net_music_divider_line" />
 
         <LinearLayout
             android:id="@+id/layout_classical_music_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/classical_list" />
 
             <TextView
                 android:layout_width="105dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
                 android:text="@string/classical_music"
@@ -240,17 +235,24 @@
                 android:src="@drawable/arrow" />
         </LinearLayout>
 
-        <include layout="@layout/divider_line_nomargin" />
+        <include layout="@layout/net_music_divider_line" />
 
         <LinearLayout
             android:id="@+id/layout_movie_music_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/movie_list" />
 
             <TextView
                 android:layout_width="105dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
                 android:text="@string/movie_music"
@@ -266,17 +268,24 @@
                 android:src="@drawable/arrow" />
         </LinearLayout>
 
-        <include layout="@layout/divider_line_nomargin" />
+        <include layout="@layout/net_music_divider_line" />
 
         <LinearLayout
             android:id="@+id/layout_net_music_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/net_list" />
 
             <TextView
                 android:layout_width="105dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
                 android:text="@string/net_music"
@@ -292,20 +301,60 @@
                 android:src="@drawable/arrow" />
         </LinearLayout>
 
-        <include layout="@layout/divider_line_nomargin" />
+        <include layout="@layout/net_music_divider_line" />
 
         <LinearLayout
             android:id="@+id/layout_europe_music_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="50dp"
             android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/europe_list" />
 
             <TextView
                 android:layout_width="105dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:gravity="center_vertical"
                 android:text="@string/europe_music"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="italic" />
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/arrow" />
+        </LinearLayout>
+
+        <include layout="@layout/net_music_divider_line" />
+
+        <LinearLayout
+            android:id="@+id/layout_popular_music_list"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="5dp"
+                android:src="@drawable/billboard_list" />
+
+            <TextView
+                android:layout_width="130dp"
+                android:layout_height="match_parent"
+                android:layout_marginStart="10dp"
+                android:gravity="center_vertical"
+                android:text="@string/billboard_music"
                 android:textColor="@android:color/black"
                 android:textSize="18sp"
                 android:textStyle="italic" />
