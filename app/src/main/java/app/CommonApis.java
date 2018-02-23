@@ -14,5 +14,11 @@ public class CommonApis {
     //    后接查询字符串
     public static final String MUSIC_SEARCH_API = "http://tingapi.ting.baidu.com/v1/restserver/ting?from=webapp_music&method=baidu.ting.search.catalogSug&format=json&query=";
 
+    //获取歌手歌曲列表,后接ting_uid
+    public static final String SINGER_MUSIC_LIST = "http://tingapi.ting.baidu.com/v1/restserver/ting?from=webapp_music&method=baidu.ting.artist.getSongList&format=json&tinguid=";
+
+    //获取歌手信息,后接ting_uid
+    public static final String SINGER_INFO_API = "http://tingapi.ting.baidu.com/v1/restserver/ting?from=webapp_music&method=baidu.ting.artist.getInfo&format=json&tinguid=";
+
     private static final String BLOG_LINK = "https://fddcn.cn/music-api-wang-yi-bai-du.html";
 }
