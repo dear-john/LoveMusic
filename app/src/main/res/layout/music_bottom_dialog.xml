@@ -8,8 +8,8 @@
     <TextView
         android:id="@+id/tv_popupwin_music_name"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginStart="10dp"
+        android:layout_height="45dp"
+        android:layout_marginStart="15dp"
         android:gravity="center_vertical" />
 
     <LinearLayout
@@ -101,7 +101,7 @@
             android:layout_width="@dimen/local_music_icon_size"
             android:layout_height="@dimen/local_music_icon_size"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/share" />
+            android:src="@drawable/share_red" />
 
         <TextView
             android:layout_width="match_parent"

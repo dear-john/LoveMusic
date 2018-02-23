@@ -17,6 +17,7 @@ import app.CommonApis;
 import bean.Music;
 import bean.Song_list;
 import utils.BottomDialogUtil;
+import utils.IntentUtil;
 import utils.OkHttpUtil;
 import utils.ToastUtil;
 
@@ -70,13 +71,28 @@ public class RanklistActivity extends AppCompatActivity implements View.OnClickL
                 recyclerView.setAdapter(new NetRecyclerViewAdapter(music.getSong_list(), new NetRecyclerViewAdapter.ClickListener() {
                     @Override
                     public void moreListener(View view, int position) {
-                        Song_list songList = music.getSong_list().get(position);
+                        final Song_list songList = music.getSong_list().get(position);
                         BottomDialogUtil.showDialog(RanklistActivity.this, songList.getTitle(),
                                 new Random().nextInt(10000) + 100, songList.getArtist_name(), songList.getAlbum_title(),
                                 new BottomDialogUtil.DialogItemClickListener() {
                                     @Override
                                     public void OnItemClickListener(int index) {
                                         ToastUtil.showShort(RanklistActivity.this, index + "");
+                                        switch (index) {
+                                            case 1:
+                                                break;
+                                            case 2:
+                                                break;
+                                            case 3:
+                                                break;
+                                            case 4:
+                                                break;
+                                            case 5:
+                                                IntentUtil.gotoActivityWithData(RanklistActivity.this, SingerInfoActivity.class, songList.getTing_uid() + "");
+                                                break;
+                                            case 6:
+                                                break;
+                                        }
                                     }
                                 });
                     }

@@ -17,6 +17,7 @@ import adapter.LocalRecyclerViewAdapter;
 import bean.LocalMusic;
 import bean.MessageEvent;
 import utils.BottomDialogUtil;
+import utils.IntentUtil;
 import utils.LocalMusicUtil;
 import utils.SharedPreferencesUtil;
 import utils.ToastUtil;
@@ -51,6 +52,20 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
                             @Override
                             public void OnItemClickListener(int index) {
                                 ToastUtil.showShort(LocalMusicActivity.this, index + "");
+//                                switch (index){
+//                                    case 1:
+//                                        break;
+//                                    case 2:
+//                                        break;
+//                                    case 3:
+//                                        break;
+//                                    case 4:
+//                                        break;
+//                                    case 5:
+//                                        break;
+//                                    case 6:
+//                                        break;
+//                                }
                             }
                         });
             }

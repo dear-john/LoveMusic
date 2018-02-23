@@ -20,10 +20,16 @@
             </intent-filter>
         </activity>
         <activity android:name="base.BaseActivity" />
-        <activity android:name=".LocalMusicActivity" />
+        <activity
+            android:name=".LocalMusicActivity"
+            android:label="" />
         <activity
             android:name=".RanklistActivity"
             android:label="" />
+        <activity
+            android:name=".SingerInfoActivity"
+            android:label=""
+            android:theme="@style/SingerInfoTheme" />
     </application>
 
 </manifest>

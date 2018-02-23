@@ -31,7 +31,7 @@ public class AroundMusicFragment extends BaseFragment {
         aroundMusicVp.setCurrentItem(0);
         tabLayout.setupWithViewPager(aroundMusicVp);
         //加载成功后，设置为true避免下次重复加载
-        hasLoaded=true;
+        hasLoaded = true;
     }
 
 
