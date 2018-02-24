@@ -40,7 +40,8 @@ public class BottomDialogUtil {
         });
         TextView commentTv = view.findViewById(R.id.tv_popupwin_comment);
         commentTv.setText(String.format("评论(%s)", String.valueOf(commentNumber)));
-        commentTv.setOnClickListener(new View.OnClickListener() {
+        View commentLayout = view.findViewById(R.id.layout_comment);
+        commentLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -57,7 +58,8 @@ public class BottomDialogUtil {
         });
         TextView singerTv = view.findViewById(R.id.tv_popupwin_singer);
         singerTv.setText(String.format("歌手: %s", singer));
-        singerTv.setOnClickListener(new View.OnClickListener() {
+        View singerLayout = view.findViewById(R.id.layout_singer);
+        singerLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();
@@ -66,7 +68,8 @@ public class BottomDialogUtil {
         });
         TextView albumTv = view.findViewById(R.id.tv_popupwin_album);
         albumTv.setText(String.format("专辑: %s", album));
-        albumTv.setOnClickListener(new View.OnClickListener() {
+        View albumLayout = view.findViewById(R.id.layout_album);
+        albumLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialog.dismiss();

@@ -45,6 +45,18 @@
                         android:layout_centerVertical="true"
                         android:src="@drawable/back" />
 
+                    <TextView
+                        android:id="@+id/tv_singer_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="15dp"
+                        android:layout_toEndOf="@id/iv_singer_info_back"
+                        android:ellipsize="end"
+                        android:gravity="center_vertical"
+                        android:maxLength="14"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp" />
+
                     <ImageView
                         android:id="@+id/iv_singer_share"
                         android:layout_width="23dp"
@@ -61,28 +73,36 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <LinearLayout
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
+        android:scrollbarStyle="insideInset"
+        android:scrollbars="vertical"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tablayout_singer_info"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="40dp"
-            app:tabGravity="fill"
-            app:tabIndicatorColor="@color/colorTheme"
-            app:tabIndicatorHeight="2dp"
-            app:tabMode="fixed"
-            app:tabSelectedTextColor="@color/colorTheme" />
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-        <android.support.v4.view.ViewPager
-            android:id="@+id/vp_singer_info"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" />
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tablayout_singer_info"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/colorTheme"
+                app:tabIndicatorHeight="2dp"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/colorTheme" />
 
-    </LinearLayout>
+            <android.support.v4.view.ViewPager
+                android:id="@+id/vp_singer_info"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>
