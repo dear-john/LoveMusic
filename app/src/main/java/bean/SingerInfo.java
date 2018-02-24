@@ -35,7 +35,7 @@ public class SingerInfo {
     private String avatar_middle;
     private int mv_total;
     private String songs_total;
-    private String birth;
+    private Date birth;
     private String avatar_s1000;
     private String piao_id;
     private String listen_num;
@@ -259,11 +259,11 @@ public class SingerInfo {
         return songs_total;
     }
 
-    public void setBirth(String birth) {
+    public void setBirth(Date birth) {
         this.birth = birth;
     }
 
-    public String getBirth() {
+    public Date getBirth() {
         return birth;
     }
 
