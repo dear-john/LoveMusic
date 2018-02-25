@@ -12,3 +12,5 @@ banner
 okhttp的使用
 
 使用ContentResolver获取本地音乐文件
+
+eventbus的简单使用
