@@ -14,7 +14,7 @@ public class SingerInfo {
     private String stature;
     private String avatar_s500;
     private String source;
-    private Date url;
+    private String url;
     private int collect_num;
     private int comment_num;
     private String area;
@@ -91,11 +91,11 @@ public class SingerInfo {
         return source;
     }
 
-    public void setUrl(Date url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 
-    public Date getUrl() {
+    public String getUrl() {
         return url;
     }
 

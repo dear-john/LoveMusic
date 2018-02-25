@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -21,6 +22,7 @@ import adapter.MyFragmentAdapter;
 import app.CommonApis;
 import base.BaseFragment;
 import bean.MessageEvent;
+import bean.SingerInfo;
 import bean.SingerMusicList;
 import fragment.SingerAlbumFragment;
 import fragment.SingerInfoFragment;
@@ -34,9 +36,14 @@ public class SingerInfoActivity extends AppCompatActivity implements View.OnClic
 
     private ViewPager mViewPager;
     private SingerMusicList mSingerMusicList;
+    private SingerInfo mSingerInfo;
 
     public SingerMusicList getSingerMusicList() {
         return mSingerMusicList;
+    }
+
+    public SingerInfo getSingerInfo() {
+        return mSingerInfo;
     }
 
     @Override
@@ -72,20 +79,19 @@ public class SingerInfoActivity extends AppCompatActivity implements View.OnClic
                 MessageEvent event = new MessageEvent();
                 event.setDataLoadFinish(true);
                 EventBus.getDefault().post(event);
-                Glide.with(SingerInfoActivity.this).load(mSingerMusicList.getSonglist().get(0).getAlbum_1000_1000()).into(ivSingerBg);
                 tvSingerName.setText(mSingerMusicList.getSonglist().get(0).getAuthor());
-                LogUtil.logD(mSingerMusicList.getSonglist().get(0).getAuthor());
             }
         });
         OkHttpUtil.loadData(CommonApis.SINGER_INFO_API + uid, new OkHttpUtil.OnLoadDataFinish() {
             @Override
             public void loadDataFinish(String data) {
-                LogUtil.logD(data);
-//                SingerInfo singerInfo = JSON.parseObject(data, SingerInfo.class);
-//                LogUtil.logD(singerInfo==null?"tt":"ff");
-//                LogUtil.logD('\n'+singerInfo.toString());
-//                collapsingToolbarLayout.setTitle(singerInfo.getName());
-//                Glide.with(SingerInfoActivity.this).load(singerInfo.getAvatar_s180()).into(ivSingerBg);
+                mSingerInfo = JSON.parseObject(data, SingerInfo.class);
+                Glide.with(SingerInfoActivity.this)
+                        .setDefaultRequestOptions(new RequestOptions()
+                                .error(R.drawable.default_artist_bg))
+                        .load(mSingerInfo.getAvatar_s500())
+                        .into(ivSingerBg);
+                tvSingerName.setText(mSingerInfo.getName());
             }
         });
     }
