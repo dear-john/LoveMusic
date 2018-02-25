@@ -11,19 +11,12 @@
         android:background="@drawable/view_shape" />
 
     <TextView
-        android:id="@+id/tv_movie_list"
+        android:id="@+id/tv_divider_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="7dp"
         android:gravity="center_vertical"
-        android:text="榜单分类"
         android:textColor="@android:color/black"
         android:textSize="15sp" />
 
-    <!--<ImageView-->
-        <!--android:layout_width="15dp"-->
-        <!--android:layout_height="15dp"-->
-        <!--android:layout_gravity="center_vertical"-->
-        <!--android:layout_marginStart="5dp"-->
-        <!--android:src="@drawable/arrow" />-->
 </LinearLayout>
