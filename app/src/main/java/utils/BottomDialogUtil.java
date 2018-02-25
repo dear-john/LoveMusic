@@ -10,89 +10,84 @@ import android.view.Window;
 import android.widget.TextView;
 
 import com.spring_ballet.lovemusic.R;
+import com.spring_ballet.lovemusic.SingerInfoActivity;
 
 /**
  * Created by 李君 on 2018/2/7.
  */
 
-public class BottomDialogUtil {
+public class BottomDialogUtil implements View.OnClickListener {
 
-    public static void showDialog(final Context context, String name, int commentNumber, String singer, String album, final DialogItemClickListener listener) {
-        final Dialog dialog = new Dialog(context, R.style.BottomDialog);
+    private Dialog mDialog;
+    private Context mContext;
+    private String mTingUid;
+
+    public void showDialog(Context context, String name, int commentNumber, String singer, String album, String tingUid) {
+        mContext = context;
+        mTingUid = tingUid;
+        mDialog = new Dialog(context, R.style.BottomDialog);
         View view = LayoutInflater.from(context).inflate(R.layout.music_bottom_dialog, null);
         TextView nameTv = view.findViewById(R.id.tv_popupwin_music_name);
         nameTv.setText(String.format("歌曲: %s", name));
         View nextLayout = view.findViewById(R.id.layout_next_music);
-        nextLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                listener.OnItemClickListener(1);
-            }
-        });
+        nextLayout.setOnClickListener(this);
         View collectLayout = view.findViewById(R.id.layout_collect);
-        collectLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                listener.OnItemClickListener(2);
-            }
-        });
+        collectLayout.setOnClickListener(this);
         TextView commentTv = view.findViewById(R.id.tv_popupwin_comment);
         commentTv.setText(String.format("评论(%s)", String.valueOf(commentNumber)));
         View commentLayout = view.findViewById(R.id.layout_comment);
-        commentLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                listener.OnItemClickListener(3);
-            }
-        });
+        commentLayout.setOnClickListener(this);
         View shareLayout = view.findViewById(R.id.layout_share);
-        shareLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                listener.OnItemClickListener(4);
-            }
-        });
+        shareLayout.setOnClickListener(this);
         TextView singerTv = view.findViewById(R.id.tv_popupwin_singer);
         singerTv.setText(String.format("歌手: %s", singer));
         View singerLayout = view.findViewById(R.id.layout_singer);
-        singerLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                listener.OnItemClickListener(5);
-            }
-        });
+        singerLayout.setOnClickListener(this);
         TextView albumTv = view.findViewById(R.id.tv_popupwin_album);
         albumTv.setText(String.format("专辑: %s", album));
         View albumLayout = view.findViewById(R.id.layout_album);
-        albumLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-                listener.OnItemClickListener(6);
-            }
-        });
-        dialog.setContentView(view);
+        albumLayout.setOnClickListener(this);
+        mDialog.setContentView(view);
         ViewGroup.LayoutParams layoutParams = view.getLayoutParams();
         //高度自适应，宽度设为屏幕宽度
 //        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
         layoutParams.width = context.getResources().getDisplayMetrics().widthPixels;
         view.setLayoutParams(layoutParams);
-        Window window = dialog.getWindow();
+        Window window = mDialog.getWindow();
         if (window != null) {
             window.setGravity(Gravity.BOTTOM);
             window.setWindowAnimations(R.style.BottomDialog_Animation);
         }
         //点击空白dialog消失
-        dialog.setCanceledOnTouchOutside(true);
-        dialog.show();
+        mDialog.setCanceledOnTouchOutside(true);
+        mDialog.show();
     }
 
-    public interface DialogItemClickListener {
-        void OnItemClickListener(int index);
+    @Override
+    public void onClick(View v) {
+        mDialog.dismiss();
+        switch (v.getId()) {
+            case R.id.layout_next_music:
+                ToastUtil.showShort(mContext, "index 1");
+                break;
+            case R.id.layout_collect:
+                ToastUtil.showShort(mContext, "index 2");
+                break;
+            case R.id.layout_comment:
+                ToastUtil.showShort(mContext, "index 3");
+                break;
+            case R.id.layout_share:
+                ToastUtil.showShort(mContext, "index 4");
+                break;
+            case R.id.layout_singer:
+                if (mTingUid.equals("local"))
+                    ToastUtil.showShort(mContext, "local");
+                else if (!mTingUid.equals("singer"))
+                    IntentUtil.gotoActivityWithData(mContext, SingerInfoActivity.class, mTingUid);
+                break;
+            case R.id.layout_album:
+                ToastUtil.showShort(mContext, "index 6");
+                break;
+        }
     }
 }

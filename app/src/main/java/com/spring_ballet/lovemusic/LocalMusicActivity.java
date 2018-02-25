@@ -5,7 +5,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.KeyEvent;
 import android.view.View;
 
 import org.greenrobot.eventbus.EventBus;
@@ -17,13 +16,11 @@ import adapter.LocalRecyclerViewAdapter;
 import bean.LocalMusic;
 import bean.MessageEvent;
 import utils.BottomDialogUtil;
-import utils.IntentUtil;
 import utils.LocalMusicUtil;
 import utils.SharedPreferencesUtil;
 import utils.ToastUtil;
 
 public class LocalMusicActivity extends AppCompatActivity implements View.OnClickListener {
-    private RecyclerView mRecyclerView;
     private List<LocalMusic> mLocalMusicList;
 
     @Override
@@ -38,36 +35,17 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
         searchLayout.setOnClickListener(this);
         View menuLayout = findViewById(R.id.local_music_menu);
         menuLayout.setOnClickListener(this);
-        mRecyclerView = findViewById(R.id.rv_local_music);
+        RecyclerView recyclerView = findViewById(R.id.rv_local_music);
         mLocalMusicList = LocalMusicUtil.getLocalMusicData(this);
         SharedPreferencesUtil.putIntData(this, "LocalMusicNumber", mLocalMusicList.size());
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-        mRecyclerView.setAdapter(new LocalRecyclerViewAdapter(mLocalMusicList, new LocalRecyclerViewAdapter.ClickListener() {
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(new LocalRecyclerViewAdapter(mLocalMusicList, new LocalRecyclerViewAdapter.ClickListener() {
             @Override
             public void moreListener(View view, int position) {
                 LocalMusic localMusic = mLocalMusicList.get(position);
-                BottomDialogUtil.showDialog(LocalMusicActivity.this, localMusic.getMusicName(),
-                        new Random().nextInt(10000) + 100, localMusic.getSinger(), localMusic.getAlbum(),
-                        new BottomDialogUtil.DialogItemClickListener() {
-                            @Override
-                            public void OnItemClickListener(int index) {
-                                ToastUtil.showShort(LocalMusicActivity.this, index + "");
-//                                switch (index){
-//                                    case 1:
-//                                        break;
-//                                    case 2:
-//                                        break;
-//                                    case 3:
-//                                        break;
-//                                    case 4:
-//                                        break;
-//                                    case 5:
-//                                        break;
-//                                    case 6:
-//                                        break;
-//                                }
-                            }
-                        });
+                new BottomDialogUtil().showDialog(LocalMusicActivity.this, localMusic.getMusicName(),
+                        new Random().nextInt(10000) + 100, localMusic.getSinger(),
+                        localMusic.getAlbum(), "local");
             }
 
             @Override

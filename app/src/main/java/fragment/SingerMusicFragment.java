@@ -58,28 +58,9 @@ public class SingerMusicFragment extends BaseFragment {
                     @Override
                     public void moreListener(View view, int position) {
                         final Song_list songList = list.getSonglist().get(position);
-                        BottomDialogUtil.showDialog(mContext, songList.getTitle(),
-                                new Random().nextInt(10000) + 100, songList.getArtist_name(), songList.getAlbum_title(),
-                                new BottomDialogUtil.DialogItemClickListener() {
-                                    @Override
-                                    public void OnItemClickListener(int index) {
-                                        ToastUtil.showShort(mContext, index + "");
-                                        switch (index) {
-                                            case 1:
-                                                break;
-                                            case 2:
-                                                break;
-                                            case 3:
-                                                break;
-                                            case 4:
-                                                break;
-                                            case 5:
-                                                break;
-                                            case 6:
-                                                break;
-                                        }
-                                    }
-                                });
+                        new BottomDialogUtil().showDialog(getActivity(), songList.getTitle(),
+                                new Random().nextInt(10000) + 100,
+                                list.getSonglist().get(0).getAuthor(), songList.getAlbum_title(), "singer");
                     }
 
                     @Override
