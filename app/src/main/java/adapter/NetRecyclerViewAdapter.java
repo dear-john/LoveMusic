@@ -19,9 +19,16 @@ import bean.Song_list;
 public class NetRecyclerViewAdapter extends RecyclerView.Adapter<NetRecyclerViewAdapter.ViewHolder> {
     private List<Song_list> mSongLists;
     private ClickListener mListener;
+    private String mDefaultSingerName = null;
 
     public NetRecyclerViewAdapter(List<Song_list> songLists, ClickListener listener) {
         mSongLists = songLists;
+        mListener = listener;
+    }
+
+    public NetRecyclerViewAdapter(List<Song_list> songLists, String defaultSingerName, ClickListener listener) {
+        mSongLists = songLists;
+        mDefaultSingerName = defaultSingerName;
         mListener = listener;
     }
 
@@ -35,7 +42,8 @@ public class NetRecyclerViewAdapter extends RecyclerView.Adapter<NetRecyclerView
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mMusicOrderTv.setText(String.valueOf(position + 1));
         holder.mMusicNameTv.setText(mSongLists.get(position).getTitle());
-        holder.mSingerTv.setText(mSongLists.get(position).getArtist_name());
+        mDefaultSingerName = (mDefaultSingerName == null) ? mSongLists.get(position).getArtist_name() : mDefaultSingerName;
+        holder.mSingerTv.setText(mDefaultSingerName);
         holder.mAlbum.setText(mSongLists.get(position).getAlbum_title());
         holder.mMusicItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override

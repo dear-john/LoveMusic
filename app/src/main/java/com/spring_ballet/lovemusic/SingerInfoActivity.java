@@ -12,12 +12,15 @@ import android.widget.TextView;
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import adapter.MyFragmentAdapter;
 import app.CommonApis;
 import base.BaseFragment;
+import bean.MessageEvent;
 import bean.SingerMusicList;
 import fragment.SingerAlbumFragment;
 import fragment.SingerInfoFragment;
@@ -30,6 +33,11 @@ public class SingerInfoActivity extends AppCompatActivity implements View.OnClic
         ViewPager.OnPageChangeListener {
 
     private ViewPager mViewPager;
+    private SingerMusicList mSingerMusicList;
+
+    public SingerMusicList getSingerMusicList() {
+        return mSingerMusicList;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,10 +68,13 @@ public class SingerInfoActivity extends AppCompatActivity implements View.OnClic
         OkHttpUtil.loadData(CommonApis.SINGER_MUSIC_LIST + uid, new OkHttpUtil.OnLoadDataFinish() {
             @Override
             public void loadDataFinish(String data) {
-                SingerMusicList singerMusicList = JSON.parseObject(data, SingerMusicList.class);
-                Glide.with(SingerInfoActivity.this).load(singerMusicList.getSonglist().get(0).getAlbum_1000_1000()).into(ivSingerBg);
-                tvSingerName.setText(singerMusicList.getSonglist().get(0).getTitle());
-                LogUtil.logD(singerMusicList.getSonglist().get(0).getAuthor());
+                mSingerMusicList = JSON.parseObject(data, SingerMusicList.class);
+                MessageEvent event = new MessageEvent();
+                event.setDataLoadFinish(true);
+                EventBus.getDefault().post(event);
+                Glide.with(SingerInfoActivity.this).load(mSingerMusicList.getSonglist().get(0).getAlbum_1000_1000()).into(ivSingerBg);
+                tvSingerName.setText(mSingerMusicList.getSonglist().get(0).getAuthor());
+                LogUtil.logD(mSingerMusicList.getSonglist().get(0).getAuthor());
             }
         });
         OkHttpUtil.loadData(CommonApis.SINGER_INFO_API + uid, new OkHttpUtil.OnLoadDataFinish() {
