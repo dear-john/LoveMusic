@@ -50,24 +50,26 @@ public class SingerMusicFragment extends BaseFragment {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDataLoadFinish(MessageEvent event) {
-        final SingerMusicList list = ((SingerInfoActivity) getActivity()).getSingerMusicList();
-        RecyclerView recyclerView = view.findViewById(R.id.rv_frag_singer_music);
-        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
-        recyclerView.setAdapter(new NetRecyclerViewAdapter(list.getSonglist(), list.getSonglist().get(0).getAuthor(),
-                new NetRecyclerViewAdapter.ClickListener() {
-                    @Override
-                    public void moreListener(View view, int position) {
-                        final Song_list songList = list.getSonglist().get(position);
-                        new BottomDialogUtil().showDialog(getActivity(), songList.getTitle(),
-                                new Random().nextInt(10000) + 100,
-                                list.getSonglist().get(0).getAuthor(), songList.getAlbum_title(), "singer");
-                    }
+        if (event.isMusicDataFinish()) {
+            final SingerMusicList list = ((SingerInfoActivity) getActivity()).getSingerMusicList();
+            RecyclerView recyclerView = view.findViewById(R.id.rv_frag_singer_music);
+            recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
+            recyclerView.setAdapter(new NetRecyclerViewAdapter(list.getSonglist(), list.getSonglist().get(0).getAuthor(),
+                    new NetRecyclerViewAdapter.ClickListener() {
+                        @Override
+                        public void moreListener(View view, int position) {
+                            final Song_list songList = list.getSonglist().get(position);
+                            new BottomDialogUtil().showDialog(getActivity(), songList.getTitle(),
+                                    new Random().nextInt(10000) + 100,
+                                    list.getSonglist().get(0).getAuthor(), songList.getAlbum_title(), "singer");
+                        }
 
-                    @Override
-                    public void itemListener(View view, int position) {
-                        ToastUtil.showShort(mContext, "play " + list.getSonglist().get(position).getTitle());
-                    }
-                }));
+                        @Override
+                        public void itemListener(View view, int position) {
+                            ToastUtil.showShort(mContext, "play " + list.getSonglist().get(position).getTitle());
+                        }
+                    }));
+        }
     }
 
     @Override

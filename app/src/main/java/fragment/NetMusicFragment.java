@@ -1,6 +1,7 @@
 package fragment;
 
 import android.view.View;
+import android.widget.TextView;
 
 import com.spring_ballet.lovemusic.R;
 import com.spring_ballet.lovemusic.RanklistActivity;
@@ -49,6 +50,8 @@ public class NetMusicFragment extends BaseFragment {
         view.findViewById(R.id.layout_classical_music_list).setOnClickListener(this);
         view.findViewById(R.id.layout_movie_music_list).setOnClickListener(this);
         view.findViewById(R.id.layout_europe_music_list).setOnClickListener(this);
+        TextView textView = view.findViewById(R.id.tv_divider_name);
+        textView.setText("榜单分类");
     }
 
     @Override

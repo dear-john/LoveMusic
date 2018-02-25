@@ -6,14 +6,14 @@ package bean;
 
 public class MessageEvent {
     private int localMusicNumber;
-    private boolean isDataLoadFinish;
+    private boolean isMusicDataFinish = false;
 
-    public boolean isDataLoadFinish() {
-        return isDataLoadFinish;
+    public boolean isMusicDataFinish() {
+        return isMusicDataFinish;
     }
 
-    public void setDataLoadFinish(boolean dataLoadFinish) {
-        isDataLoadFinish = dataLoadFinish;
+    public void setMusicDataFinish(boolean musicDataFinish) {
+        isMusicDataFinish = musicDataFinish;
     }
 
     public int getLocalMusicNumber() {

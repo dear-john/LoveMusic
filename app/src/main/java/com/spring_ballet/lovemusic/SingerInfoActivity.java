@@ -28,7 +28,6 @@ import fragment.SingerAlbumFragment;
 import fragment.SingerInfoFragment;
 import fragment.SingerMusicFragment;
 import fragment.SingerVideoFragment;
-import utils.LogUtil;
 import utils.OkHttpUtil;
 
 public class SingerInfoActivity extends AppCompatActivity implements View.OnClickListener,
@@ -77,7 +76,7 @@ public class SingerInfoActivity extends AppCompatActivity implements View.OnClic
             public void loadDataFinish(String data) {
                 mSingerMusicList = JSON.parseObject(data, SingerMusicList.class);
                 MessageEvent event = new MessageEvent();
-                event.setDataLoadFinish(true);
+                event.setMusicDataFinish(true);
                 EventBus.getDefault().post(event);
                 tvSingerName.setText(mSingerMusicList.getSonglist().get(0).getAuthor());
             }
@@ -89,7 +88,7 @@ public class SingerInfoActivity extends AppCompatActivity implements View.OnClic
                 Glide.with(SingerInfoActivity.this)
                         .setDefaultRequestOptions(new RequestOptions()
                                 .error(R.drawable.default_artist_bg))
-                        .load(mSingerInfo.getAvatar_s500())
+                        .load(mSingerInfo.getAvatar_s1000())
                         .into(ivSingerBg);
                 tvSingerName.setText(mSingerInfo.getName());
             }
