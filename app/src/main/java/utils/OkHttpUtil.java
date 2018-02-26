@@ -22,6 +22,7 @@ public class OkHttpUtil {
             .writeTimeout(DEFAULT_TIMEOUT, TimeUnit.SECONDS)
             .build();
     private static String data;
+    private static Handler sHandler = new Handler(Looper.getMainLooper());
 
     public static void loadData(String url, final OnLoadDataFinish l) {
         Request request = new Request.Builder()
@@ -33,13 +34,18 @@ public class OkHttpUtil {
         sClient.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
+                sHandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        l.loadDataFinish(null);
+                    }
+                });
             }
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 data = response.body().string();
-                Handler mainHandler = new Handler(Looper.getMainLooper());
-                mainHandler.post(new Runnable() {
+                sHandler.post(new Runnable() {
                     @Override
                     public void run() {
                         l.loadDataFinish(data);

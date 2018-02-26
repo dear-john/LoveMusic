@@ -5,13 +5,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -29,6 +29,7 @@ import fragment.SingerInfoFragment;
 import fragment.SingerMusicFragment;
 import fragment.SingerVideoFragment;
 import utils.OkHttpUtil;
+import utils.ToastUtil;
 
 public class SingerInfoActivity extends AppCompatActivity implements View.OnClickListener,
         ViewPager.OnPageChangeListener {
@@ -74,24 +75,32 @@ public class SingerInfoActivity extends AppCompatActivity implements View.OnClic
         OkHttpUtil.loadData(CommonApis.SINGER_MUSIC_LIST + uid, new OkHttpUtil.OnLoadDataFinish() {
             @Override
             public void loadDataFinish(String data) {
-                mSingerMusicList = JSON.parseObject(data, SingerMusicList.class);
-                MessageEvent event = new MessageEvent();
-                event.setMusicDataFinish(true);
-                EventBus.getDefault().post(event);
-                tvSingerName.setText(mSingerMusicList.getSonglist().get(0).getAuthor());
+                if (data != null) {
+                    mSingerMusicList = JSON.parseObject(data, SingerMusicList.class);
+                    MessageEvent event = new MessageEvent();
+                    event.setMusicDataFinish(true);
+                    EventBus.getDefault().post(event);
+                } else ToastUtil.showShort(SingerInfoActivity.this, "music load error");
             }
         });
         OkHttpUtil.loadData(CommonApis.SINGER_INFO_API + uid, new OkHttpUtil.OnLoadDataFinish() {
             @Override
             public void loadDataFinish(String data) {
-                mSingerInfo = JSON.parseObject(data, SingerInfo.class);
-                Glide.with(SingerInfoActivity.this)
-                        .setDefaultRequestOptions(new RequestOptions()
-                                .error(R.drawable.default_artist_bg)
-                                .centerCrop())
-                        .load(mSingerInfo.getAvatar_s1000())
-                        .into(ivSingerBg);
-                tvSingerName.setText(mSingerInfo.getName());
+                if (data != null) {
+                    mSingerInfo = JSON.parseObject(data, SingerInfo.class);
+                    String url = mSingerInfo.getAvatar_s1000();
+                    if (TextUtils.isEmpty(url)) {
+                        url = mSingerInfo.getAvatar_s500();
+                        if (TextUtils.isEmpty(url)) {
+                            url = mSingerInfo.getAvatar_big();
+                            if (TextUtils.isEmpty(url)) {
+                                url = mSingerInfo.getAvatar_s180();
+                            }
+                        }
+                    }
+                    Glide.with(SingerInfoActivity.this).load(url).into(ivSingerBg);
+                    tvSingerName.setText(mSingerInfo.getName());
+                } else ToastUtil.showShort(SingerInfoActivity.this, "info load error");
             }
         });
     }

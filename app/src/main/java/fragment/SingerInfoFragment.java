@@ -1,5 +1,6 @@
 package fragment;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -25,7 +26,9 @@ public class SingerInfoFragment extends BaseFragment {
 //        tvFamiliarSinger.setText("相似歌手");
         SingerInfo singerInfo = ((SingerInfoActivity) getActivity()).getSingerInfo();
         TextView tvSingerInfoDetail = view.findViewById(R.id.tv_singer_detail_info);
-        tvSingerInfoDetail.setText(singerInfo.getIntro());
+        String info = singerInfo.getIntro();
+        if (TextUtils.isEmpty(info)) info = "暂无歌手简介";
+        tvSingerInfoDetail.setText(info);
     }
 
     @Override
