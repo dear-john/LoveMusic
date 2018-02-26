@@ -87,7 +87,8 @@ public class SingerInfoActivity extends AppCompatActivity implements View.OnClic
                 mSingerInfo = JSON.parseObject(data, SingerInfo.class);
                 Glide.with(SingerInfoActivity.this)
                         .setDefaultRequestOptions(new RequestOptions()
-                                .error(R.drawable.default_artist_bg))
+                                .error(R.drawable.default_artist_bg)
+                                .centerCrop())
                         .load(mSingerInfo.getAvatar_s1000())
                         .into(ivSingerBg);
                 tvSingerName.setText(mSingerInfo.getName());

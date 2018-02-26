@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:layout_marginTop="15dp"
     android:scrollbarStyle="insideInset"
-    android:scrollbars="vertical">
+    android:scrollbars="vertical"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginStart="5dp"
+        android:orientation="vertical"
+        android:paddingBottom="5dp"
+        android:paddingTop="15dp">
 
         <include
             android:id="@+id/layout_singer_info"
@@ -18,13 +24,14 @@
             android:id="@+id/tv_singer_detail_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:paddingEnd="3dp"
             android:paddingStart="3dp"
             android:textSize="12sp" />
 
-        <include
-            android:id="@+id/layout_familiar_singer"
-            layout="@layout/divider_head" />
+        <!--<include-->
+        <!--android:id="@+id/layout_familiar_singer"-->
+        <!--layout="@layout/divider_head" />-->
     </LinearLayout>
 
-</ScrollView>
+</android.support.v4.widget.NestedScrollView>

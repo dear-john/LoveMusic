@@ -20,9 +20,9 @@ public class SingerInfoFragment extends BaseFragment {
         View singerInfoLayout = view.findViewById(R.id.layout_singer_info);
         TextView tvSingerInfo = singerInfoLayout.findViewById(R.id.tv_divider_name);
         tvSingerInfo.setText("歌手简介");
-        View familiarSingerLayout = view.findViewById(R.id.layout_familiar_singer);
-        TextView tvFamiliarSinger = familiarSingerLayout.findViewById(R.id.tv_divider_name);
-        tvFamiliarSinger.setText("相似歌手");
+//        View familiarSingerLayout = view.findViewById(R.id.layout_familiar_singer);
+//        TextView tvFamiliarSinger = familiarSingerLayout.findViewById(R.id.tv_divider_name);
+//        tvFamiliarSinger.setText("相似歌手");
         SingerInfo singerInfo = ((SingerInfoActivity) getActivity()).getSingerInfo();
         TextView tvSingerInfoDetail = view.findViewById(R.id.tv_singer_detail_info);
         tvSingerInfoDetail.setText(singerInfo.getIntro());
