@@ -73,7 +73,7 @@ public class RanklistActivity extends AppCompatActivity implements View.OnClickL
                         final Song_list songList = music.getSong_list().get(position);
                         new BottomDialogUtil().showDialog(RanklistActivity.this, songList.getTitle(),
                                 new Random().nextInt(10000) + 100,
-                                songList.getArtist_name(), songList.getAlbum_title(),songList.getTing_uid());
+                                songList.getArtist_name(), songList.getAlbum_title(),songList.getAll_artist_ting_uid());
                     }
 
                     @Override

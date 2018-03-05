@@ -2,6 +2,8 @@ package utils;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,9 +23,11 @@ public class BottomDialogUtil implements View.OnClickListener {
     private Dialog mDialog;
     private Context mContext;
     private String mTingUid;
+    private String mSinger;
 
     public void showDialog(Context context, String name, int commentNumber, String singer, String album, String tingUid) {
         mContext = context;
+        mSinger = singer;
         mTingUid = tingUid;
         mDialog = new Dialog(context, R.style.BottomDialog);
         View view = LayoutInflater.from(context).inflate(R.layout.music_bottom_dialog, null);
@@ -82,8 +86,24 @@ public class BottomDialogUtil implements View.OnClickListener {
             case R.id.layout_singer:
                 if (mTingUid.equals("local"))
                     ToastUtil.showShort(mContext, "local");
-                else if (!mTingUid.equals("singer"))
-                    IntentUtil.gotoActivityWithData(mContext, SingerInfoActivity.class, mTingUid);
+                else if (!mTingUid.equals("singer")) {
+                    if (mSinger.contains(",")) {
+                        final String[] nameList = mSinger.split(",");
+                        final String[] idList = mTingUid.split(",");
+                        AlertDialog.Builder builder = new AlertDialog.Builder(mContext)
+                                .setCancelable(true)
+                                .setItems(nameList, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        IntentUtil.gotoActivityWithData(mContext, SingerInfoActivity.class, idList[which]);
+                                    }
+                                })
+                                .setTitle("请选择要查看的歌手");
+                        builder.show();
+                    } else
+                        IntentUtil.gotoActivityWithData(mContext, SingerInfoActivity.class, mTingUid);
+
+                }
                 break;
             case R.id.layout_album:
                 ToastUtil.showShort(mContext, "index 6");
