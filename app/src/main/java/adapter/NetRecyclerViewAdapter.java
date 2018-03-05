@@ -1,6 +1,7 @@
 package adapter;
 
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,16 +20,9 @@ import bean.Song_list;
 public class NetRecyclerViewAdapter extends RecyclerView.Adapter<NetRecyclerViewAdapter.ViewHolder> {
     private List<Song_list> mSongLists;
     private ClickListener mListener;
-    private String mDefaultSingerName = null;
 
     public NetRecyclerViewAdapter(List<Song_list> songLists, ClickListener listener) {
         mSongLists = songLists;
-        mListener = listener;
-    }
-
-    public NetRecyclerViewAdapter(List<Song_list> songLists, String defaultSingerName, ClickListener listener) {
-        mSongLists = songLists;
-        mDefaultSingerName = defaultSingerName;
         mListener = listener;
     }
 
@@ -42,10 +36,10 @@ public class NetRecyclerViewAdapter extends RecyclerView.Adapter<NetRecyclerView
     public void onBindViewHolder(final ViewHolder holder, int position) {
         holder.mMusicOrderTv.setText(String.valueOf(position + 1));
         holder.mMusicNameTv.setText(mSongLists.get(position).getTitle());
-        if (mDefaultSingerName == null) {
-            holder.mSingerTv.setText(mSongLists.get(position).getArtist_name());
-        } else
-            holder.mSingerTv.setText(mDefaultSingerName);
+        String singer = mSongLists.get(position).getArtist_name();
+        if (TextUtils.isEmpty(singer))
+            singer = mSongLists.get(position).getAuthor();
+        holder.mSingerTv.setText(singer);
         holder.mAlbum.setText(mSongLists.get(position).getAlbum_title());
         holder.mMusicItemLayout.setOnClickListener(new View.OnClickListener() {
             @Override

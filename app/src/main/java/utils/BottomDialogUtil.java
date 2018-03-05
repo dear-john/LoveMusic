@@ -102,7 +102,6 @@ public class BottomDialogUtil implements View.OnClickListener {
                         builder.show();
                     } else
                         IntentUtil.gotoActivityWithData(mContext, SingerInfoActivity.class, mTingUid);
-
                 }
                 break;
             case R.id.layout_album:
