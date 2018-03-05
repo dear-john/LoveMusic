@@ -60,7 +60,7 @@ public class SingerMusicFragment extends BaseFragment {
                     final Song_list songList = list.getSonglist().get(position);
                     new BottomDialogUtil().showDialog(getActivity(), songList.getTitle(),
                             new Random().nextInt(10000) + 100,
-                            list.getSonglist().get(0).getAuthor(), songList.getAlbum_title(), "singer");
+                            list.getSonglist().get(position).getAuthor(), songList.getAlbum_title(), "singer");
                 }
 
                 @Override
