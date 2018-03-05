@@ -1,7 +1,12 @@
 package fragment;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
@@ -16,9 +21,9 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import base.BaseFragment;
 import bean.MessageEvent;
-import utils.DialogUtil;
 import utils.IntentUtil;
 import utils.SharedPreferencesUtil;
+import utils.ToastUtil;
 
 
 public class LocalMusicFragment extends BaseFragment {
@@ -60,7 +65,7 @@ public class LocalMusicFragment extends BaseFragment {
         if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             loadData();
         } else {
-            DialogUtil.showDialog(getActivity(), "是否进入设置进行授权?");
+            showDialog();
             if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
                 loadData();
@@ -111,6 +116,27 @@ public class LocalMusicFragment extends BaseFragment {
                 loadCollectionData();
                 break;
         }
+    }
+
+    public void showDialog() {
+        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
+        dialog.setMessage("是否进入设置进行授权?");
+        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+                intent.setData(Uri.fromParts("package", mContext.getPackageName(), null));
+                mContext.startActivity(intent);
+            }
+        });
+        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ToastUtil.showShort(mContext, "您取消了授权");
+            }
+        });
+        dialog.setCancelable(true);
+        dialog.show();
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
