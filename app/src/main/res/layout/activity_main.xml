@@ -107,6 +107,7 @@
             android:orientation="horizontal">
 
         </LinearLayout>
+
     </LinearLayout>
 
     <!--滑动菜单-->
@@ -114,31 +115,96 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
+        android:background="@android:color/white"
         android:orientation="vertical">
 
-        <android.support.design.widget.NavigationView
-            android:id="@+id/nav"
+        <ListView
+            android:id="@+id/main_listview"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:fitsSystemWindows="true"
-            app:headerLayout="@layout/nav_head"
-            app:menu="@menu/nav_menu" />
+            android:scrollbars="none" />
+
+        <include layout="@layout/divider_line_nomargin" />
 
         <LinearLayout
-            android:id="@+id/nav_foot_layout"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:layout_gravity="bottom"
+            android:baselineAligned="false"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/layout_change_mode"
+                android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:text="bottom" />
-        </LinearLayout>
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground">
 
+                <ImageView
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/night_mode" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/change_mode"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_settings"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/settings" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/settings"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_quit"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="?attr/selectableItemBackground">
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/quit" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="5dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/quit"
+                    android:textColor="@android:color/black" />
+            </LinearLayout>
+
+        </LinearLayout>
     </LinearLayout>
+
 
 </android.support.v4.widget.DrawerLayout>

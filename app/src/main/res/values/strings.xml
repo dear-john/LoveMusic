@@ -1,9 +1,5 @@
 <resources>
     <string name="app_name">音乐之声</string>
-    <string name="nav_my_msg">我的消息</string>
-    <string name="nav_my_friend">我的好友</string>
-    <string name="nav_quit_ontime">定时停止播放</string>
-    <string name="nav_scan">扫一扫</string>
     <string name="nav_night_mode">夜间模式</string>
     <string name="local_music">本地音乐</string>
     <string name="local_music_init">(点击扫描)</string>
@@ -22,4 +18,7 @@
     <string name="movie_music">影视金曲榜</string>
     <string name="net_music">网络歌曲榜</string>
     <string name="europe_music">欧美金曲榜</string>
+    <string name="change_mode">夜间模式</string>
+    <string name="settings">设置</string>
+    <string name="quit">退出</string>
 </resources>

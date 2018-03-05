@@ -1,8 +1,6 @@
 package com.spring_ballet.lovemusic;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
@@ -10,16 +8,19 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
-import android.view.MenuItem;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import adapter.ListViewAdapter;
 import adapter.MyFragmentAdapter;
 import base.BaseFragment;
 import fragment.AroundMusicFragment;
@@ -29,7 +30,7 @@ import utils.ToastUtil;
 
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-        ViewPager.OnPageChangeListener, NavigationView.OnNavigationItemSelectedListener {
+        ViewPager.OnPageChangeListener {
 
     private DrawerLayout drawerLayout;
 
@@ -44,13 +45,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private List<BaseFragment> baseFragmentList;
 
     //滑动菜单
-    private NavigationView nav;
-    private ImageView navBgIv;
-    private ImageView navHeadIconIv;
+    private ListView mListView;
+    private ImageView mUserIconIv;
     private TextView userNameTv;
     private TextView userLevelTv;
     private TextView userSignTv;
-    private LinearLayout navFootLayout;
+    private View mModeLayout;
+    private View mSettingsLayout;
+    private View mQuitLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,15 +81,42 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         friendIv.setOnClickListener(this);
         searchLauout.setOnClickListener(this);
         mainVp.addOnPageChangeListener(this);
-        footLayout.setOnClickListener(this);
 
         //滑动菜单
-        nav.setNavigationItemSelectedListener(this);
-        navHeadIconIv.setOnClickListener(this);
-        navBgIv.setOnClickListener(this);
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        ToastUtil.showShort(MainActivity.this, "home page");
+                        drawerLayout.closeDrawers();
+                        break;
+                    case 1:
+                        ToastUtil.showShort(MainActivity.this, "msg");
+                        drawerLayout.closeDrawers();
+                        break;
+                    case 2:
+                        ToastUtil.showShort(MainActivity.this, "friend");
+                        drawerLayout.closeDrawers();
+                        break;
+                    case 3:
+                        ToastUtil.showShort(MainActivity.this, "stop on time");
+                        drawerLayout.closeDrawers();
+                        break;
+                    case 4:
+                        ToastUtil.showShort(MainActivity.this, "scan");
+                        drawerLayout.closeDrawers();
+                        break;
+                }
+            }
+        });
         userNameTv.setOnClickListener(this);
         userLevelTv.setOnClickListener(this);
         userSignTv.setOnClickListener(this);
+        mUserIconIv.setOnClickListener(this);
+        mModeLayout.setOnClickListener(this);
+        mSettingsLayout.setOnClickListener(this);
+        mQuitLayout.setOnClickListener(this);
     }
 
     private void initWidgets() {
@@ -109,23 +138,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         footLayout = findViewById(R.id.main_footview);
 
         //滑动菜单
-        nav = findViewById(R.id.nav);
-        View headView = nav.getHeaderView(0);
-        navBgIv = headView.findViewById(R.id.nav_bg);
-        navHeadIconIv = headView.findViewById(R.id.nav_head_icon);
-        userNameTv = headView.findViewById(R.id.tv_user_name);
-        userLevelTv = headView.findViewById(R.id.tv_user_level);
-        userSignTv = headView.findViewById(R.id.tv_user_sign);
-        navFootLayout = findViewById(R.id.nav_foot_layout);
-        navFootLayout.setOnClickListener(this);
+        mListView = findViewById(R.id.main_listview);
+        mListView.addHeaderView(LayoutInflater.from(this).inflate(R.layout.nav_head, mListView, false));
+        mListView.setAdapter(new ListViewAdapter(this));
+        mListView.setDivider(null);
+        mUserIconIv = findViewById(R.id.nav_head_icon);
+        userNameTv = findViewById(R.id.tv_user_name);
+        userLevelTv = findViewById(R.id.tv_user_level);
+        userSignTv = findViewById(R.id.tv_user_sign);
+        mModeLayout = findViewById(R.id.layout_change_mode);
+        mSettingsLayout = findViewById(R.id.layout_settings);
+        mQuitLayout = findViewById(R.id.layout_quit);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.nav_foot_layout:
-                ToastUtil.showShort(this, "nav foot");
-                break;
             case R.id.main_menu:
                 drawerLayout.openDrawer(GravityCompat.START);
                 break;
@@ -156,20 +184,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.main_footview:
                 ToastUtil.showShort(this, "this is foot");
                 break;
-            case R.id.nav_head_icon:
-                ToastUtil.showShort(this, "this is head icon");
-                break;
-            case R.id.nav_bg:
-                ToastUtil.showShort(this, "this is bg");
-                break;
             case R.id.tv_user_name:
-                ToastUtil.showShort(this, "this is name");
+                ToastUtil.showShort(this, "user name");
                 break;
             case R.id.tv_user_level:
-                ToastUtil.showShort(this, "this is level");
+                ToastUtil.showShort(this, "user level");
                 break;
             case R.id.tv_user_sign:
-                ToastUtil.showShort(this, "this is sign");
+                ToastUtil.showShort(this, "user sign");
+                break;
+            case R.id.nav_head_icon:
+                ToastUtil.showShort(this, "user icon");
+                break;
+            case R.id.layout_change_mode:
+                ToastUtil.showShort(this, "change mode");
+                break;
+            case R.id.layout_settings:
+                ToastUtil.showShort(this, "settings");
+                break;
+            case R.id.layout_quit:
+                finish();
                 break;
         }
     }
@@ -210,25 +244,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onPageScrollStateChanged(int state) {
 
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.item_my_msg:
-                ToastUtil.showShort(this, "msg");
-                break;
-            case R.id.item_my_friend:
-                ToastUtil.showShort(this, "friend");
-                break;
-            case R.id.item_quit_ontime:
-                ToastUtil.showShort(this, "quit");
-                break;
-            case R.id.item_scan:
-                ToastUtil.showShort(this, "scan");
-                break;
-        }
-        return true;
     }
 
     @Override
