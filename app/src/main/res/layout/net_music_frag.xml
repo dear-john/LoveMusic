@@ -140,6 +140,7 @@
             android:id="@+id/layout_new_music_list"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
             <ImageView
@@ -174,6 +175,7 @@
             android:id="@+id/layout_hot_music_list"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
             <ImageView
@@ -208,6 +210,7 @@
             android:id="@+id/layout_classical_music_list"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
             <ImageView
@@ -241,6 +244,7 @@
             android:id="@+id/layout_movie_music_list"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
             <ImageView
@@ -274,6 +278,7 @@
             android:id="@+id/layout_net_music_list"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
             <ImageView
@@ -307,6 +312,7 @@
             android:id="@+id/layout_europe_music_list"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
             <ImageView
@@ -340,6 +346,7 @@
             android:id="@+id/layout_popular_music_list"
             android:layout_width="match_parent"
             android:layout_height="50dp"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
             <ImageView

@@ -13,6 +13,7 @@
             android:id="@+id/layout_local_music"
             android:layout_width="match_parent"
             android:layout_height="@dimen/music_item_height"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
             <ImageView
@@ -47,6 +48,7 @@
             android:id="@+id/layout_recent_play"
             android:layout_width="match_parent"
             android:layout_height="@dimen/music_item_height"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
             <ImageView
@@ -81,6 +83,7 @@
             android:id="@+id/layout_download_music"
             android:layout_width="match_parent"
             android:layout_height="@dimen/music_item_height"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
             <ImageView
@@ -115,6 +118,7 @@
             android:id="@+id/layout_radio"
             android:layout_width="match_parent"
             android:layout_height="@dimen/music_item_height"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
             <ImageView
@@ -149,6 +153,7 @@
             android:id="@+id/layout_collection"
             android:layout_width="match_parent"
             android:layout_height="@dimen/music_item_height"
+            android:background="?attr/selectableItemBackground"
             android:orientation="horizontal">
 
             <ImageView
