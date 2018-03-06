@@ -1,11 +1,13 @@
 package com.spring_ballet.lovemusic;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
@@ -61,6 +63,10 @@ public class RanklistActivity extends AppCompatActivity implements View.OnClickL
                 type = 25;
                 break;
         }
+        final View loadingLayout = findViewById(R.id.layout_loading);
+        ImageView loadingIv = findViewById(R.id.iv_loading);
+        final AnimationDrawable drawable = (AnimationDrawable) loadingIv.getBackground();
+        drawable.start();
         final RecyclerView recyclerView = findViewById(R.id.ranklist_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         OkHttpUtil.loadData(CommonApis.MUSIC_LIST_API + type, new OkHttpUtil.OnLoadDataFinish() {
@@ -73,7 +79,7 @@ public class RanklistActivity extends AppCompatActivity implements View.OnClickL
                         final Song_list songList = music.getSong_list().get(position);
                         new BottomDialogUtil().showDialog(RanklistActivity.this, songList.getTitle(),
                                 new Random().nextInt(10000) + 100,
-                                songList.getArtist_name(), songList.getAlbum_title(),songList.getAll_artist_ting_uid());
+                                songList.getArtist_name(), songList.getAlbum_title(), songList.getAll_artist_ting_uid());
                     }
 
                     @Override
@@ -81,6 +87,11 @@ public class RanklistActivity extends AppCompatActivity implements View.OnClickL
                         ToastUtil.showShort(RanklistActivity.this, "play " + music.getSong_list().get(position).getTitle());
                     }
                 }));
+                if (drawable.isRunning()) {
+                    drawable.stop();
+                    loadingLayout.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
