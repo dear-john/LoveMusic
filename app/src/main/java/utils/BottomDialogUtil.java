@@ -24,11 +24,13 @@ public class BottomDialogUtil implements View.OnClickListener {
     private Context mContext;
     private String mTingUid;
     private String mSinger;
+    private String mName;
 
     public void showDialog(Context context, String name, int commentNumber, String singer, String album, String tingUid) {
         mContext = context;
         mSinger = singer;
         mTingUid = tingUid;
+        mName = name;
         mDialog = new Dialog(context, R.style.BottomDialog);
         View view = LayoutInflater.from(context).inflate(R.layout.music_bottom_dialog, null);
         TextView nameTv = view.findViewById(R.id.tv_popupwin_music_name);
@@ -81,7 +83,7 @@ public class BottomDialogUtil implements View.OnClickListener {
                 ToastUtil.showShort(mContext, "index 3");
                 break;
             case R.id.layout_share:
-                ToastUtil.showShort(mContext, "index 4");
+                ShareUtil.share(mContext, "分享" + mSinger + "的单曲: " + mName + "(来自@" + mContext.getResources().getString(R.string.app_name) + ")");
                 break;
             case R.id.layout_singer:
                 if (mTingUid.equals("local"))
