@@ -63,10 +63,11 @@ public class RanklistActivity extends AppCompatActivity implements View.OnClickL
                 type = 25;
                 break;
         }
-        final View loadingLayout = findViewById(R.id.layout_loading);
-        ImageView loadingIv = findViewById(R.id.iv_loading);
-        final AnimationDrawable drawable = (AnimationDrawable) loadingIv.getBackground();
-        drawable.start();
+        final View loadingView = findViewById(R.id.layout_loading);
+        ImageView imageView = loadingView.findViewById(R.id.iv_loading);
+        final AnimationDrawable drawable = (AnimationDrawable) imageView.getBackground();
+        if (drawable != null && !drawable.isRunning())
+            drawable.start();
         final RecyclerView recyclerView = findViewById(R.id.ranklist_recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         OkHttpUtil.loadData(CommonApis.MUSIC_LIST_API + type, new OkHttpUtil.OnLoadDataFinish() {
@@ -87,9 +88,9 @@ public class RanklistActivity extends AppCompatActivity implements View.OnClickL
                         ToastUtil.showShort(RanklistActivity.this, "play " + music.getSong_list().get(position).getTitle());
                     }
                 }));
-                if (drawable.isRunning()) {
+                if (drawable != null && drawable.isRunning()) {
                     drawable.stop();
-                    loadingLayout.setVisibility(View.GONE);
+                    loadingView.setVisibility(View.GONE);
                     recyclerView.setVisibility(View.VISIBLE);
                 }
             }

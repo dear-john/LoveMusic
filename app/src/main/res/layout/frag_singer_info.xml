@@ -8,30 +8,37 @@
     android:scrollbars="vertical"
     app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:orientation="vertical"
-        android:paddingBottom="5dp"
-        android:paddingTop="15dp">
+        android:layout_height="wrap_content">
 
-        <include
+        <include layout="@layout/loading_layout" />
+
+        <LinearLayout
             android:id="@+id/layout_singer_info"
-            layout="@layout/divider_head" />
-
-        <TextView
-            android:id="@+id/tv_singer_detail_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:paddingEnd="3dp"
-            android:paddingStart="3dp"
-            android:textSize="12sp" />
+            android:layout_marginStart="5dp"
+            android:orientation="vertical"
+            android:paddingBottom="5dp"
+            android:paddingTop="15dp"
+            android:visibility="gone">
 
-        <!--<include-->
-        <!--android:id="@+id/layout_familiar_singer"-->
-        <!--layout="@layout/divider_head" />-->
-    </LinearLayout>
+            <include
+                android:id="@+id/layout_singer_info_divider"
+                layout="@layout/divider_head" />
+
+            <TextView
+                android:id="@+id/tv_singer_detail_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:paddingEnd="3dp"
+                android:paddingStart="3dp"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+    </FrameLayout>
 
 </android.support.v4.widget.NestedScrollView>

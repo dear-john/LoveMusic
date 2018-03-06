@@ -1,8 +1,10 @@
 package fragment;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.spring_ballet.lovemusic.R;
 import com.spring_ballet.lovemusic.SingerInfoActivity;
@@ -51,6 +53,11 @@ public class SingerMusicFragment extends BaseFragment {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onDataLoadFinish(MessageEvent event) {
         if (event.isMusicDataFinish()) {
+            final View loadingView = view.findViewById(R.id.layout_loading);
+            ImageView imageView = loadingView.findViewById(R.id.iv_loading);
+            final AnimationDrawable drawable = (AnimationDrawable) imageView.getBackground();
+            if (drawable != null && !drawable.isRunning())
+                drawable.start();
             final SingerMusicList list = ((SingerInfoActivity) getActivity()).getSingerMusicList();
             RecyclerView recyclerView = view.findViewById(R.id.rv_frag_singer_music);
             recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
@@ -68,6 +75,11 @@ public class SingerMusicFragment extends BaseFragment {
                     ToastUtil.showShort(mContext, "play " + list.getSonglist().get(position).getTitle());
                 }
             }));
+            if (drawable != null && drawable.isRunning()) {
+                drawable.stop();
+                loadingView.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+            }
         }
     }
 

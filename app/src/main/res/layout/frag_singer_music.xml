@@ -4,10 +4,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <include layout="@layout/loading_layout" />
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_frag_singer_music"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbarStyle="insideInset"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:visibility="gone" />
 </LinearLayout>
