@@ -1,12 +1,21 @@
 package utils;
 
 
+import android.content.Context;
 import android.util.Log;
 
-public class LogUtil {
-    private static final String TAG = "app_name";
+import com.spring_ballet.lovemusic.R;
 
-    public static void logD(String text) {
-        Log.d(TAG, "LogD: " + text);
+public class LogUtil {
+    private Context mContext;
+
+    public LogUtil(Context context) {
+        mContext = context;
+    }
+
+    public void logD(String text) {
+        if (mContext != null) {
+            Log.d(mContext.getResources().getString(R.string.app_name), text);
+        }
     }
 }
