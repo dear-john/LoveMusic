@@ -29,6 +29,7 @@ import fragment.SingerInfoFragment;
 import fragment.SingerMusicFragment;
 import fragment.SingerVideoFragment;
 import utils.OkHttpUtil;
+import utils.ShareUtil;
 import utils.ToastUtil;
 
 public class SingerInfoActivity extends AppCompatActivity implements View.OnClickListener,
@@ -112,6 +113,9 @@ public class SingerInfoActivity extends AppCompatActivity implements View.OnClic
                 finish();
                 break;
             case R.id.iv_singer_share:
+                ShareUtil.share(SingerInfoActivity.this, "分享歌手" + mSingerInfo.getName()
+                        + " " + mSingerInfo.getUrl() + "(来自@"
+                        + SingerInfoActivity.this.getResources().getString(R.string.app_name) + ")");
                 break;
         }
     }

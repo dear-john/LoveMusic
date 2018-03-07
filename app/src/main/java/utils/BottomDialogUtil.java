@@ -83,7 +83,8 @@ public class BottomDialogUtil implements View.OnClickListener {
                 ToastUtil.showShort(mContext, "index 3");
                 break;
             case R.id.layout_share:
-                ShareUtil.share(mContext, "分享" + mSinger + "的单曲\n" + mName + "(来自@" + mContext.getResources().getString(R.string.app_name) + ")");
+                ShareUtil.share(mContext, "分享" + mSinger + "的单曲 " + mName + " (来自@"
+                        + mContext.getResources().getString(R.string.app_name) + ")");
                 break;
             case R.id.layout_singer:
                 if (mTingUid.equals("local"))
