@@ -5,7 +5,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -22,6 +20,7 @@ import java.util.List;
 
 import adapter.ListViewAdapter;
 import adapter.MyFragmentAdapter;
+import base.BaseActivity;
 import base.BaseFragment;
 import fragment.AroundMusicFragment;
 import fragment.FriendFragment;
@@ -29,8 +28,7 @@ import fragment.LocalMusicFragment;
 import utils.ToastUtil;
 
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener,
-        ViewPager.OnPageChangeListener {
+public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
     private DrawerLayout drawerLayout;
 
@@ -41,8 +39,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private ImageView friendIv;
     private FrameLayout searchLauout;
     private ViewPager mainVp;
-    private LinearLayout footLayout;
-    private List<BaseFragment> baseFragmentList;
 
     //滑动菜单
     private ListView mListView;
@@ -57,76 +53,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
         initWidgets();
         initListeners();
         initViewPager();
         setSelectedItemAndPage(1);
     }
 
-    private void initViewPager() {
-        baseFragmentList = new ArrayList<>(3);
-        baseFragmentList.add(new LocalMusicFragment());
-        baseFragmentList.add(new AroundMusicFragment());
-        baseFragmentList.add(new FriendFragment());
-        mainVp.setAdapter(new MyFragmentAdapter(getSupportFragmentManager(), baseFragmentList));
-        mainVp.setOffscreenPageLimit(2);
-    }
-
-    private void initListeners() {
-        //主界面
-        menuLayout.setOnClickListener(this);
-        localMusicIv.setOnClickListener(this);
-        netMusicIv.setOnClickListener(this);
-        friendIv.setOnClickListener(this);
-        searchLauout.setOnClickListener(this);
-        mainVp.addOnPageChangeListener(this);
-
-        //滑动菜单
-        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                switch (position) {
-                    case 0:
-                        ToastUtil.showShort(MainActivity.this, "home page");
-                        drawerLayout.closeDrawers();
-                        break;
-                    case 1:
-                        ToastUtil.showShort(MainActivity.this, "msg");
-                        drawerLayout.closeDrawers();
-                        break;
-                    case 2:
-                        ToastUtil.showShort(MainActivity.this, "friend");
-                        drawerLayout.closeDrawers();
-                        break;
-                    case 3:
-                        ToastUtil.showShort(MainActivity.this, "stop on time");
-                        drawerLayout.closeDrawers();
-                        break;
-                    case 4:
-                        ToastUtil.showShort(MainActivity.this, "scan");
-                        drawerLayout.closeDrawers();
-                        break;
-                }
-            }
-        });
-        userNameTv.setOnClickListener(this);
-        userLevelTv.setOnClickListener(this);
-        userSignTv.setOnClickListener(this);
-        mUserIconIv.setOnClickListener(this);
-        mModeLayout.setOnClickListener(this);
-        mSettingsLayout.setOnClickListener(this);
-        mQuitLayout.setOnClickListener(this);
-    }
-
-    private void initWidgets() {
+    @Override
+    protected void initWidgets() {
         drawerLayout = findViewById(R.id.draw_layout);
         Toolbar toolbar = findViewById(R.id.main_toolbar);
         setSupportActionBar(toolbar);
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
+        if (actionBar != null)
             actionBar.setDisplayShowTitleEnabled(false);
-        }
 
         //主界面
         menuLayout = findViewById(R.id.main_menu);
@@ -135,7 +75,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         friendIv = findViewById(R.id.iv_friend);
         searchLauout = findViewById(R.id.search);
         mainVp = findViewById(R.id.main_viewpager);
-        footLayout = findViewById(R.id.main_footview);
 
         //滑动菜单
         mListView = findViewById(R.id.main_listview);
@@ -152,7 +91,65 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void initListeners() {
+        //主界面
+        menuLayout.setOnClickListener(this);
+        localMusicIv.setOnClickListener(this);
+        netMusicIv.setOnClickListener(this);
+        friendIv.setOnClickListener(this);
+        searchLauout.setOnClickListener(this);
+        mainVp.addOnPageChangeListener(this);
+
+        //滑动菜单
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position) {
+                    case 0:
+                        ToastUtil.showShort(MainActivity.this, "home page");
+                        break;
+                    case 1:
+                        ToastUtil.showShort(MainActivity.this, "msg");
+                        break;
+                    case 2:
+                        ToastUtil.showShort(MainActivity.this, "friend");
+                        break;
+                    case 3:
+                        ToastUtil.showShort(MainActivity.this, "stop on time");
+                        break;
+                    case 4:
+                        ToastUtil.showShort(MainActivity.this, "scan");
+                        break;
+                }
+                drawerLayout.closeDrawers();
+            }
+        });
+        userNameTv.setOnClickListener(this);
+        userLevelTv.setOnClickListener(this);
+        userSignTv.setOnClickListener(this);
+        mUserIconIv.setOnClickListener(this);
+        mModeLayout.setOnClickListener(this);
+        mSettingsLayout.setOnClickListener(this);
+        mQuitLayout.setOnClickListener(this);
+    }
+
+    private void initViewPager() {
+        List<BaseFragment> baseFragmentList = new ArrayList<>(3);
+        baseFragmentList.add(new LocalMusicFragment());
+        baseFragmentList.add(new AroundMusicFragment());
+        baseFragmentList.add(new FriendFragment());
+        mainVp.setAdapter(new MyFragmentAdapter(getSupportFragmentManager(), baseFragmentList));
+        mainVp.setOffscreenPageLimit(2);
+    }
+
+    @Override
+    protected int getContainerView() {
+        return R.layout.activity_main;
+    }
+
+    @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()) {
             case R.id.main_menu:
                 drawerLayout.openDrawer(GravityCompat.START);
@@ -180,9 +177,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case R.id.search:
                 ToastUtil.showShort(this, "this is search");
-                break;
-            case R.id.main_footview:
-                ToastUtil.showShort(this, "this is foot");
                 break;
             case R.id.tv_user_name:
                 ToastUtil.showShort(this, "user name");
@@ -233,7 +227,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
     }
 
     @Override

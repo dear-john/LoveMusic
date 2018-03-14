@@ -1,7 +1,6 @@
 package com.spring_ballet.lovemusic;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +12,7 @@ import java.util.List;
 import java.util.Random;
 
 import adapter.LocalRecyclerViewAdapter;
+import base.BaseActivity;
 import bean.LocalMusic;
 import bean.MessageEvent;
 import utils.BottomDialogUtil;
@@ -20,24 +20,42 @@ import utils.LocalMusicUtil;
 import utils.SharedPreferencesUtil;
 import utils.ToastUtil;
 
-public class LocalMusicActivity extends AppCompatActivity implements View.OnClickListener {
+public class LocalMusicActivity extends BaseActivity {
+
     private List<LocalMusic> mLocalMusicList;
+    private View backLayout;
+    private View searchLayout;
+    private View menuLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_local_music);
+        mLocalMusicList = LocalMusicUtil.getLocalMusicData(this);
+        initWidgets();
+        initListeners();
+        SharedPreferencesUtil.putIntData(this, "LocalMusicNumber", mLocalMusicList.size());
+    }
+
+    @Override
+    protected int getContainerView() {
+        return R.layout.activity_local_music;
+    }
+
+    @Override
+    protected void initListeners() {
+        backLayout.setOnClickListener(this);
+        searchLayout.setOnClickListener(this);
+        menuLayout.setOnClickListener(this);
+    }
+
+    @Override
+    protected void initWidgets() {
         Toolbar toolbar = findViewById(R.id.local_music_toolbar);
         setSupportActionBar(toolbar);
-        View backLayout = findViewById(R.id.local_music_back);
-        backLayout.setOnClickListener(this);
-        View searchLayout = findViewById(R.id.local_music_search);
-        searchLayout.setOnClickListener(this);
-        View menuLayout = findViewById(R.id.local_music_menu);
-        menuLayout.setOnClickListener(this);
+        backLayout = findViewById(R.id.local_music_back);
+        searchLayout = findViewById(R.id.local_music_search);
+        menuLayout = findViewById(R.id.local_music_menu);
         RecyclerView recyclerView = findViewById(R.id.rv_local_music);
-        mLocalMusicList = LocalMusicUtil.getLocalMusicData(this);
-        SharedPreferencesUtil.putIntData(this, "LocalMusicNumber", mLocalMusicList.size());
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(new LocalRecyclerViewAdapter(mLocalMusicList, new LocalRecyclerViewAdapter.ClickListener() {
             @Override
@@ -50,13 +68,15 @@ public class LocalMusicActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void itemListener(View view, int position) {
-                ToastUtil.showShort(LocalMusicActivity.this, "play " + mLocalMusicList.get(position).getMusicName());
+                LocalMusic localMusic = mLocalMusicList.get(position);
+                refreshControllLayout(null, localMusic.getPath(), localMusic.getMusicName(), localMusic.getSinger());
             }
         }));
     }
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()) {
             case R.id.local_music_back:
                 finish();

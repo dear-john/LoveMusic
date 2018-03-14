@@ -30,6 +30,11 @@
             android:name=".SingerInfoActivity"
             android:label=""
             android:theme="@style/SingerInfoTheme" />
+
+        <service
+            android:name=".MusicPlayService"
+            android:enabled="true"
+            android:exported="true" />
     </application>
 
 </manifest>
