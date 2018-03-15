@@ -134,10 +134,6 @@ public class SingerInfoActivity extends BaseActivity implements ViewPager.OnPage
         return mSingerInfo;
     }
 
-    public void playSingerMusic(String icon, String url, String songName, String singerName) {
-        refreshControllLayout(icon, url, songName, singerName);
-    }
-
     @Override
     public void onClick(View v) {
         super.onClick(v);

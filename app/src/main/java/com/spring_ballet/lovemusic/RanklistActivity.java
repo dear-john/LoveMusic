@@ -11,16 +11,11 @@ import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONObject;
 
-import java.util.Random;
-
-import adapter.NetRecyclerViewAdapter;
+import adapter.MusicRecyclerViewAdapter;
 import app.CommonApis;
 import base.BaseActivity;
 import bean.Music;
-import bean.Song_list;
-import utils.BottomDialogUtil;
 import utils.OkHttpUtil;
-import utils.PlayOnlineMusicUtil;
 
 
 public class RanklistActivity extends BaseActivity {
@@ -104,22 +99,8 @@ public class RanklistActivity extends BaseActivity {
             @Override
             public void loadDataFinish(String data) {
                 final Music music = JSONObject.parseObject(data, Music.class);
-                recyclerView.setAdapter(new NetRecyclerViewAdapter(music.getSong_list(), new NetRecyclerViewAdapter.ClickListener() {
-                    @Override
-                    public void moreListener(View view, int position) {
-                        final Song_list songList = music.getSong_list().get(position);
-                        new BottomDialogUtil().showDialog(RanklistActivity.this, songList.getTitle(),
-                                new Random().nextInt(10000) + 100,
-                                songList.getArtist_name(), songList.getAlbum_title(), songList.getAll_artist_ting_uid());
-                    }
-
-                    @Override
-                    public void itemListener(View view, int position) {
-                        Song_list songList = music.getSong_list().get(position);
-                        PlayOnlineMusicUtil.playMusic(RanklistActivity.this, songList.getSong_id(),
-                                songList.getPic_small(), songList.getTitle(), songList.getAuthor());
-                    }
-                }));
+                recyclerView.setAdapter(new MusicRecyclerViewAdapter(RanklistActivity.this,
+                        true, music.getSong_list(), null));
                 if (drawable != null && drawable.isRunning()) {
                     drawable.stop();
                     loadingView.setVisibility(View.GONE);

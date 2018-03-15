@@ -9,13 +9,11 @@ import android.view.View;
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
-import java.util.Random;
 
-import adapter.LocalRecyclerViewAdapter;
+import adapter.MusicRecyclerViewAdapter;
 import base.BaseActivity;
 import bean.LocalMusic;
 import bean.MessageEvent;
-import utils.BottomDialogUtil;
 import utils.LocalMusicUtil;
 import utils.SharedPreferencesUtil;
 import utils.ToastUtil;
@@ -57,21 +55,8 @@ public class LocalMusicActivity extends BaseActivity {
         menuLayout = findViewById(R.id.local_music_menu);
         RecyclerView recyclerView = findViewById(R.id.rv_local_music);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new LocalRecyclerViewAdapter(mLocalMusicList, new LocalRecyclerViewAdapter.ClickListener() {
-            @Override
-            public void moreListener(View view, int position) {
-                LocalMusic localMusic = mLocalMusicList.get(position);
-                new BottomDialogUtil().showDialog(LocalMusicActivity.this, localMusic.getMusicName(),
-                        new Random().nextInt(10000) + 100, localMusic.getSinger(),
-                        localMusic.getAlbum(), "local");
-            }
-
-            @Override
-            public void itemListener(View view, int position) {
-                LocalMusic localMusic = mLocalMusicList.get(position);
-                refreshControllLayout(null, localMusic.getPath(), localMusic.getMusicName(), localMusic.getSinger());
-            }
-        }));
+        recyclerView.setAdapter(new MusicRecyclerViewAdapter(LocalMusicActivity.this,
+                false, null, mLocalMusicList));
     }
 
     @Override
