@@ -21,7 +21,7 @@ import bean.MessageEvent;
 import bean.SingerMusicList;
 import bean.Song_list;
 import utils.BottomDialogUtil;
-import utils.ToastUtil;
+import utils.PlayOnlineMusicUtil;
 
 /**
  * Created by 李君 on 2018/2/23.
@@ -72,7 +72,9 @@ public class SingerMusicFragment extends BaseFragment {
 
                 @Override
                 public void itemListener(View view, int position) {
-                    ToastUtil.showShort(mContext, "play " + list.getSonglist().get(position).getTitle());
+                    Song_list songList = list.getSonglist().get(position);
+                    PlayOnlineMusicUtil.playMusic((SingerInfoActivity) getActivity(), songList.getSong_id(),
+                            songList.getPic_small(), songList.getTitle(), songList.getAuthor());
                 }
             }));
             if (drawable != null && drawable.isRunning()) {

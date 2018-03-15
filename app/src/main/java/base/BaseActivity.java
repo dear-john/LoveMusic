@@ -122,7 +122,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             mPlayAndPauseIv.setImageResource(R.drawable.music_pause);
     }
 
-    protected void refreshControllLayout(String icon, String url, String songName, String singerName) {
+    public void refreshControllLayout(String icon, String url, String songName, String singerName) {
         if (!TextUtils.isEmpty(icon)) Glide.with(this).load(icon).into(mSongIv);
         if (!TextUtils.isEmpty(songName)) mSongNameTv.setText(songName);
         if (!TextUtils.isEmpty(singerName)) mSingerNameTv.setText(singerName);

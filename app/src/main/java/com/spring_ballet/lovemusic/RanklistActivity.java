@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,11 +17,10 @@ import adapter.NetRecyclerViewAdapter;
 import app.CommonApis;
 import base.BaseActivity;
 import bean.Music;
-import bean.MusicPalyDetail;
 import bean.Song_list;
 import utils.BottomDialogUtil;
 import utils.OkHttpUtil;
-import utils.ToastUtil;
+import utils.PlayOnlineMusicUtil;
 
 
 public class RanklistActivity extends BaseActivity {
@@ -117,25 +115,9 @@ public class RanklistActivity extends BaseActivity {
 
                     @Override
                     public void itemListener(View view, int position) {
-                        final Song_list songList = music.getSong_list().get(position);
-                        OkHttpUtil.loadData(CommonApis.PLAY_MUSIC_LINK + songList.getSong_id(),
-                                new OkHttpUtil.OnLoadDataFinish() {
-                                    @Override
-                                    public void loadDataFinish(String data) {
-                                        if (!TextUtils.isEmpty(data)) {
-                                            MusicPalyDetail detail = JSONObject.parseObject(data, MusicPalyDetail.class);
-                                            data = detail.getBitrate().getShow_link();
-                                            if (TextUtils.isEmpty(data))
-                                                data = detail.getBitrate().getFile_link();
-                                            if (!TextUtils.isEmpty(data))
-                                                refreshControllLayout(songList.getPic_small(),
-                                                        data, songList.getTitle(), songList.getAuthor());
-                                            else
-                                                ToastUtil.showShort(RanklistActivity.this, "歌曲加载失败，请稍后重试");
-                                        } else
-                                            ToastUtil.showShort(RanklistActivity.this, "歌曲加载失败，请稍后重试");
-                                    }
-                                });
+                        Song_list songList = music.getSong_list().get(position);
+                        PlayOnlineMusicUtil.playMusic(RanklistActivity.this, songList.getSong_id(),
+                                songList.getPic_small(), songList.getTitle(), songList.getAuthor());
                     }
                 }));
                 if (drawable != null && drawable.isRunning()) {

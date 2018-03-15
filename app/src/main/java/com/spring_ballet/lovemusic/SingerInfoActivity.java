@@ -3,7 +3,6 @@ package com.spring_ballet.lovemusic;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
@@ -20,6 +19,7 @@ import java.util.List;
 
 import adapter.MyFragmentAdapter;
 import app.CommonApis;
+import base.BaseActivity;
 import base.BaseFragment;
 import bean.MessageEvent;
 import bean.SingerInfo;
@@ -32,32 +32,47 @@ import utils.OkHttpUtil;
 import utils.ShareUtil;
 import utils.ToastUtil;
 
-public class SingerInfoActivity extends AppCompatActivity implements View.OnClickListener,
-        ViewPager.OnPageChangeListener {
+public class SingerInfoActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
     private ViewPager mViewPager;
     private SingerMusicList mSingerMusicList;
     private SingerInfo mSingerInfo;
-
-    public SingerMusicList getSingerMusicList() {
-        return mSingerMusicList;
-    }
-
-    public SingerInfo getSingerInfo() {
-        return mSingerInfo;
-    }
+    private TextView tvSingerName;
+    private TabLayout tabLayout;
+    private ImageView ivSingerBg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_singer_info);
+        initWidgets();
+        initListeners();
+        initViewPager();
+        loadData();
+    }
+
+    @Override
+    protected int getContainerView() {
+        return R.layout.activity_singer_info;
+    }
+
+    @Override
+    protected void initWidgets() {
         Toolbar toolbar = findViewById(R.id.singer_info_toolbar);
         setSupportActionBar(toolbar);
         findViewById(R.id.iv_singer_info_back).setOnClickListener(this);
         findViewById(R.id.iv_singer_share).setOnClickListener(this);
-        final TextView tvSingerName = findViewById(R.id.tv_singer_name);
-        TabLayout tabLayout = findViewById(R.id.tablayout_singer_info);
+        tvSingerName = findViewById(R.id.tv_singer_name);
+        tabLayout = findViewById(R.id.tablayout_singer_info);
         mViewPager = findViewById(R.id.vp_singer_info);
+        ivSingerBg = findViewById(R.id.iv_default_singer_bg);
+    }
+
+    @Override
+    protected void initListeners() {
+
+    }
+
+    private void initViewPager() {
         List<BaseFragment> baseFragmentList = new ArrayList<>(4);
         baseFragmentList.add(new SingerMusicFragment());
         baseFragmentList.add(new SingerAlbumFragment());
@@ -71,7 +86,9 @@ public class SingerInfoActivity extends AppCompatActivity implements View.OnClic
         mViewPager.setAdapter(new MyFragmentAdapter(getSupportFragmentManager(), baseFragmentList, titleList));
         mViewPager.setOffscreenPageLimit(3);
         tabLayout.setupWithViewPager(mViewPager);
-        final ImageView ivSingerBg = findViewById(R.id.iv_default_singer_bg);
+    }
+
+    private void loadData() {
         final String uid = getIntent().getStringExtra("data");
         OkHttpUtil.loadData(CommonApis.SINGER_MUSIC_LIST + uid, new OkHttpUtil.OnLoadDataFinish() {
             @Override
@@ -84,9 +101,11 @@ public class SingerInfoActivity extends AppCompatActivity implements View.OnClic
                 } else ToastUtil.showShort(SingerInfoActivity.this, "music load error");
             }
         });
+
         OkHttpUtil.loadData(CommonApis.SINGER_INFO_API + uid, new OkHttpUtil.OnLoadDataFinish() {
             @Override
             public void loadDataFinish(String data) {
+                boolean hasData = true;
                 if (data != null) {
                     mSingerInfo = JSON.parseObject(data, SingerInfo.class);
                     String url = mSingerInfo.getAvatar_s1000();
@@ -96,18 +115,32 @@ public class SingerInfoActivity extends AppCompatActivity implements View.OnClic
                             url = mSingerInfo.getAvatar_big();
                             if (TextUtils.isEmpty(url)) {
                                 url = mSingerInfo.getAvatar_s180();
-                            }
+                            } else hasData = false;
                         }
                     }
-                    Glide.with(SingerInfoActivity.this).load(url).into(ivSingerBg);
+                    if (hasData) Glide.with(SingerInfoActivity.this).load(url).into(ivSingerBg);
+                    else ToastUtil.showShort(SingerInfoActivity.this, "歌手信息加载失败，请稍后重试");
                     tvSingerName.setText(mSingerInfo.getName());
-                } else ToastUtil.showShort(SingerInfoActivity.this, "info load error");
+                }
             }
         });
     }
 
+    public SingerMusicList getSingerMusicList() {
+        return mSingerMusicList;
+    }
+
+    public SingerInfo getSingerInfo() {
+        return mSingerInfo;
+    }
+
+    public void playSingerMusic(String icon, String url, String songName, String singerName) {
+        refreshControllLayout(icon, url, songName, singerName);
+    }
+
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()) {
             case R.id.iv_singer_info_back:
                 finish();
