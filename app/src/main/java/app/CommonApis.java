@@ -20,5 +20,8 @@ public class CommonApis {
     //获取歌手信息,后接ting_uid
     public static final String SINGER_INFO_API = "http://tingapi.ting.baidu.com/v1/restserver/ting?from=webapp_music&method=baidu.ting.artist.getInfo&format=json&tinguid=";
 
+    //音乐播放链接，后接songid
+    public static final String PLAY_MUSIC_LINK = "http://tingapi.ting.baidu.com/v1/restserver/ting?from=webapp_music&method=baidu.ting.song.play&songid=";
+
     private static final String BLOG_LINK = "https://fddcn.cn/music-api-wang-yi-bai-du.html";
 }

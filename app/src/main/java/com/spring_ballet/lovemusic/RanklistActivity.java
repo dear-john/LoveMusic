@@ -2,10 +2,10 @@ package com.spring_ballet.lovemusic;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,24 +16,55 @@ import java.util.Random;
 
 import adapter.NetRecyclerViewAdapter;
 import app.CommonApis;
+import base.BaseActivity;
 import bean.Music;
+import bean.MusicPalyDetail;
 import bean.Song_list;
 import utils.BottomDialogUtil;
 import utils.OkHttpUtil;
 import utils.ToastUtil;
 
 
-public class RanklistActivity extends AppCompatActivity implements View.OnClickListener {
+public class RanklistActivity extends BaseActivity {
+
+    private int type;
+    private View loadingView;
+    private TextView ranklistName;
+    private AnimationDrawable drawable;
+    private RecyclerView recyclerView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ranklist);
+        initWidgets();
+        initListeners();
+        initData();
+    }
+
+    @Override
+    protected int getContainerView() {
+        return R.layout.activity_ranklist;
+    }
+
+    @Override
+    protected void initWidgets() {
         Toolbar toolbar = findViewById(R.id.ranklist_toolbar);
         setSupportActionBar(toolbar);
         findViewById(R.id.layout_ranklist_back).setOnClickListener(this);
-        TextView ranklistName = findViewById(R.id.tv_ranklist_name);
-        int type = 1;
+        ranklistName = findViewById(R.id.tv_ranklist_name);
+        initRankListName();
+        loadingView = findViewById(R.id.layout_loading);
+        ImageView imageView = loadingView.findViewById(R.id.iv_loading);
+        drawable = (AnimationDrawable) imageView.getBackground();
+        if (drawable != null && !drawable.isRunning())
+            drawable.start();
+        recyclerView = findViewById(R.id.ranklist_recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void initRankListName() {
+        type = 1;
         switch (Integer.parseInt(getIntent().getStringExtra("data"))) {
             case 1:
                 ranklistName.setText(R.string.new_music);
@@ -63,13 +94,14 @@ public class RanklistActivity extends AppCompatActivity implements View.OnClickL
                 type = 25;
                 break;
         }
-        final View loadingView = findViewById(R.id.layout_loading);
-        ImageView imageView = loadingView.findViewById(R.id.iv_loading);
-        final AnimationDrawable drawable = (AnimationDrawable) imageView.getBackground();
-        if (drawable != null && !drawable.isRunning())
-            drawable.start();
-        final RecyclerView recyclerView = findViewById(R.id.ranklist_recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    @Override
+    protected void initListeners() {
+
+    }
+
+    private void initData() {
         OkHttpUtil.loadData(CommonApis.MUSIC_LIST_API + type, new OkHttpUtil.OnLoadDataFinish() {
             @Override
             public void loadDataFinish(String data) {
@@ -85,7 +117,25 @@ public class RanklistActivity extends AppCompatActivity implements View.OnClickL
 
                     @Override
                     public void itemListener(View view, int position) {
-                        ToastUtil.showShort(RanklistActivity.this, "play " + music.getSong_list().get(position).getTitle());
+                        final Song_list songList = music.getSong_list().get(position);
+                        OkHttpUtil.loadData(CommonApis.PLAY_MUSIC_LINK + songList.getSong_id(),
+                                new OkHttpUtil.OnLoadDataFinish() {
+                                    @Override
+                                    public void loadDataFinish(String data) {
+                                        if (!TextUtils.isEmpty(data)) {
+                                            MusicPalyDetail detail = JSONObject.parseObject(data, MusicPalyDetail.class);
+                                            data = detail.getBitrate().getShow_link();
+                                            if (TextUtils.isEmpty(data))
+                                                data = detail.getBitrate().getFile_link();
+                                            if (!TextUtils.isEmpty(data))
+                                                refreshControllLayout(songList.getPic_small(),
+                                                        data, songList.getTitle(), songList.getAuthor());
+                                            else
+                                                ToastUtil.showShort(RanklistActivity.this, "歌曲加载失败，请稍后重试");
+                                        } else
+                                            ToastUtil.showShort(RanklistActivity.this, "歌曲加载失败，请稍后重试");
+                                    }
+                                });
                     }
                 }));
                 if (drawable != null && drawable.isRunning()) {
@@ -99,6 +149,7 @@ public class RanklistActivity extends AppCompatActivity implements View.OnClickL
 
     @Override
     public void onClick(View v) {
+        super.onClick(v);
         switch (v.getId()) {
             case R.id.layout_ranklist_back:
                 finish();

@@ -170,12 +170,11 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     }
 
     private void savePlayRecord() {
-        if (!TextUtils.isEmpty(sIcon))
-            SharedPreferencesUtil.putStringData(this, "icon", sIcon);
         if (!TextUtils.isEmpty(sUrl) && !TextUtils.isEmpty(sSongName) && !TextUtils.isEmpty(sSingerName)) {
             SharedPreferencesUtil.putStringData(this, "url", sUrl);
             SharedPreferencesUtil.putStringData(this, "song", sSongName);
             SharedPreferencesUtil.putStringData(this, "singer", sSingerName);
+            SharedPreferencesUtil.putStringData(this, "icon", sIcon);
         }
     }
 
