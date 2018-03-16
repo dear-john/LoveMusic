@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">音乐之声</string>
-    <string name="nav_night_mode">夜间模式</string>
     <string name="local_music">本地音乐</string>
     <string name="local_music_init">(点击扫描)</string>
     <string name="recent_play">最近播放</string>

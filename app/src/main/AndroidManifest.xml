@@ -13,7 +13,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".MainActivity"/>
-        <activity android:name="base.BaseActivity" />
         <activity
             android:name=".LocalMusicActivity"
             android:label="" />
