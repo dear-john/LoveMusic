@@ -7,7 +7,6 @@ import java.util.List;
 
 import app.CommonApis;
 import bean.SingerMusicList;
-import utils.LogUtil;
 import utils.OkHttpUtil;
 
 /**

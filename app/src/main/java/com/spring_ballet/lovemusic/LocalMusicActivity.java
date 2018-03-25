@@ -10,64 +10,39 @@ import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
+import Presenter.LocalMusicPresenter;
+import Presenter.MusicContract;
 import adapter.MusicRecyclerViewAdapter;
 import base.BaseActivity;
 import bean.LocalMusic;
 import bean.MessageEvent;
-import model.LocalMusicDataImpl;
-import model.MusicData;
-import model.OnDataLoadFinished;
-import utils.LogUtil;
 import utils.SharedPreferencesUtil;
 import utils.ToastUtil;
 
-public class LocalMusicActivity extends BaseActivity {
+public class LocalMusicActivity extends BaseActivity implements MusicContract.View<LocalMusic> {
 
-    private List<LocalMusic> mLocalMusicList;
     private View backLayout;
     private View searchLayout;
     private View menuLayout;
+    private LocalMusicPresenter mPresenter;
+    private List<LocalMusic> mLocalMusicList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        LogUtil.logD("local onCreate");
-        MusicData<LocalMusic> musicData = new LocalMusicDataImpl(this);
-        musicData.getMusicData(new OnDataLoadFinished<LocalMusic>() {
-            @Override
-            public void onLoadFinished(List<LocalMusic> list) {
-                mLocalMusicList = list;
-            }
-        });
         initWidgets();
         initListeners();
-        SharedPreferencesUtil.putIntData(this, "LocalMusicNumber", mLocalMusicList.size());
+        mPresenter = new LocalMusicPresenter(this, this);
+        mPresenter.loadData();
     }
 
     @Override
-    protected int getContainerView() {
-        return R.layout.activity_local_music;
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        LogUtil.logD("local onResume");
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        LogUtil.logD("local onPause");
-        MessageEvent event = new MessageEvent();
-        event.setLocalMusicNumber(mLocalMusicList.size());
-        EventBus.getDefault().post(event);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        LogUtil.logD("local onStop");
+    protected void initWidgets() {
+        Toolbar toolbar = findViewById(R.id.local_music_toolbar);
+        setSupportActionBar(toolbar);
+        backLayout = findViewById(R.id.local_music_back);
+        searchLayout = findViewById(R.id.local_music_search);
+        menuLayout = findViewById(R.id.local_music_menu);
     }
 
     @Override
@@ -78,16 +53,16 @@ public class LocalMusicActivity extends BaseActivity {
     }
 
     @Override
-    protected void initWidgets() {
-        Toolbar toolbar = findViewById(R.id.local_music_toolbar);
-        setSupportActionBar(toolbar);
-        backLayout = findViewById(R.id.local_music_back);
-        searchLayout = findViewById(R.id.local_music_search);
-        menuLayout = findViewById(R.id.local_music_menu);
-        RecyclerView recyclerView = findViewById(R.id.rv_local_music);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new MusicRecyclerViewAdapter(LocalMusicActivity.this,
-                false, null, mLocalMusicList));
+    protected int getContainerView() {
+        return R.layout.activity_local_music;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MessageEvent event = new MessageEvent();
+        event.setLocalMusicNumber(mLocalMusicList.size());
+        EventBus.getDefault().post(event);
     }
 
     @Override
@@ -107,8 +82,25 @@ public class LocalMusicActivity extends BaseActivity {
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        LogUtil.logD("local onDestroy");
+    public void refreshView(List<LocalMusic> list) {
+        if (list != null) {
+            mLocalMusicList = list;
+            SharedPreferencesUtil.putIntData(this, "LocalMusicNumber", mLocalMusicList.size());
+            RecyclerView recyclerView = findViewById(R.id.rv_local_music);
+            recyclerView.setLayoutManager(new LinearLayoutManager(this));
+            recyclerView.setAdapter(new MusicRecyclerViewAdapter(LocalMusicActivity.this,
+                    false, null, list));
+        } else ToastUtil.showShort(this, getResources().getString(R.string.loading_failed));
     }
+
+    @Override
+    protected void onDestroy() {
+        if (mPresenter != null) {
+            mPresenter.destory();
+            mPresenter = null;
+        }
+        mLocalMusicList = null;
+        super.onDestroy();
+    }
+
 }

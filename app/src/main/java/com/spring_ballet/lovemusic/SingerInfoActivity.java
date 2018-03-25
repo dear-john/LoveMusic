@@ -14,6 +14,8 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 import java.util.List;
 
+import Presenter.MusicContract;
+import Presenter.SingerInfoMusicPresenter;
 import adapter.MyFragmentAdapter;
 import base.BaseActivity;
 import base.BaseFragment;
@@ -22,12 +24,10 @@ import fragment.SingerAlbumFragment;
 import fragment.SingerInfoFragment;
 import fragment.SingerMusicFragment;
 import fragment.SingerVideoFragment;
-import model.MusicData;
-import model.OnDataLoadFinished;
-import model.SingerInfoMusicDataImpl;
 import utils.ShareUtil;
+import utils.ToastUtil;
 
-public class SingerInfoActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
+public class SingerInfoActivity extends BaseActivity implements ViewPager.OnPageChangeListener, MusicContract.View<SingerInfo> {
 
     private ViewPager mViewPager;
     private SingerInfo mSingerInfo;
@@ -35,6 +35,7 @@ public class SingerInfoActivity extends BaseActivity implements ViewPager.OnPage
     private ImageView ivSingerBg;
     private TextView tvSingerName;
     private String uid;
+    private SingerInfoMusicPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +44,8 @@ public class SingerInfoActivity extends BaseActivity implements ViewPager.OnPage
         initWidgets();
         initListeners();
         initViewPager();
-        loadSingerInfoData();
+        mPresenter = new SingerInfoMusicPresenter(uid, this);
+        mPresenter.loadData();
     }
 
     @Override
@@ -84,26 +86,6 @@ public class SingerInfoActivity extends BaseActivity implements ViewPager.OnPage
         tabLayout.setupWithViewPager(mViewPager);
     }
 
-    private void loadSingerInfoData() {
-        MusicData<SingerInfo> data = new SingerInfoMusicDataImpl(uid);
-        data.getMusicData(new OnDataLoadFinished<SingerInfo>() {
-            @Override
-            public void onLoadFinished(List<SingerInfo> list) {
-                if (list != null && list.size() > 0 && (mSingerInfo = list.get(0)) != null) {
-                    tvSingerName.setText(mSingerInfo.getName());
-                    String url = mSingerInfo.getAvatar_s1000();
-                    if (TextUtils.isEmpty(url)) {
-                        url = mSingerInfo.getAvatar_s500();
-                        if (TextUtils.isEmpty(url))
-                            url = mSingerInfo.getAvatar_big();
-                    }
-                    if (!TextUtils.isEmpty(url))
-                        Glide.with(SingerInfoActivity.this).load(url).into(ivSingerBg);
-                } else mSingerInfo = null;
-            }
-        });
-    }
-
     public String getUid() {
         return uid;
     }
@@ -140,6 +122,30 @@ public class SingerInfoActivity extends BaseActivity implements ViewPager.OnPage
     @Override
     public void onPageScrollStateChanged(int state) {
 
+    }
+
+    @Override
+    public void refreshView(List<SingerInfo> list) {
+        if (list != null && list.size() > 0 && (mSingerInfo = list.get(0)) != null) {
+            tvSingerName.setText(mSingerInfo.getName());
+            String url = mSingerInfo.getAvatar_s1000();
+            if (TextUtils.isEmpty(url)) {
+                url = mSingerInfo.getAvatar_s500();
+                if (TextUtils.isEmpty(url))
+                    url = mSingerInfo.getAvatar_big();
+            }
+            if (!TextUtils.isEmpty(url))
+                Glide.with(SingerInfoActivity.this).load(url).into(ivSingerBg);
+        } else ToastUtil.showShort(this, getResources().getString(R.string.loading_failed));
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mPresenter != null) {
+            mPresenter.destory();
+            mPresenter = null;
+        }
+        super.onDestroy();
     }
 
 }

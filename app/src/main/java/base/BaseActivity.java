@@ -59,7 +59,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     private static int sSubClassCount;
     private static boolean isFirst = true;
-    private static boolean hasPlayed;
     private static String sIcon;
     private static String sUrl;
     private static String sSongName;
@@ -235,9 +234,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     }
 
     public void refreshAfterPlay(String icon, String url, String songName, String singerName) {
-        showControllLayout();
-        hasPlayed = true;
         SharedPreferencesUtil.putBooleanData(this, "hasPlayed", true);
+        showControllLayout();
         if (!TextUtils.isEmpty(icon)) Glide.with(this).load(icon).into(mSongIv);
         else mSongIv.setImageResource(R.drawable.default_controll_song_bg);
         if (!TextUtils.isEmpty(songName)) mSongNameTv.setText(songName);
@@ -248,8 +246,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         sSongName = songName;
         sSingerName = singerName;
         //开始播放
-        sService.play(url);
         if (!sService.isPlayerPlaying()) mPlayAndPauseIv.setImageResource(R.drawable.music_playing);
+        sService.play(url);
     }
 
     private void showControllLayout() {
@@ -328,7 +326,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         if (sSubClassCount == 0) {
             sService.unbindService(mConnection);
             savePlayRecord();
-            SharedPreferencesUtil.putBooleanData(this, "hasPlayed", hasPlayed);
         }
     }
 
