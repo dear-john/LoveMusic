@@ -9,13 +9,15 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSONObject;
+import java.util.List;
 
 import adapter.MusicRecyclerViewAdapter;
-import app.CommonApis;
 import base.BaseActivity;
-import bean.Music;
-import utils.OkHttpUtil;
+import bean.Song_list;
+import model.MusicData;
+import model.OnDataLoadFinished;
+import model.Song_listMusicDataImpl;
+import utils.ToastUtil;
 
 
 public class RanklistActivity extends BaseActivity {
@@ -26,13 +28,12 @@ public class RanklistActivity extends BaseActivity {
     private AnimationDrawable drawable;
     private RecyclerView recyclerView;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initWidgets();
         initListeners();
-        initData();
+        loadData();
     }
 
     @Override
@@ -94,17 +95,23 @@ public class RanklistActivity extends BaseActivity {
 
     }
 
-    private void initData() {
-        OkHttpUtil.loadData(CommonApis.MUSIC_LIST_API + type, new OkHttpUtil.OnLoadDataFinish() {
+    private void loadData() {
+        MusicData<Song_list> data = new Song_listMusicDataImpl(type);
+        data.getMusicData(new OnDataLoadFinished<Song_list>() {
             @Override
-            public void loadDataFinish(String data) {
-                final Music music = JSONObject.parseObject(data, Music.class);
-                recyclerView.setAdapter(new MusicRecyclerViewAdapter(RanklistActivity.this,
-                        true, music.getSong_list(), null));
-                if (drawable != null && drawable.isRunning()) {
-                    drawable.stop();
-                    loadingView.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
+            public void onLoadFinished(List<Song_list> list) {
+                if (list != null && list.size() > 0) {
+                    recyclerView.setAdapter(new MusicRecyclerViewAdapter(RanklistActivity.this,
+                            true, list, null));
+                    if (drawable != null && drawable.isRunning()) {
+                        drawable.stop();
+                        loadingView.setVisibility(View.GONE);
+                        recyclerView.setVisibility(View.VISIBLE);
+                    }
+                } else {
+                    if (drawable != null && drawable.isRunning())
+                        drawable.stop();
+                    ToastUtil.showShort(RanklistActivity.this, "榜单信息加载失败，请稍后重试");
                 }
             }
         });

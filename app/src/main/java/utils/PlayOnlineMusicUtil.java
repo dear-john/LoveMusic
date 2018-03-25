@@ -25,7 +25,7 @@ public class PlayOnlineMusicUtil {
                             if (TextUtils.isEmpty(data))
                                 data = detail.getBitrate().getFile_link();
                             if (!TextUtils.isEmpty(data))
-                                activity.refreshControllLayout(icon, data, songName, singerName);
+                                activity.refreshAfterPlay(icon, data, songName, singerName);
                             else hasData = false;
                         }
                         if (!hasData)

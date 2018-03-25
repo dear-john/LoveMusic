@@ -5,4 +5,5 @@
     <dimen name="local_music_margin">5dp</dimen>
     <dimen name="local_music_item_font">15sp</dimen>
     <dimen name="popupwindow_item_dimen">50dp</dimen>
+    <dimen name="music_controll_layout_height">55dp</dimen>
 </resources>

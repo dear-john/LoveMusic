@@ -11,6 +11,7 @@ public class SharedPreferencesUtil {
     private static SharedPreferences sPreferences;
     private static SharedPreferences.Editor sEditor;
     private static final String DATA_BASE_NAME = "MyDataBase";
+    public static final int DEFAULT_INT_VALUE = -1;
 
     public static void putStringData(Context context, String key, String value) {
         sPreferences = context.getApplicationContext().getSharedPreferences(DATA_BASE_NAME, 0);
@@ -33,6 +34,18 @@ public class SharedPreferencesUtil {
 
     public static int getIntData(Context context, String key) {
         sPreferences = context.getApplicationContext().getSharedPreferences(DATA_BASE_NAME, 0);
-        return sPreferences.getInt(key, -1);
+        return sPreferences.getInt(key, DEFAULT_INT_VALUE);
+    }
+
+    public static void putBooleanData(Context context, String key, Boolean value) {
+        sPreferences = context.getApplicationContext().getSharedPreferences(DATA_BASE_NAME, 0);
+        sEditor = sPreferences.edit();
+        sEditor.putBoolean(key, value);
+        sEditor.apply();
+    }
+
+    public static Boolean getBooleanData(Context context, String key) {
+        sPreferences = context.getApplicationContext().getSharedPreferences(DATA_BASE_NAME, 0);
+        return sPreferences.getBoolean(key, false);
     }
 }

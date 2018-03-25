@@ -19,11 +19,13 @@ import base.BaseFragment;
 import fragment.AroundMusicFragment;
 import fragment.FriendFragment;
 import fragment.LocalMusicFragment;
+import utils.LogUtil;
 import utils.ToastUtil;
 
 
 public class MainActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
+    //应用主页
     private FrameLayout menuLayout;
     private ImageView localMusicIv;
     private ImageView netMusicIv;
@@ -34,10 +36,35 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LogUtil.logD("main onCreate");
         initWidgets();
         initListeners();
         initViewPager();
         setSelectedItemAndPage(1);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtil.logD("main onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LogUtil.logD("main onPause");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LogUtil.logD("main onStop");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LogUtil.logD("main onDestroy");
     }
 
     @Override
@@ -111,7 +138,6 @@ public class MainActivity extends BaseActivity implements ViewPager.OnPageChange
             case R.id.search:
                 ToastUtil.showShort(this, "this is search");
                 break;
-
         }
     }
 

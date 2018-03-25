@@ -1,13 +1,7 @@
 package fragment;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
@@ -29,22 +23,47 @@ import utils.ToastUtil;
 public class LocalMusicFragment extends BaseFragment {
 
     private TextView localMusicNumberTv;
+    private View localMusicLayout;
+    private View recentPlayLayout;
+    private View downloadLayout;
+    private View radioLayout;
+    private View collectLayout;
 
     @Override
     protected void lazyLoad() {
         //加载成功后，设置为true避免下次重复加载
         hasLoaded = true;
-        checkPermission();
+
+        EventBus.getDefault().register(this);
+
+        initWidgets();
+        initListeners();
     }
 
-
-    private void checkPermission() {
-        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 0);
-        } else {
-            loadData();
+    private void initWidgets() {
+        localMusicLayout = view.findViewById(R.id.layout_local_music);
+        localMusicNumberTv = view.findViewById(R.id.tv_local_music_number);
+        int number = SharedPreferencesUtil.getIntData(mContext, "LocalMusicNumber");
+        if (number != SharedPreferencesUtil.DEFAULT_INT_VALUE) {
+            String text = "(" + number + ")";
+            localMusicNumberTv.setText(text);
         }
+        recentPlayLayout = view.findViewById(R.id.layout_recent_play);
+        TextView recentPlayNumberTv = view.findViewById(R.id.tv_recent_paly_number);
+        downloadLayout = view.findViewById(R.id.layout_download_music);
+        TextView downloadNumberTv = view.findViewById(R.id.tv_download_music_number);
+        radioLayout = view.findViewById(R.id.layout_radio);
+        TextView radioTv = view.findViewById(R.id.tv_radio_number);
+        collectLayout = view.findViewById(R.id.layout_collection);
+        TextView collectTv = view.findViewById(R.id.tv_collection_number);
+    }
+
+    private void initListeners() {
+        localMusicLayout.setOnClickListener(this);
+        recentPlayLayout.setOnClickListener(this);
+        downloadLayout.setOnClickListener(this);
+        radioLayout.setOnClickListener(this);
+        collectLayout.setOnClickListener(this);
     }
 
     @Override
@@ -57,51 +76,12 @@ public class LocalMusicFragment extends BaseFragment {
         return R.layout.local_music_frag;
     }
 
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode == 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            loadData();
-        } else {
-            showDialog();
-            if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED) {
-                loadData();
-            }
-        }
-    }
-
-    private void loadData() {
-        EventBus.getDefault().register(this);
-        View localMusicLayout = view.findViewById(R.id.layout_local_music);
-        localMusicNumberTv = view.findViewById(R.id.tv_local_music_number);
-        int number = SharedPreferencesUtil.getIntData(mContext, "LocalMusicNumber");
-        if (number != -1) {
-            String text = "(" + number + ")";
-            localMusicNumberTv.setText(text);
-        }
-        View recentPlayLayout = view.findViewById(R.id.layout_recent_play);
-        TextView recentPlayNumberTv = view.findViewById(R.id.tv_recent_paly_number);
-        View downloadLayout = view.findViewById(R.id.layout_download_music);
-        TextView downloadNumberTv = view.findViewById(R.id.tv_download_music_number);
-        View radioLayout = view.findViewById(R.id.layout_radio);
-        TextView radioTv = view.findViewById(R.id.tv_radio_number);
-        View collectLayout = view.findViewById(R.id.layout_collection);
-        TextView collectTv = view.findViewById(R.id.tv_collection_number);
-        localMusicLayout.setOnClickListener(this);
-        recentPlayLayout.setOnClickListener(this);
-        downloadLayout.setOnClickListener(this);
-        radioLayout.setOnClickListener(this);
-        collectLayout.setOnClickListener(this);
-    }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.layout_local_music:
-                IntentUtil.gotoActivity(mContext, LocalMusicActivity.class);
+                if (checkPermission())
+                    IntentUtil.gotoActivity(mContext, LocalMusicActivity.class);
                 break;
             case R.id.layout_recent_play:
                 loadRecentPlayData();
@@ -118,25 +98,13 @@ public class LocalMusicFragment extends BaseFragment {
         }
     }
 
-    public void showDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(mContext);
-        dialog.setMessage("是否进入设置进行授权?");
-        dialog.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-                intent.setData(Uri.fromParts("package", mContext.getPackageName(), null));
-                mContext.startActivity(intent);
-            }
-        });
-        dialog.setNegativeButton("No", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ToastUtil.showShort(mContext, "您取消了授权");
-            }
-        });
-        dialog.setCancelable(true);
-        dialog.show();
+    private boolean checkPermission() {
+        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            ToastUtil.showShort(mContext, "暂未授权，本功能不能使用");
+            return false;
+        }
+        return true;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -162,8 +130,9 @@ public class LocalMusicFragment extends BaseFragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroyView() {
+        super.onDestroyView();
         EventBus.getDefault().unregister(this);
     }
+
 }

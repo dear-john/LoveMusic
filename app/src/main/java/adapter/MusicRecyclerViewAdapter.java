@@ -59,13 +59,14 @@ public class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRecycler
                             songList.getPic_small(), songList.getTitle(), songList.getAuthor());
                 }
             });
+            final String finalSinger = singer;
             holder.mMusicMoreLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     final Song_list songList = mSongLists.get(holder.getAdapterPosition());
                     new BottomDialogUtil().showDialog(mBaseActivity, songList.getTitle(),
                             new Random().nextInt(10000) + 100,
-                            songList.getArtist_name(), songList.getAlbum_title(), songList.getAll_artist_ting_uid());
+                            finalSinger, songList.getAlbum_title(), songList.getAll_artist_ting_uid());
                 }
             });
         } else {
@@ -77,7 +78,7 @@ public class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRecycler
                 @Override
                 public void onClick(View v) {
                     LocalMusic localMusic = mLocalMusicList.get(holder.getAdapterPosition());
-                    mBaseActivity.refreshControllLayout(null, localMusic.getPath(), localMusic.getMusicName(), localMusic.getSinger());
+                    mBaseActivity.refreshAfterPlay(null, localMusic.getPath(), localMusic.getMusicName(), localMusic.getSinger());
                 }
             });
             holder.mMusicMoreLayout.setOnClickListener(new View.OnClickListener() {

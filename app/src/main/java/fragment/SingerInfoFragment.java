@@ -11,34 +11,58 @@ import com.spring_ballet.lovemusic.SingerInfoActivity;
 
 import base.BaseFragment;
 import bean.SingerInfo;
+import utils.ToastUtil;
 
 /**
  * Created by 李君 on 2018/2/23.
  */
 
 public class SingerInfoFragment extends BaseFragment {
+
+    private View loadingView;
+    private AnimationDrawable drawable;
+    private ImageView imageView;
+
     @Override
     protected void lazyLoad() {
-        hasLoaded = true;
-        View loadingView = view.findViewById(R.id.layout_loading);
-        ImageView imageView = loadingView.findViewById(R.id.iv_loading);
-        AnimationDrawable drawable = (AnimationDrawable) imageView.getBackground();
-        if (drawable != null && !drawable.isRunning())
-            drawable.start();
-        View bodyLayout = view.findViewById(R.id.layout_singer_info);
-        bodyLayout.setVisibility(View.GONE);
         View singerInfoLayout = view.findViewById(R.id.layout_singer_info_divider);
         TextView tvSingerInfo = singerInfoLayout.findViewById(R.id.tv_divider_name);
         tvSingerInfo.setText("歌手简介");
-        SingerInfo singerInfo = ((SingerInfoActivity) getActivity()).getSingerInfo();
-        TextView tvSingerInfoDetail = view.findViewById(R.id.tv_singer_detail_info);
-        String info = singerInfo.getIntro();
-        if (TextUtils.isEmpty(info)) info = "暂无歌手简介";
-        tvSingerInfoDetail.setText(info);
+        loadingView = view.findViewById(R.id.layout_loading);
+        imageView = loadingView.findViewById(R.id.iv_loading);
+        drawable = (AnimationDrawable) imageView.getBackground();
+        if (drawable != null && !drawable.isRunning())
+            drawable.start();
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (!hasLoaded && isVisibleToUser) {
+            hasLoaded = true;
+            View bodyLayout = view.findViewById(R.id.layout_singer_info);
+            SingerInfo singerInfo = ((SingerInfoActivity) getActivity()).getSingerInfo();
+            if (singerInfo != null) {
+                String info = singerInfo.getIntro();
+                if (TextUtils.isEmpty(info)) info = "暂无歌手简介";
+                TextView tvSingerInfoDetail = view.findViewById(R.id.tv_singer_detail_info);
+                tvSingerInfoDetail.setText(info);
+                if (drawable != null && drawable.isRunning()) {
+                    drawable.stop();
+                    loadingView.setVisibility(View.GONE);
+                    bodyLayout.setVisibility(View.VISIBLE);
+                }
+            } else onLoadFailed();
+        }
+    }
+
+    private void onLoadFailed() {
+        TextView textView = loadingView.findViewById(R.id.tv_loading);
+        textView.setText(R.string.loading_failed);
+        ToastUtil.showShort(mContext, getResources().getString(R.string.loading_failed));
         if (drawable != null && drawable.isRunning()) {
             drawable.stop();
-            loadingView.setVisibility(View.GONE);
-            bodyLayout.setVisibility(View.VISIBLE);
+            imageView.setVisibility(View.GONE);
         }
     }
 
@@ -56,4 +80,5 @@ public class SingerInfoFragment extends BaseFragment {
     public void onClick(View v) {
 
     }
+
 }

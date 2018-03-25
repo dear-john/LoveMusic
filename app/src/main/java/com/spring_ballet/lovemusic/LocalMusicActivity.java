@@ -14,7 +14,10 @@ import adapter.MusicRecyclerViewAdapter;
 import base.BaseActivity;
 import bean.LocalMusic;
 import bean.MessageEvent;
-import utils.LocalMusicUtil;
+import model.LocalMusicDataImpl;
+import model.MusicData;
+import model.OnDataLoadFinished;
+import utils.LogUtil;
 import utils.SharedPreferencesUtil;
 import utils.ToastUtil;
 
@@ -28,7 +31,14 @@ public class LocalMusicActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mLocalMusicList = LocalMusicUtil.getLocalMusicData(this);
+        LogUtil.logD("local onCreate");
+        MusicData<LocalMusic> musicData = new LocalMusicDataImpl(this);
+        musicData.getMusicData(new OnDataLoadFinished<LocalMusic>() {
+            @Override
+            public void onLoadFinished(List<LocalMusic> list) {
+                mLocalMusicList = list;
+            }
+        });
         initWidgets();
         initListeners();
         SharedPreferencesUtil.putIntData(this, "LocalMusicNumber", mLocalMusicList.size());
@@ -37,6 +47,27 @@ public class LocalMusicActivity extends BaseActivity {
     @Override
     protected int getContainerView() {
         return R.layout.activity_local_music;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LogUtil.logD("local onResume");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LogUtil.logD("local onPause");
+        MessageEvent event = new MessageEvent();
+        event.setLocalMusicNumber(mLocalMusicList.size());
+        EventBus.getDefault().post(event);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        LogUtil.logD("local onStop");
     }
 
     @Override
@@ -78,8 +109,6 @@ public class LocalMusicActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        MessageEvent event = new MessageEvent();
-        event.setLocalMusicNumber(mLocalMusicList.size());
-        EventBus.getDefault().post(event);
+        LogUtil.logD("local onDestroy");
     }
 }

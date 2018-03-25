@@ -9,45 +9,41 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import adapter.MyFragmentAdapter;
-import app.CommonApis;
 import base.BaseActivity;
 import base.BaseFragment;
-import bean.MessageEvent;
 import bean.SingerInfo;
-import bean.SingerMusicList;
 import fragment.SingerAlbumFragment;
 import fragment.SingerInfoFragment;
 import fragment.SingerMusicFragment;
 import fragment.SingerVideoFragment;
-import utils.OkHttpUtil;
+import model.MusicData;
+import model.OnDataLoadFinished;
+import model.SingerInfoMusicDataImpl;
 import utils.ShareUtil;
-import utils.ToastUtil;
 
 public class SingerInfoActivity extends BaseActivity implements ViewPager.OnPageChangeListener {
 
     private ViewPager mViewPager;
-    private SingerMusicList mSingerMusicList;
     private SingerInfo mSingerInfo;
-    private TextView tvSingerName;
     private TabLayout tabLayout;
     private ImageView ivSingerBg;
+    private TextView tvSingerName;
+    private String uid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        uid = getIntent().getStringExtra("data");
         initWidgets();
         initListeners();
         initViewPager();
-        loadData();
+        loadSingerInfoData();
     }
 
     @Override
@@ -88,46 +84,28 @@ public class SingerInfoActivity extends BaseActivity implements ViewPager.OnPage
         tabLayout.setupWithViewPager(mViewPager);
     }
 
-    private void loadData() {
-        final String uid = getIntent().getStringExtra("data");
-        OkHttpUtil.loadData(CommonApis.SINGER_MUSIC_LIST + uid, new OkHttpUtil.OnLoadDataFinish() {
+    private void loadSingerInfoData() {
+        MusicData<SingerInfo> data = new SingerInfoMusicDataImpl(uid);
+        data.getMusicData(new OnDataLoadFinished<SingerInfo>() {
             @Override
-            public void loadDataFinish(String data) {
-                if (data != null) {
-                    mSingerMusicList = JSON.parseObject(data, SingerMusicList.class);
-                    MessageEvent event = new MessageEvent();
-                    event.setMusicDataFinish(true);
-                    EventBus.getDefault().post(event);
-                } else ToastUtil.showShort(SingerInfoActivity.this, "music load error");
-            }
-        });
-
-        OkHttpUtil.loadData(CommonApis.SINGER_INFO_API + uid, new OkHttpUtil.OnLoadDataFinish() {
-            @Override
-            public void loadDataFinish(String data) {
-                boolean hasData = true;
-                if (data != null) {
-                    mSingerInfo = JSON.parseObject(data, SingerInfo.class);
+            public void onLoadFinished(List<SingerInfo> list) {
+                if (list != null && list.size() > 0 && (mSingerInfo = list.get(0)) != null) {
+                    tvSingerName.setText(mSingerInfo.getName());
                     String url = mSingerInfo.getAvatar_s1000();
                     if (TextUtils.isEmpty(url)) {
                         url = mSingerInfo.getAvatar_s500();
-                        if (TextUtils.isEmpty(url)) {
+                        if (TextUtils.isEmpty(url))
                             url = mSingerInfo.getAvatar_big();
-                            if (TextUtils.isEmpty(url)) {
-                                url = mSingerInfo.getAvatar_s180();
-                            } else hasData = false;
-                        }
                     }
-                    if (hasData) Glide.with(SingerInfoActivity.this).load(url).into(ivSingerBg);
-                    else ToastUtil.showShort(SingerInfoActivity.this, "歌手信息加载失败，请稍后重试");
-                    tvSingerName.setText(mSingerInfo.getName());
-                }
+                    if (!TextUtils.isEmpty(url))
+                        Glide.with(SingerInfoActivity.this).load(url).into(ivSingerBg);
+                } else mSingerInfo = null;
             }
         });
     }
 
-    public SingerMusicList getSingerMusicList() {
-        return mSingerMusicList;
+    public String getUid() {
+        return uid;
     }
 
     public SingerInfo getSingerInfo() {
@@ -163,4 +141,5 @@ public class SingerInfoActivity extends BaseActivity implements ViewPager.OnPage
     public void onPageScrollStateChanged(int state) {
 
     }
+
 }
