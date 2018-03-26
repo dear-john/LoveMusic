@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
 
-import app.CommonApis;
+import app.Apis;
 import bean.Music;
 import bean.Song_list;
 import utils.OkHttpUtil;
@@ -25,14 +25,14 @@ public class Song_listMusicDataImpl implements MusicData<Song_list> {
     @Override
     public void getMusicData(final OnDataLoadFinished<Song_list> loadFinished) {
 
-        OkHttpUtil.loadData(CommonApis.MUSIC_LIST_API + type, new OkHttpUtil.OnLoadDataFinish() {
+        OkHttpUtil.loadData(Apis.MUSIC_LIST_API + type, new OkHttpUtil.OnLoadDataFinish() {
             @Override
             public void loadDataFinish(String data) {
                 if (data != null) {
                     Music music = JSONObject.parseObject(data, Music.class);
                     lists = music.getSong_list();
-                    loadFinished.onLoadFinished(lists);
                 }
+                loadFinished.onLoadFinished(lists);
             }
         });
     }

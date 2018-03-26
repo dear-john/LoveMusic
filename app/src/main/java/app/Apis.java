@@ -1,7 +1,7 @@
 package app;
 
 
-public class CommonApis {
+public class Apis {
     //    后接歌单种类
     public static final String MUSIC_LIST_API = "http://tingapi.ting.baidu.com/v1/restserver/ting?from=webapp_music&method=baidu.ting.billboard.billList&format=json&type=";
 

@@ -11,29 +11,32 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import Presenter.MusicContract;
+import Presenter.RanklistPresenter;
 import adapter.MusicRecyclerViewAdapter;
 import base.BaseActivity;
 import bean.Song_list;
-import model.MusicData;
-import model.OnDataLoadFinished;
-import model.Song_listMusicDataImpl;
 import utils.ToastUtil;
 
 
-public class RanklistActivity extends BaseActivity {
+public class RanklistActivity extends BaseActivity implements MusicContract.View<Song_list> {
 
     private int type;
     private View loadingView;
+    private ImageView imageView;
     private TextView ranklistName;
     private AnimationDrawable drawable;
     private RecyclerView recyclerView;
+    private RanklistPresenter mPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initWidgets();
+        initRankListName();
         initListeners();
-        loadData();
+        mPresenter = new RanklistPresenter(type, this);
+        mPresenter.loadData();
     }
 
     @Override
@@ -47,9 +50,8 @@ public class RanklistActivity extends BaseActivity {
         setSupportActionBar(toolbar);
         findViewById(R.id.layout_ranklist_back).setOnClickListener(this);
         ranklistName = findViewById(R.id.tv_ranklist_name);
-        initRankListName();
         loadingView = findViewById(R.id.layout_loading);
-        ImageView imageView = loadingView.findViewById(R.id.iv_loading);
+         imageView = loadingView.findViewById(R.id.iv_loading);
         drawable = (AnimationDrawable) imageView.getBackground();
         if (drawable != null && !drawable.isRunning())
             drawable.start();
@@ -95,28 +97,6 @@ public class RanklistActivity extends BaseActivity {
 
     }
 
-    private void loadData() {
-        MusicData<Song_list> data = new Song_listMusicDataImpl(type);
-        data.getMusicData(new OnDataLoadFinished<Song_list>() {
-            @Override
-            public void onLoadFinished(List<Song_list> list) {
-                if (list != null && list.size() > 0) {
-                    recyclerView.setAdapter(new MusicRecyclerViewAdapter(RanklistActivity.this,
-                            true, list, null));
-                    if (drawable != null && drawable.isRunning()) {
-                        drawable.stop();
-                        loadingView.setVisibility(View.GONE);
-                        recyclerView.setVisibility(View.VISIBLE);
-                    }
-                } else {
-                    if (drawable != null && drawable.isRunning())
-                        drawable.stop();
-                    ToastUtil.showShort(RanklistActivity.this, "榜单信息加载失败，请稍后重试");
-                }
-            }
-        });
-    }
-
     @Override
     public void onClick(View v) {
         super.onClick(v);
@@ -125,6 +105,38 @@ public class RanklistActivity extends BaseActivity {
                 finish();
                 break;
         }
+    }
+
+    @Override
+    public void refreshView(List<Song_list> list) {
+        if (list != null && list.size() > 0) {
+            recyclerView.setAdapter(new MusicRecyclerViewAdapter(RanklistActivity.this,
+                    true, list, null));
+            if (drawable != null && drawable.isRunning()) {
+                loadingView.setVisibility(View.GONE);
+                recyclerView.setVisibility(View.VISIBLE);
+                drawable.stop();
+            }
+        } else onLoadFailed();
+    }
+
+    private void onLoadFailed() {
+        TextView textView = loadingView.findViewById(R.id.tv_loading);
+        textView.setText(R.string.loading_failed);
+        ToastUtil.showShort(this, getResources().getString(R.string.loading_failed));
+        if (drawable != null && drawable.isRunning()) {
+            drawable.stop();
+            imageView.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        if (mPresenter != null) {
+            mPresenter.destory();
+            mPresenter = null;
+        }
+        super.onDestroy();
     }
 
 }
