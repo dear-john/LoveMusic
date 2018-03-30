@@ -12,15 +12,15 @@
         <RelativeLayout
             android:id="@+id/layout_controll"
             android:layout_width="match_parent"
-            android:layout_height="55dp"
+            android:layout_height="50dp"
             android:layout_alignParentBottom="true"
             android:layout_gravity="bottom"
             android:background="@android:color/white">
 
             <ImageView
                 android:id="@+id/iv_controll_song_icon"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="@dimen/controll_layout_width_height"
+                android:layout_height="@dimen/controll_layout_width_height"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="5dp"
                 android:layout_marginStart="5dp"
@@ -28,43 +28,31 @@
                 android:src="@drawable/default_controll_song_bg" />
 
             <ImageView
-                android:id="@+id/iv_controll_music_next"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:id="@+id/iv_controll_playlist"
+                android:layout_width="@dimen/controll_layout_width_height"
+                android:layout_height="@dimen/controll_layout_width_height"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"
-                android:scaleType="centerCrop"
-                android:src="@drawable/music_next" />
+                android:scaleType="center"
+                android:src="@drawable/play_list" />
 
             <ImageView
                 android:id="@+id/iv_controll_music_play_pause"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
+                android:layout_width="@dimen/controll_layout_width_height"
+                android:layout_height="@dimen/controll_layout_width_height"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="5dp"
                 android:layout_marginStart="5dp"
-                android:layout_toStartOf="@id/iv_controll_music_next"
+                android:layout_toStartOf="@id/iv_controll_playlist"
                 android:scaleType="centerCrop"
                 android:src="@drawable/music_pause" />
-
-            <ImageView
-                android:id="@+id/iv_controll_music_pre"
-                android:layout_width="45dp"
-                android:layout_height="45dp"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="5dp"
-                android:layout_marginStart="5dp"
-                android:layout_toStartOf="@id/iv_controll_music_play_pause"
-                android:scaleType="centerCrop"
-                android:src="@drawable/music_pre" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_toEndOf="@id/iv_controll_song_icon"
-                android:layout_toStartOf="@id/iv_controll_music_pre"
+                android:layout_toStartOf="@id/iv_controll_music_play_pause"
                 android:orientation="vertical">
 
                 <TextView
@@ -74,7 +62,7 @@
                     android:ellipsize="end"
                     android:maxLines="1"
                     android:paddingBottom="5dp"
-                    android:paddingTop="10dp"
+                    android:paddingTop="5dp"
                     android:textColor="@android:color/black" />
 
                 <TextView

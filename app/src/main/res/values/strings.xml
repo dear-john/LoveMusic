@@ -22,4 +22,5 @@
     <string name="quit">退出</string>
     <string name="loading_hard">努力加载中…</string>
     <string name="loading_failed">加载失败，请稍后重试</string>
+    <string name="playlist_collect_all">收藏全部</string>
 </resources>

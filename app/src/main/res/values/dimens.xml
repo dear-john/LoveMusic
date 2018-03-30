@@ -6,4 +6,8 @@
     <dimen name="local_music_item_font">15sp</dimen>
     <dimen name="popupwindow_item_dimen">50dp</dimen>
     <dimen name="music_controll_layout_height">55dp</dimen>
+    <dimen name="controll_layout_width_height">40dp</dimen>
+    <dimen name="playlist_icon_size">20dp</dimen>
+    <dimen name="playlist_margin_end">8dp</dimen>
+    <dimen name="playlist_dialog_height">350dp</dimen>
 </resources>

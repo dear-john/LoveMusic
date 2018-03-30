@@ -31,7 +31,13 @@ import com.bumptech.glide.Glide;
 import com.spring_ballet.lovemusic.MusicPlayService;
 import com.spring_ballet.lovemusic.R;
 
-import adapter.ListViewAdapter;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
+import adapter.NavListViewAdapter;
+import bean.PlaylistItem;
+import utils.PlaylistWindow;
 import utils.SharedPreferencesUtil;
 import utils.ToastUtil;
 
@@ -39,9 +45,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     //控制栏
     private ImageView mSongIv;
-    private ImageView mPreIv;
-    private ImageView mNextIv;
     private ImageView mPlayAndPauseIv;
+    private ImageView mPlayListIv;
     private TextView mSongNameTv;
     private TextView mSingerNameTv;
     private View mControllLayout;
@@ -57,15 +62,24 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     private View mSettingsLayout;
     private View mQuitLayout;
 
+    //记录当前播放位置
+    private static int currentItem;
+
+    //子类数量
     private static int sSubClassCount;
+
+    //判断是否需要重新加载播放栏状态
     private static boolean isFirst = true;
+
+    //控制栏所需资源
     private static String sIcon;
     private static String sUrl;
     private static String sSongName;
     private static String sSingerName;
 
+
     protected static MusicPlayService sService;
-    protected static ServiceConnection mConnection = new ServiceConnection() {
+    protected static ServiceConnection sConnection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
             MusicPlayService.MyBinder binder = (MusicPlayService.MyBinder) service;
@@ -84,7 +98,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         sSubClassCount++;
         if (sSubClassCount == 1) {
             Intent intent = new Intent(this, MusicPlayService.class);
-            bindService(intent, mConnection, BIND_AUTO_CREATE);
+            bindService(intent, sConnection, BIND_AUTO_CREATE);
         }
         checkPermission();
         //每次都要加载，需要修改
@@ -152,8 +166,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     private void initBaseWidgets() {
         //控制栏
         mSongIv = findViewById(R.id.iv_controll_song_icon);
-        mPreIv = findViewById(R.id.iv_controll_music_pre);
-        mNextIv = findViewById(R.id.iv_controll_music_next);
+        mPlayListIv = findViewById(R.id.iv_controll_playlist);
         mPlayAndPauseIv = findViewById(R.id.iv_controll_music_play_pause);
         mSongNameTv = findViewById(R.id.tv_controll_song_name);
         mSingerNameTv = findViewById(R.id.tv_controll_singer_name);
@@ -164,7 +177,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
         mListView = findViewById(R.id.main_listview);
         mListView.addHeaderView(LayoutInflater.from(this).inflate(R.layout.nav_head, mListView, false));
-        mListView.setAdapter(new ListViewAdapter(this));
+        mListView.setAdapter(new NavListViewAdapter(this));
         mListView.setDivider(null);
         mUserIconIv = findViewById(R.id.nav_head_icon);
         userNameTv = findViewById(R.id.tv_user_name);
@@ -177,9 +190,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
     private void initBaseListeners() {
         //控制栏
-        mPreIv.setOnClickListener(this);
+        mPlayListIv.setOnClickListener(this);
         mPlayAndPauseIv.setOnClickListener(this);
-        mNextIv.setOnClickListener(this);
         mControllLayout.setOnClickListener(this);
 
         //滑动菜单
@@ -277,8 +289,17 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     public void onClick(View v) {
         switch (v.getId()) {
             //控制栏
-            case R.id.iv_controll_music_pre:
-                ToastUtil.showShort(this, "pre song");
+            case R.id.iv_controll_playlist:
+                List<PlaylistItem> list = new LinkedList<>();
+                list.add(new PlaylistItem("dear1", "love1", "", ""));
+                list.add(new PlaylistItem("dear2", "love2", "", ""));
+                list.add(new PlaylistItem("dear3", "love3", "", ""));
+                list.add(new PlaylistItem("dear4", "love4", "", ""));
+                list.add(new PlaylistItem("dear5", "love5", "", ""));
+                list.add(new PlaylistItem("dear6", "love6", "", ""));
+                list.add(new PlaylistItem("dear7", "love7", "", ""));
+                list.add(new PlaylistItem("dear8", "love8", "", ""));
+                new PlaylistWindow().showPlaylist(this, list, 1);
                 break;
             case R.id.iv_controll_music_play_pause:
                 if (!sService.isPlayerPlaying())
@@ -286,9 +307,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
                 else
                     mPlayAndPauseIv.setImageResource(R.drawable.music_pause);
                 sService.playOrPause();
-                break;
-            case R.id.iv_controll_music_next:
-                ToastUtil.showShort(this, "next song");
                 break;
             case R.id.layout_controll:
                 ToastUtil.showShort(this, "music controll");
@@ -324,7 +342,7 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         super.onDestroy();
         sSubClassCount--;
         if (sSubClassCount == 0) {
-            sService.unbindService(mConnection);
+            sService.unbindService(sConnection);
             savePlayRecord();
         }
     }

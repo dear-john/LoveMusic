@@ -15,7 +15,7 @@ import java.util.Random;
 import base.BaseActivity;
 import bean.LocalMusic;
 import bean.Song_list;
-import utils.BottomDialogUtil;
+import utils.MoreAboutMusicDialog;
 import utils.PlayOnlineMusicUtil;
 
 /**
@@ -64,7 +64,7 @@ public class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRecycler
                 @Override
                 public void onClick(View v) {
                     final Song_list songList = mSongLists.get(holder.getAdapterPosition());
-                    new BottomDialogUtil().showDialog(mBaseActivity, songList.getTitle(),
+                    new MoreAboutMusicDialog().showDialog(mBaseActivity, songList.getTitle(),
                             new Random().nextInt(10000) + 100,
                             finalSinger, songList.getAlbum_title(), songList.getAll_artist_ting_uid());
                 }
@@ -85,7 +85,7 @@ public class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRecycler
                 @Override
                 public void onClick(View v) {
                     LocalMusic localMusic = mLocalMusicList.get(holder.getAdapterPosition());
-                    new BottomDialogUtil().showDialog(mBaseActivity, localMusic.getMusicName(),
+                    new MoreAboutMusicDialog().showDialog(mBaseActivity, localMusic.getMusicName(),
                             new Random().nextInt(10000) + 100, localMusic.getSinger(),
                             localMusic.getAlbum(), "local");
                 }

@@ -8,5 +8,7 @@
     <color name="colorPrimaryDark">#ffce3d3a</color>
     <color name="colorAccent">#ffce3d3a</color>
     <color name="colorTheme">#ffce3d3a</color>
-    <color name="colorBg">#F2F4F5</color>
+    <color name="colorWindow">#F3F3F3</color>
+    <color name="colorBg">#888888</color>
+    <color name="colorPopupWindowBg">#626262</color>
 </resources>

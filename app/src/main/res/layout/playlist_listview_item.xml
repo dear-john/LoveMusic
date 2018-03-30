@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout_playlist_lv_item"
+    android:layout_width="match_parent"
+    android:layout_height="50dp"
+    android:layout_marginStart="@dimen/playlist_margin_end"
+    android:background="?attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/iv_playlist_playing"
+        android:layout_width="@dimen/playlist_icon_size"
+        android:layout_height="@dimen/playlist_icon_size"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="10dp"
+        android:layout_marginStart="10dp"
+        android:src="@drawable/playlist_playing"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/tv_playlist_song_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_toEndOf="@id/iv_playlist_playing"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxEms="16"
+        android:maxLines="1"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tv_playlist_divider"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="2dp"
+        android:layout_toEndOf="@id/tv_playlist_song_name"
+        android:gravity="center_vertical"
+        android:text="-"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/tv_playlist_singer_name"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginStart="2dp"
+        android:layout_toEndOf="@id/tv_playlist_divider"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxEms="16"
+        android:maxLines="1"
+        android:textSize="15sp" />
+
+    <ImageView
+        android:id="@+id/iv_playlist_delete_music"
+        android:layout_width="@dimen/playlist_icon_size"
+        android:layout_height="@dimen/playlist_icon_size"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_gravity="end|center_vertical"
+        android:layout_marginEnd="@dimen/playlist_margin_end"
+        android:src="@drawable/playlist_delete_music" />
+
+</RelativeLayout>

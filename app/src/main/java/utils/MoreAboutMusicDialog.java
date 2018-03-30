@@ -18,7 +18,7 @@ import com.spring_ballet.lovemusic.SingerInfoActivity;
  * Created by 李君 on 2018/2/7.
  */
 
-public class BottomDialogUtil implements View.OnClickListener {
+public class MoreAboutMusicDialog implements View.OnClickListener {
 
     private Dialog mDialog;
     private Context mContext;

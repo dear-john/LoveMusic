@@ -20,10 +20,10 @@ import bean.NavItem;
  * Created by 李君 on 2018/3/5.
  */
 
-public class ListViewAdapter extends BaseAdapter {
+public class NavListViewAdapter extends BaseAdapter {
     private Context mContext;
 
-    public ListViewAdapter(Context context) {
+    public NavListViewAdapter(Context context) {
         mContext = context;
     }
 
@@ -54,10 +54,8 @@ public class ListViewAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            viewHolder = new ViewHolder();
-            convertView = LayoutInflater.from(mContext).inflate(R.layout.listview_item, parent, false);
-            viewHolder.mTextView = convertView.findViewById(R.id.tv_lv_item_title);
-            viewHolder.mImageView = convertView.findViewById(R.id.iv_lv_item_icon);
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.nav_listview_item, parent, false);
+            viewHolder = new ViewHolder(convertView);
             convertView.setTag(viewHolder);
         } else viewHolder = (ViewHolder) convertView.getTag();
         NavItem navItem = mNavItemList.get(position);
@@ -69,6 +67,11 @@ public class ListViewAdapter extends BaseAdapter {
     private class ViewHolder {
         private TextView mTextView;
         private ImageView mImageView;
+
+        ViewHolder(View convertView) {
+            mTextView = convertView.findViewById(R.id.tv_lv_item_title);
+            mImageView = convertView.findViewById(R.id.iv_lv_item_icon);
+        }
     }
 }
 
