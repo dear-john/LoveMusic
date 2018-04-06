@@ -1,17 +1,18 @@
 package fragment;
 
 import android.graphics.drawable.AnimationDrawable;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.spring_ballet.lovemusic.R;
-import com.spring_ballet.lovemusic.SingerInfoActivity;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import base.BaseFragment;
-import bean.SingerInfo;
-import utils.ToastUtil;
+import bean.SingerInfoEvent;
 
 /**
  * Created by 李君 on 2018/2/23.
@@ -21,54 +22,39 @@ public class SingerInfoFragment extends BaseFragment {
 
     private View loadingView;
     private AnimationDrawable drawable;
-    private ImageView imageView;
+    private View bodyLayout;
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void getSingerInfo(SingerInfoEvent event) {
+        TextView tvSingerInfoDetail = view.findViewById(R.id.tv_singer_detail_info);
+        tvSingerInfoDetail.setText(event.getInfo());
+        if (drawable != null && drawable.isRunning()) {
+            bodyLayout.setVisibility(View.VISIBLE);
+            drawable.stop();
+            loadingView.setVisibility(View.GONE);
+        }
+    }
 
     @Override
     protected void lazyLoad() {
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        hasLoaded = true;
+        EventBus.getDefault().register(this);
         View singerInfoLayout = view.findViewById(R.id.layout_singer_info_divider);
         TextView tvSingerInfo = singerInfoLayout.findViewById(R.id.tv_divider_name);
         tvSingerInfo.setText("歌手简介");
         loadingView = view.findViewById(R.id.layout_loading);
-        imageView = loadingView.findViewById(R.id.iv_loading);
+        ImageView imageView = loadingView.findViewById(R.id.iv_loading);
         drawable = (AnimationDrawable) imageView.getBackground();
         if (drawable != null && !drawable.isRunning())
             drawable.start();
-    }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (!hasLoaded && isVisibleToUser) {
-            hasLoaded = true;
-            View bodyLayout = view.findViewById(R.id.layout_singer_info);
-            SingerInfo singerInfo = ((SingerInfoActivity) getActivity()).getSingerInfo();
-            if (singerInfo != null) {
-                String info = singerInfo.getIntro();
-                if (TextUtils.isEmpty(info)) info = "暂无歌手简介";
-                TextView tvSingerInfoDetail = view.findViewById(R.id.tv_singer_detail_info);
-                tvSingerInfoDetail.setText(info);
-                if (drawable != null && drawable.isRunning()) {
-                    drawable.stop();
-                    loadingView.setVisibility(View.GONE);
-                    bodyLayout.setVisibility(View.VISIBLE);
-                }
-            } else onLoadFailed();
-        }
-    }
-
-    private void onLoadFailed() {
-        TextView textView = loadingView.findViewById(R.id.tv_loading);
-        textView.setText(R.string.loading_failed);
-        ToastUtil.showShort(mContext, getResources().getString(R.string.loading_failed));
-        if (drawable != null && drawable.isRunning()) {
-            drawable.stop();
-            imageView.setVisibility(View.GONE);
-        }
-    }
-
-    @Override
-    protected void refresh() {
-
+        bodyLayout = view.findViewById(R.id.layout_singer_info);
+        if (drawable != null && !drawable.isRunning())
+            drawable.start();
     }
 
     @Override
@@ -81,4 +67,9 @@ public class SingerInfoFragment extends BaseFragment {
 
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }

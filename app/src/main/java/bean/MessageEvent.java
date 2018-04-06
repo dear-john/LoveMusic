@@ -5,16 +5,8 @@ package bean;
  */
 
 public class MessageEvent {
+
     private int localMusicNumber;
-    private boolean isMusicDataFinish = false;
-
-    public boolean isMusicDataFinish() {
-        return isMusicDataFinish;
-    }
-
-    public void setMusicDataFinish(boolean musicDataFinish) {
-        isMusicDataFinish = musicDataFinish;
-    }
 
     public int getLocalMusicNumber() {
         return localMusicNumber;

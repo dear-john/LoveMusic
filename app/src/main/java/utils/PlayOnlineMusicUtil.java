@@ -4,7 +4,7 @@ import android.text.TextUtils;
 
 import com.alibaba.fastjson.JSONObject;
 
-import app.Apis;
+import app.AppConstants;
 import base.BaseActivity;
 import bean.MusicPalyDetail;
 
@@ -14,7 +14,7 @@ import bean.MusicPalyDetail;
 
 public class PlayOnlineMusicUtil {
     public static void playMusic(final BaseActivity activity, String songid, final String icon, final String songName, final String singerName) {
-        OkHttpUtil.loadData(Apis.PLAY_MUSIC_LINK + songid,
+        OkHttpUtil.loadData(AppConstants.PLAY_MUSIC_LINK + songid,
                 new OkHttpUtil.OnLoadDataFinish() {
                     @Override
                     public void loadDataFinish(String data) {

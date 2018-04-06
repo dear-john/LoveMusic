@@ -1,6 +1,8 @@
 package fragment;
 
 import android.graphics.drawable.AnimationDrawable;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -8,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.spring_ballet.lovemusic.R;
-import com.spring_ballet.lovemusic.SingerInfoActivity;
 
 import java.util.List;
 
@@ -29,23 +30,40 @@ public class SingerMusicFragment extends BaseFragment implements MusicContract.V
     private View loadingView;
     private AnimationDrawable drawable;
     private ImageView imageView;
-    private SingerMusicListPresenter mPresenter;
+    private MusicContract.Presenter mPresenter;
+    private String uid;
 
     @Override
     protected void lazyLoad() {
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         hasLoaded = true;
         loadingView = view.findViewById(R.id.layout_loading);
         imageView = loadingView.findViewById(R.id.iv_loading);
         drawable = (AnimationDrawable) imageView.getBackground();
         if (drawable != null && !drawable.isRunning())
             drawable.start();
-        mPresenter = new SingerMusicListPresenter(((SingerInfoActivity) getActivity()).getUid(), this);
+        mPresenter = new SingerMusicListPresenter(uid, this);
         mPresenter.loadData();
     }
 
-    @Override
-    protected void refresh() {
+    public static SingerMusicFragment newInstance(String uid) {
+        SingerMusicFragment fragment = new SingerMusicFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("uid", uid);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            uid = getArguments().getString("uid");
+        }
     }
 
     @Override
@@ -67,9 +85,9 @@ public class SingerMusicFragment extends BaseFragment implements MusicContract.V
             recyclerView.setAdapter(new MusicRecyclerViewAdapter((BaseActivity) getActivity(),
                     true, singerMusicList.getSonglist(), null));
             if (drawable != null && drawable.isRunning()) {
+                recyclerView.setVisibility(View.VISIBLE);
                 drawable.stop();
                 loadingView.setVisibility(View.GONE);
-                recyclerView.setVisibility(View.VISIBLE);
             }
         } else onLoadFailed();
     }

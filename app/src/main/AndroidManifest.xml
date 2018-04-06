@@ -12,17 +12,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity" />
-        <activity
-            android:name=".LocalMusicActivity"
-            android:label="" />
-        <activity
-            android:name=".RanklistActivity"
-            android:label="" />
-        <activity
-            android:name=".SingerInfoActivity"
-            android:label=""
-            android:theme="@style/SingerInfoTheme" />
 
         <service
             android:name=".MusicPlayService"
@@ -38,6 +27,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name="base.BaseActivity" />
+
     </application>
 
 </manifest>

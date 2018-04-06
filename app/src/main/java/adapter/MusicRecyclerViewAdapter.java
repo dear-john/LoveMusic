@@ -14,6 +14,7 @@ import java.util.Random;
 
 import base.BaseActivity;
 import bean.LocalMusic;
+import bean.PlaylistItem;
 import bean.Song_list;
 import utils.MoreAboutMusicDialog;
 import utils.PlayOnlineMusicUtil;
@@ -23,10 +24,16 @@ import utils.PlayOnlineMusicUtil;
  */
 
 public class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRecyclerViewAdapter.ViewHolder> {
+
     private List<LocalMusic> mLocalMusicList;
     private List<Song_list> mSongLists;
+
+    //true表示网络歌曲，false为本地歌曲
     private boolean isNetMusic;
+
     private BaseActivity mBaseActivity;
+
+    public static final String LOCAL_MUSIC_TING_UID = "LOCAL_MUSIC_TING_UID";
 
     public MusicRecyclerViewAdapter(BaseActivity activity, boolean isNetMusic, List<Song_list> songLists, List<LocalMusic> localMusicList) {
         mBaseActivity = activity;
@@ -43,14 +50,27 @@ public class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRecycler
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
+
+        //作为dialog和下一首播放的数据源
+        final int commentNumber;
+        final String songName;
+        final String singerName;
+        final String url;
+        final String icon;
+        final String albumName;
+        final String tingUid;
+
         if (isNetMusic) {
+            //网络歌曲
             holder.mMusicOrderTv.setText(String.valueOf(position + 1));
-            holder.mMusicNameTv.setText(mSongLists.get(position).getTitle());
+            holder.mMusicNameTv.setText(songName = mSongLists.get(position).getTitle());
             String singer = mSongLists.get(position).getArtist_name();
             if (TextUtils.isEmpty(singer))
                 singer = mSongLists.get(position).getAuthor();
-            holder.mSingerTv.setText(singer);
-            holder.mAlbum.setText(mSongLists.get(position).getAlbum_title());
+            holder.mSingerTv.setText(singerName = singer);
+            holder.mAlbum.setText(albumName = mSongLists.get(position).getAlbum_title());
+
+            //点击某一个item
             holder.mMusicItemLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -59,21 +79,19 @@ public class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRecycler
                             songList.getPic_small(), songList.getTitle(), songList.getAuthor());
                 }
             });
-            final String finalSinger = singer;
-            holder.mMusicMoreLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final Song_list songList = mSongLists.get(holder.getAdapterPosition());
-                    new MoreAboutMusicDialog().showDialog(mBaseActivity, songList.getTitle(),
-                            new Random().nextInt(10000) + 100,
-                            finalSinger, songList.getAlbum_title(), songList.getAll_artist_ting_uid());
-                }
-            });
+
+            commentNumber = new Random().nextInt(10000) + 100;
+            icon = mSongLists.get(position).getPic_small();
+            url = "";
+            tingUid = mSongLists.get(position).getAll_artist_ting_uid();
         } else {
+            //本地歌曲
             holder.mMusicOrderTv.setText(String.valueOf(mLocalMusicList.get(position).getMusicOrder()));
-            holder.mMusicNameTv.setText(mLocalMusicList.get(position).getMusicName());
-            holder.mSingerTv.setText(mLocalMusicList.get(position).getSinger());
-            holder.mAlbum.setText(mLocalMusicList.get(position).getAlbum());
+            holder.mMusicNameTv.setText(songName = mLocalMusicList.get(position).getMusicName());
+            holder.mSingerTv.setText(singerName = mLocalMusicList.get(position).getSinger());
+            holder.mAlbum.setText(albumName = mLocalMusicList.get(position).getAlbum());
+
+            //点击某一个item
             holder.mMusicItemLayout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -81,16 +99,21 @@ public class MusicRecyclerViewAdapter extends RecyclerView.Adapter<MusicRecycler
                     mBaseActivity.refreshAfterPlay(null, localMusic.getPath(), localMusic.getMusicName(), localMusic.getSinger());
                 }
             });
-            holder.mMusicMoreLayout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    LocalMusic localMusic = mLocalMusicList.get(holder.getAdapterPosition());
-                    new MoreAboutMusicDialog().showDialog(mBaseActivity, localMusic.getMusicName(),
-                            new Random().nextInt(10000) + 100, localMusic.getSinger(),
-                            localMusic.getAlbum(), "local");
-                }
-            });
+
+            commentNumber = new Random().nextInt(10000) + 100;
+            icon = "";
+            url = mLocalMusicList.get(position).getPath();
+            tingUid = LOCAL_MUSIC_TING_UID;
         }
+
+        //点击右侧菜单
+        holder.mMusicMoreLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MoreAboutMusicDialog().showDialog(mBaseActivity, new PlaylistItem
+                        (songName, singerName, url, icon), commentNumber, albumName, tingUid);
+            }
+        });
     }
 
     @Override

@@ -12,31 +12,28 @@ import com.spring_ballet.lovemusic.R;
 
 import java.util.List;
 
+import Presenter.PlayListContract;
 import bean.PlaylistItem;
 
 /**
  * Created by 李君 on 2018/3/5.
  */
 
-public class PlayListViewAdapter extends BaseAdapter {
+public class PlayListAdapter extends BaseAdapter implements PlayListContract.PlayListAdapterView {
 
-    public static final int DELETE_MUSIC_TAG = -1;
     private Context mContext;
     private List<PlaylistItem> mList;
-    private int currentItem = -1;
-    private PopItemClickListener mListener;
+    private int currentPos = -1;
+    private OnAddAndDeleteMusicListener mListener;
 
-    public PlayListViewAdapter(Context context, List<PlaylistItem> list) {
+    public PlayListAdapter(Context context, List<PlaylistItem> list, int currentPos) {
         mContext = context;
         mList = list;
+        this.currentPos = currentPos;
     }
 
-    public void setListener(PopItemClickListener listener) {
+    public void setListener(OnAddAndDeleteMusicListener listener) {
         mListener = listener;
-    }
-
-    public int getCurrentItem() {
-        return currentItem;
     }
 
     @Override
@@ -55,8 +52,8 @@ public class PlayListViewAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        ViewHolder mViewHolder;
+    public View getView(final int position, View convertView, final ViewGroup parent) {
+        final ViewHolder mViewHolder;
         if (convertView == null) {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.playlist_listview_item, parent, false);
             mViewHolder = new ViewHolder(convertView);
@@ -68,21 +65,24 @@ public class PlayListViewAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 mList.remove(position);
+                if (currentPos > position) currentPos--;
+                if (currentPos > mList.size() - 1) currentPos = 0;
                 notifyDataSetChanged();
-                if (mListener == null) throw new NullPointerException("listener has not been init");
-                mListener.listener(DELETE_MUSIC_TAG);
+                mListener.onAddAndDelele(mList.size());
             }
         });
+
+        //点击item
         mViewHolder.mPlaylistItem.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mListener == null) throw new NullPointerException("listener has not been init");
-                mListener.listener(position);
+                currentPos = position;
+                notifyDataSetChanged();
             }
         });
 
         //判断当前item是否是被选中的item
-        if (currentItem == position) {
+        if (currentPos == position) {
             mViewHolder.mPlaying.setVisibility(View.VISIBLE);
             mViewHolder.mDivider.setTextColor(mContext.getResources().getColor(R.color.colorTheme));
             mViewHolder.mSingerName.setTextColor(mContext.getResources().getColor(R.color.colorTheme));
@@ -106,11 +106,20 @@ public class PlayListViewAdapter extends BaseAdapter {
         return convertView;
     }
 
-    public void changeSelected(int pos) {
-        if (pos != currentItem) {
-            currentItem = pos;
-            notifyDataSetChanged();
-        }
+    @Override
+    public void refresh(List<PlaylistItem> list) {
+        //size=1表示添加了一首歌
+        if (list.size() == 1) mList.add(currentPos + 1, list.get(0));
+        else mList.addAll(list);
+        mListener.onAddAndDelele(mList.size());
+        notifyDataSetChanged();
+    }
+
+    @Override
+    public void clear() {
+        if (mList == null) return;
+        mList.clear();
+        notifyDataSetChanged();
     }
 
     private class ViewHolder {
@@ -131,8 +140,13 @@ public class PlayListViewAdapter extends BaseAdapter {
         }
     }
 
-    public interface PopItemClickListener {
-        void listener(int position);
+    public interface OnAddAndDeleteMusicListener {
+        void onAddAndDelele(int size);
     }
+
+    public static void addItemAsNext(PlaylistItem item) {
+
+    }
+
 }
 

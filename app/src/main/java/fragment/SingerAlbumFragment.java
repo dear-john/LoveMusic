@@ -13,12 +13,7 @@ import base.BaseFragment;
 public class SingerAlbumFragment extends BaseFragment {
     @Override
     protected void lazyLoad() {
-
-    }
-
-    @Override
-    protected void refresh() {
-
+        hasLoaded = true;
     }
 
     @Override

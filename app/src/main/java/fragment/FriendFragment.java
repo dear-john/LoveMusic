@@ -16,11 +16,6 @@ public class FriendFragment extends BaseFragment {
     }
 
     @Override
-    protected void refresh() {
-
-    }
-
-    @Override
     protected int getLayoutId() {
         return R.layout.friend_frag;
     }

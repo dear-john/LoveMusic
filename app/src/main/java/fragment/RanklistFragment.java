@@ -1,13 +1,15 @@
-package com.spring_ballet.lovemusic;
+package fragment;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.spring_ballet.lovemusic.R;
 
 import java.util.List;
 
@@ -15,53 +17,68 @@ import Presenter.MusicContract;
 import Presenter.RanklistPresenter;
 import adapter.MusicRecyclerViewAdapter;
 import base.BaseActivity;
+import base.BaseFragment;
 import bean.Song_list;
 import utils.ToastUtil;
 
+/**
+ * Created by 李君 on 2018/4/5.
+ */
 
-public class RanklistActivity extends BaseActivity implements MusicContract.View<Song_list> {
+public class RanklistFragment extends BaseFragment implements MusicContract.View<Song_list> {
 
-    private int type;
+    private int type = 1;
     private View loadingView;
     private ImageView imageView;
     private TextView ranklistName;
     private AnimationDrawable drawable;
     private RecyclerView recyclerView;
-    private RanklistPresenter mPresenter;
+    private MusicContract.Presenter mPresenter;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    protected void lazyLoad() {
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        hasLoaded = true;
         initWidgets();
         initRankListName();
-        initListeners();
         mPresenter = new RanklistPresenter(type, this);
         mPresenter.loadData();
     }
 
-    @Override
-    protected int getContainerView() {
-        return R.layout.activity_ranklist;
+    public static RanklistFragment newInstance(int type) {
+        RanklistFragment fragment = new RanklistFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt("type", type);
+        fragment.setArguments(bundle);
+        return fragment;
     }
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            type = getArguments().getInt("type");
+        }
+    }
+
     protected void initWidgets() {
-        Toolbar toolbar = findViewById(R.id.ranklist_toolbar);
-        setSupportActionBar(toolbar);
-        findViewById(R.id.layout_ranklist_back).setOnClickListener(this);
-        ranklistName = findViewById(R.id.tv_ranklist_name);
-        loadingView = findViewById(R.id.layout_loading);
-         imageView = loadingView.findViewById(R.id.iv_loading);
+        view.findViewById(R.id.layout_ranklist_back).setOnClickListener(this);
+        ranklistName = view.findViewById(R.id.tv_ranklist_name);
+        loadingView = view.findViewById(R.id.layout_loading);
+        imageView = loadingView.findViewById(R.id.iv_loading);
         drawable = (AnimationDrawable) imageView.getBackground();
         if (drawable != null && !drawable.isRunning())
             drawable.start();
-        recyclerView = findViewById(R.id.ranklist_recyclerview);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView = view.findViewById(R.id.ranklist_recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(mContext));
     }
 
     private void initRankListName() {
-        type = 1;
-        switch (Integer.parseInt(getIntent().getStringExtra("data"))) {
+        switch (type) {
             case 1:
                 ranklistName.setText(R.string.new_music);
                 break;
@@ -93,16 +110,15 @@ public class RanklistActivity extends BaseActivity implements MusicContract.View
     }
 
     @Override
-    protected void initListeners() {
-
+    protected int getLayoutId() {
+        return R.layout.frag_ranklist;
     }
 
     @Override
     public void onClick(View v) {
-        super.onClick(v);
         switch (v.getId()) {
             case R.id.layout_ranklist_back:
-                finish();
+                ((BaseActivity) mContext).showOldView();
                 break;
         }
     }
@@ -110,11 +126,11 @@ public class RanklistActivity extends BaseActivity implements MusicContract.View
     @Override
     public void refreshView(List<Song_list> list) {
         if (list != null && list.size() > 0) {
-            recyclerView.setAdapter(new MusicRecyclerViewAdapter(RanklistActivity.this,
+            recyclerView.setAdapter(new MusicRecyclerViewAdapter((BaseActivity) mContext,
                     true, list, null));
             if (drawable != null && drawable.isRunning()) {
-                loadingView.setVisibility(View.GONE);
                 recyclerView.setVisibility(View.VISIBLE);
+                loadingView.setVisibility(View.GONE);
                 drawable.stop();
             }
         } else onLoadFailed();
@@ -123,7 +139,7 @@ public class RanklistActivity extends BaseActivity implements MusicContract.View
     private void onLoadFailed() {
         TextView textView = loadingView.findViewById(R.id.tv_loading);
         textView.setText(R.string.loading_failed);
-        ToastUtil.showShort(this, getResources().getString(R.string.loading_failed));
+        ToastUtil.showShort(mContext, getResources().getString(R.string.loading_failed));
         if (drawable != null && drawable.isRunning()) {
             drawable.stop();
             imageView.setVisibility(View.GONE);
@@ -131,12 +147,11 @@ public class RanklistActivity extends BaseActivity implements MusicContract.View
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         if (mPresenter != null) {
             mPresenter.destory();
             mPresenter = null;
         }
         super.onDestroy();
     }
-
 }

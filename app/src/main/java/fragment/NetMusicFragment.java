@@ -4,15 +4,14 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.spring_ballet.lovemusic.R;
-import com.spring_ballet.lovemusic.RanklistActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.listener.OnBannerListener;
 
+import base.BaseActivity;
 import base.BaseFragment;
 import utils.GetBannerImages;
 import utils.GlideImageLoader;
-import utils.IntentUtil;
 import utils.ToastUtil;
 
 /**
@@ -20,6 +19,7 @@ import utils.ToastUtil;
  */
 
 public class NetMusicFragment extends BaseFragment {
+
     private Banner mBanner;
 
     @Override
@@ -52,11 +52,6 @@ public class NetMusicFragment extends BaseFragment {
         view.findViewById(R.id.layout_europe_music_list).setOnClickListener(this);
         TextView textView = view.findViewById(R.id.tv_divider_name);
         textView.setText("榜单分类");
-    }
-
-    @Override
-    protected void refresh() {
-
     }
 
     @Override
@@ -96,6 +91,6 @@ public class NetMusicFragment extends BaseFragment {
                 type = 21;
                 break;
         }
-        IntentUtil.gotoActivityWithData(mContext, RanklistActivity.class, "" + type);
+        ((BaseActivity) mContext).showNewView(RanklistFragment.newInstance(type));
     }
 }

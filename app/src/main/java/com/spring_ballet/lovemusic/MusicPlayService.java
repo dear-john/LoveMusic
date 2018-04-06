@@ -25,10 +25,6 @@ public class MusicPlayService extends Service {
         return new MyBinder();
     }
 
-    public void play(Context context) {
-        play(SharedPreferencesUtil.getStringData(context, "url"));
-    }
-
     public void play(String uri) {
         if (sMediaPlayer == null) sMediaPlayer = new MediaPlayer();
         sMediaPlayer.reset();

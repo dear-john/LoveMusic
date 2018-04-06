@@ -13,29 +13,29 @@ import android.widget.TextView;
 
 import com.spring_ballet.lovemusic.R;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import adapter.PlayListViewAdapter;
+import Presenter.PlayListContract;
+import Presenter.PlayListPresenter;
+import adapter.PlayListAdapter;
 import bean.PlaylistItem;
 
 /**
  * Created by 李君 on 2018/3/26.
  */
 
-public class PlaylistWindow {
+public class PlaylistDialog implements PlayListContract.DialogView {
 
     private Dialog mDialog;
     private ImageView playModeIv;
     private TextView playModeTv;
+    private TextView songNumTv;
+    private PlayListAdapter adapter;
+    private static PlayListContract.Presenter sPresenter;
 
-    private static int currentPlayMode = -1;
-
-    private static final int PLAY_MODE_NUMBER = 3;
-    private static final String[] PLAY_MODE_NAME = {"列表循环", "随机播放", "单曲循环"};
-    private static final int[] PLAY_MODE_ICON = {R.drawable.play_icon_loop, R.drawable.play_icon_random, R.drawable.play_icon_one};
-
-    public void showPlaylist(final Context context, final List<PlaylistItem> list, int currentItem) {
+    public PlaylistDialog init(final Context context, final List<PlaylistItem> list, int currentItem) {
 
         //加载播放列表
         View playlistView = LayoutInflater.from(context).inflate(R.layout.layout_playlist, null);
@@ -53,49 +53,35 @@ public class PlaylistWindow {
             window.setGravity(Gravity.BOTTOM);
             window.setWindowAnimations(R.style.BottomDialog_Animation);
         }
-        mDialog.show();
+
+        //列表歌曲数目
+        songNumTv = playlistView.findViewById(R.id.tv_playlist_song_number);
+        songNumTv.setText(String.format(Locale.CHINA, "( %d )", list.size()));
+
+        //初始化listview
+        ListView playListLv = playlistView.findViewById(R.id.lv_playlist);
+        adapter = new PlayListAdapter(context, list, currentItem);
+        sPresenter = new PlayListPresenter(adapter, this);
+        playListLv.setAdapter(adapter);
+        adapter.setListener(new PlayListAdapter.OnAddAndDeleteMusicListener() {
+            @Override
+            public void onAddAndDelele(int size) {
+                if (size == 0) mDialog.dismiss();
+                else songNumTv.setText(String.format(Locale.CHINA, "( %d )", size));
+            }
+        });
 
         //列表播放模式
         View playModeView = playlistView.findViewById(R.id.layout_playlist_play_mode);
         playModeIv = playlistView.findViewById(R.id.iv_playlist_play_mode);
         playModeTv = playlistView.findViewById(R.id.tv_playlist_play_mode);
+        sPresenter.initPlayMode();
         playModeView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changePlayMode();
+                sPresenter.changePlayMode();
             }
         });
-
-        //初始化当前播放模式
-        //类似于当前播放状态的读取与设置
-        changePlayMode();
-
-        //列表歌曲数目
-        final TextView songNumTv = playlistView.findViewById(R.id.tv_playlist_song_number);
-        songNumTv.setText(String.format(Locale.CHINA, "( %d )", list.size()));
-
-        //初始化listview
-        final ListView playListLv = playlistView.findViewById(R.id.lv_playlist);
-        final PlayListViewAdapter adapter = new PlayListViewAdapter(context, list);
-        adapter.changeSelected(currentItem);
-        adapter.setListener(new PlayListViewAdapter.PopItemClickListener() {
-            @Override
-            public void listener(int position) {
-                if (position == PlayListViewAdapter.DELETE_MUSIC_TAG) {
-                    if (list.size() == 0) {
-                        mDialog.dismiss();
-                        return;
-                    }
-                    position = adapter.getCurrentItem();
-                    if (position > list.size() - 1) position = 0;
-                    adapter.changeSelected(position);
-                    songNumTv.setText(String.format(Locale.CHINA, "( %d )", list.size()));
-                    return;
-                }
-                adapter.changeSelected(position);
-            }
-        });
-        playListLv.setAdapter(adapter);
 
         //收藏列表全部音乐
         View collectView = playlistView.findViewById(R.id.layout_playlist_collect);
@@ -111,18 +97,33 @@ public class PlaylistWindow {
         deleteIv.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (list.size() > 0) {
-                    list.clear();
-                    adapter.notifyDataSetChanged();
-                    playListLv.setAdapter(adapter);
-                }
+                sPresenter.clearAdapter();
+                mDialog.dismiss();
             }
         });
+        return this;
     }
 
-    private void changePlayMode() {
-        currentPlayMode = (currentPlayMode + 1) % PLAY_MODE_NUMBER;
-        playModeIv.setImageResource(PLAY_MODE_ICON[currentPlayMode]);
-        playModeTv.setText(PLAY_MODE_NAME[currentPlayMode]);
+    public void show() {
+        if (mDialog != null && !mDialog.isShowing())
+            mDialog.show();
     }
+
+    public void destory() {
+        //还要保存列表状态
+        if (mDialog != null) {
+            if (mDialog.isShowing())
+                mDialog.dismiss();
+            mDialog = null;
+        }
+        sPresenter = null;
+        adapter = null;
+    }
+
+    @Override
+    public void changePlayMode(String modeName, int modeIcon) {
+        playModeIv.setImageResource(modeIcon);
+        playModeTv.setText(modeName);
+    }
+
 }

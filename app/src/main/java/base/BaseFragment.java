@@ -9,12 +9,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
-public abstract class BaseFragment extends Fragment implements View.OnClickListener{
+public abstract class BaseFragment extends Fragment implements View.OnClickListener {
     private boolean canLoad = false;
     private boolean isPrepared = false;
     protected boolean hasLoaded = false;
     protected View view;
     protected Context mContext;
+    protected Context mApplicationContext;
 
     @Nullable
     @Override
@@ -30,7 +31,8 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 //            hasLoaded = true;
         }
         isPrepared = true;
-        mContext = view.getContext().getApplicationContext();
+        mContext = view.getContext();
+        mApplicationContext = mContext.getApplicationContext();
         return view;
     }
 
@@ -42,13 +44,10 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
         }
         if (getUserVisibleHint() && !hasLoaded && isPrepared) {
             lazyLoad();
-//            hasLoaded = true;
         }
     }
 
     protected abstract void lazyLoad();
-
-    protected abstract void refresh();
 
     protected abstract int getLayoutId();
 

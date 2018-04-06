@@ -1,23 +1,18 @@
 package fragment;
 
-import android.Manifest;
-import android.content.pm.PackageManager;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.widget.TextView;
 
-import com.spring_ballet.lovemusic.LocalMusicActivity;
 import com.spring_ballet.lovemusic.R;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
+import base.BaseActivity;
 import base.BaseFragment;
 import bean.MessageEvent;
-import utils.IntentUtil;
 import utils.SharedPreferencesUtil;
-import utils.ToastUtil;
 
 
 public class LocalMusicFragment extends BaseFragment {
@@ -43,7 +38,7 @@ public class LocalMusicFragment extends BaseFragment {
     private void initWidgets() {
         localMusicLayout = view.findViewById(R.id.layout_local_music);
         localMusicNumberTv = view.findViewById(R.id.tv_local_music_number);
-        int number = SharedPreferencesUtil.getIntData(mContext, "LocalMusicNumber");
+        int number = SharedPreferencesUtil.getIntData(getActivity(), "LocalMusicNumber");
         if (number != SharedPreferencesUtil.DEFAULT_INT_VALUE) {
             String text = "(" + number + ")";
             localMusicNumberTv.setText(text);
@@ -67,11 +62,6 @@ public class LocalMusicFragment extends BaseFragment {
     }
 
     @Override
-    protected void refresh() {
-
-    }
-
-    @Override
     protected int getLayoutId() {
         return R.layout.local_music_frag;
     }
@@ -80,53 +70,23 @@ public class LocalMusicFragment extends BaseFragment {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.layout_local_music:
-                if (checkPermission())
-                    IntentUtil.gotoActivity(mContext, LocalMusicActivity.class);
+                ((BaseActivity) getActivity()).showNewView(new LocalMusicDetailFragment());
                 break;
             case R.id.layout_recent_play:
-                loadRecentPlayData();
                 break;
             case R.id.layout_download_music:
-                loadDownloadData();
                 break;
             case R.id.layout_radio:
-                loadRadioData();
                 break;
             case R.id.layout_collection:
-                loadCollectionData();
                 break;
         }
-    }
-
-    private boolean checkPermission() {
-        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-            ToastUtil.showShort(mContext, "暂未授权，本功能不能使用");
-            return false;
-        }
-        return true;
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onMessageEvent(MessageEvent event) {
         String text = "(" + event.getLocalMusicNumber() + ")";
         localMusicNumberTv.setText(text);
-    }
-
-    private void loadCollectionData() {
-
-    }
-
-    private void loadRadioData() {
-
-    }
-
-    private void loadDownloadData() {
-
-    }
-
-    private void loadRecentPlayData() {
-
     }
 
     @Override

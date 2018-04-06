@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 
 import java.util.List;
 
-import app.Apis;
+import app.AppConstants;
 import bean.Music;
 import bean.Song_list;
 import utils.OkHttpUtil;
@@ -25,7 +25,7 @@ public class Song_listMusicDataImpl implements MusicData<Song_list> {
     @Override
     public void getMusicData(final OnDataLoadFinished<Song_list> loadFinished) {
 
-        OkHttpUtil.loadData(Apis.MUSIC_LIST_API + type, new OkHttpUtil.OnLoadDataFinish() {
+        OkHttpUtil.loadData(AppConstants.MUSIC_LIST_API + type, new OkHttpUtil.OnLoadDataFinish() {
             @Override
             public void loadDataFinish(String data) {
                 if (data != null) {

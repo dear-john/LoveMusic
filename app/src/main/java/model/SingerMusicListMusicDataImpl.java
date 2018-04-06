@@ -5,7 +5,7 @@ import com.alibaba.fastjson.JSON;
 import java.util.ArrayList;
 import java.util.List;
 
-import app.Apis;
+import app.AppConstants;
 import bean.SingerMusicList;
 import utils.OkHttpUtil;
 
@@ -24,7 +24,7 @@ public class SingerMusicListMusicDataImpl implements MusicData<SingerMusicList> 
 
     @Override
     public void getMusicData(final OnDataLoadFinished<SingerMusicList> loadFinished) {
-        OkHttpUtil.loadData(Apis.SINGER_MUSIC_LIST + uid, new OkHttpUtil.OnLoadDataFinish() {
+        OkHttpUtil.loadData(AppConstants.SINGER_MUSIC_LIST + uid, new OkHttpUtil.OnLoadDataFinish() {
             @Override
             public void loadDataFinish(String data) {
                 if (data != null) mSingerMusicList = JSON.parseObject(data, SingerMusicList.class);

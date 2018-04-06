@@ -14,6 +14,7 @@ import base.BaseFragment;
 
 
 public class AroundMusicFragment extends BaseFragment {
+
     private static final int PAGE_NUM = 2;
 
     @Override
@@ -32,12 +33,6 @@ public class AroundMusicFragment extends BaseFragment {
         tabLayout.setupWithViewPager(aroundMusicVp);
         //加载成功后，设置为true避免下次重复加载
         hasLoaded = true;
-    }
-
-
-    @Override
-    protected void refresh() {
-
     }
 
     @Override
