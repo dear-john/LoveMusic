@@ -405,9 +405,13 @@ public class BaseActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     protected void onDestroy() {
-        sService.unbindService(sConnection);
+        unbindService(sConnection);
         savePlayRecord();
-        mDialog.destory();
+        if (mDialog != null) {
+            mDialog.destory();
+            mDialog = null;
+        }
+        sService = null;
         mCurrentFrag = null;
         mPreviousFragList.clear();
         mPreviousFragList = null;

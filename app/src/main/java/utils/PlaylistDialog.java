@@ -35,7 +35,7 @@ public class PlaylistDialog implements PlayListContract.DialogView {
     private PlayListAdapter adapter;
     private static PlayListContract.Presenter sPresenter;
 
-    public PlaylistDialog init(final Context context, final List<PlaylistItem> list, int currentItem) {
+    public void init(final Context context, final List<PlaylistItem> list, int currentItem) {
 
         //加载播放列表
         View playlistView = LayoutInflater.from(context).inflate(R.layout.layout_playlist, null);
@@ -101,7 +101,6 @@ public class PlaylistDialog implements PlayListContract.DialogView {
                 mDialog.dismiss();
             }
         });
-        return this;
     }
 
     public void show() {
